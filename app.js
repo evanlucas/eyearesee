@@ -171,6 +171,7 @@ App.prototype._addHandlers = function _addHandlers() {
         chan.logs.push({
           from: this.data.user.nickname
         , message: data
+        , ts: new Date()
         })
         this.emit('render')
         break
@@ -328,6 +329,7 @@ App.prototype.login = function login(opts) {
       chans[name].logs.push({
         from: msg.from
       , message: msg.message
+      , ts: new Date()
       })
       this.emit('render')
       if (msg.message.indexOf(this.data.user.nickname)) {
