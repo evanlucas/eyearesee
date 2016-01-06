@@ -2339,6 +2339,10 @@ ul.logs {
   left: 150px;
   right: 0;
 }
+#main2 .container .logs-container {
+  right: 0;
+  left: 150px;
+}
 #main2 .container #header {
   position: fixed;
   height: 90px;
@@ -2511,4 +2515,48 @@ a:focus {
 }
 span.mention {
   font-weight: bold;
+}
+.callout {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-radius: 3px;
+}
+.callout h4 {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+.callout p:last-child {
+  margin-bottom: 0;
+}
+.callout.callout-purple {
+  border-left-color: #9979b7;
+}
+.callout.callout-purple h4 {
+  color: #9979b7;
+}
+.callout.callout-blue {
+  border-left-color: #1f8dd6;
+}
+.callout.callout-blue h4 {
+  color: #1f8dd6;
+}
+.callout.callout-green {
+  border-left-color: #1cb841;
+}
+.callout.callout-green h4 {
+  color: #1cb841;
+}
+.callout.callout-yellow {
+  border-left-color: #dfb114;
+}
+.callout.callout-yellow h4 {
+  color: #dfb114;
+}
+.callout.callout-red {
+  border-left-color: #ca3c3c;
+}
+.callout.callout-red h4 {
+  color: #ca3c3c;
 }
