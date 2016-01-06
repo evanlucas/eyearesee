@@ -190,9 +190,9 @@ App.prototype._addHandlers = function _addHandlers() {
         break
       case 'leave':
       case 'part':
-        const channel = data[0]
+        const channel = data[0] || this.nav.current
         const m = data[1]
-        if (!channel) return
+        if (!channel || channel === '#server') return
 
         debug('part %s %s', channel, m)
 
@@ -398,7 +398,11 @@ App.prototype.login = function login(opts) {
       // we just joined
       const view = new ChannelView(this.target)
       this.views.channels[channel] = view
+      // have to render to add the view
       this.emit('render')
+
+      // now we actually show the channel
+      this.showChannel(channel)
     } else {
       // the second arg is the mode.
       // is there a way to get this from the message?
@@ -411,6 +415,18 @@ App.prototype.login = function login(opts) {
 
 App.prototype.showLogin = function showLogin() {
   this.render('login')
+}
+
+App.prototype.showServer = function showServer() {
+  const node = document.getElementById('server')
+  debug('show server')
+  this.nav.show('#server', node)
+}
+
+App.prototype.showChannel = function showChannel(name) {
+  const node = document.querySelector(`a[href="${name}"]`)
+  debug('show channel %s', name)
+  this.nav.show(name.toLowerCase(), node)
 }
 
 App.prototype.log = function log(obj) {
