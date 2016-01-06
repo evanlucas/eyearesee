@@ -23,10 +23,10 @@ function setup() {
   setupMenu()
 
   mainWindow = new BrowserWindow({
-    width: 960
+    width: 1200
   , height: 650
-  , 'min-height': 600
-  , 'min-width': 400
+  , 'min-height': 400
+  , 'min-width': 600
   , resizable: true
   , center: true
   , title: name
