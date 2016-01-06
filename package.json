@@ -1,0 +1,41 @@
+{
+  "name": "eyearesee",
+  "version": "1.0.0",
+  "description": "Electron IRC Client",
+  "main": "index.js",
+  "scripts": {
+    "build-css": "lessc client/less/index.less > public/css/style.css",
+    "dev": "npm run build-css && npm start",
+    "start": "electron .",
+    "test": "tap test/*.js --cov"
+  },
+  "dependencies": {
+    "argsplit": "~1.0.4",
+    "autolinker": "~0.22.0",
+    "debug": "~2.2.0",
+    "delegate-dom": "0.0.1",
+    "electron-prebuilt": "~0.36.2",
+    "keytar": "~3.0.0",
+    "leveldown": "~1.4.3",
+    "levelup": "~1.3.1",
+    "slate-irc": "~0.8.1",
+    "subleveldown": "~2.1.0",
+    "virtual-dom": "~2.1.1"
+  },
+  "devDependencies": {
+    "electron-packager": "~5.2.0",
+    "electron-rebuild": "~1.0.2",
+    "less": "~2.5.3",
+    "tap": "~5.0.0"
+  },
+  "license": "MIT",
+  "author": "Evan Lucas <evanlucas@me.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evanlucas/eyearesee"
+  },
+  "homepage": "https://github.com/evanlucas/eyearesee",
+  "bugs": {
+    "url": "https://github.com/evanlucas/eyearesee/issues"
+  }
+}
