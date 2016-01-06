@@ -145,6 +145,16 @@ App.prototype._addHandlers = function _addHandlers() {
     return false
   })
 
+  delegate.on(this.el, 'a.external-url', 'click', (e) => {
+    e.preventDefault()
+    var a = e.target
+    if (a && a.href) {
+      this.emit('openUrl', a.href)
+    }
+
+    return false
+  })
+
   this.on('command', (msg) => {
     const data = msg.data
     const active = this.nav.current
