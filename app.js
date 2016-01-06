@@ -91,9 +91,6 @@ inherits(App, EE)
 
 App.prototype.render = function render(type) {
   const views = this.views
-  const data = this.data
-  const channels = data.channels
-  const messages = data.messages
 
   if (type === 'login') {
     return views.login.render()
@@ -104,6 +101,10 @@ App.prototype.render = function render(type) {
   debug('render active %s', active)
   var view
   var columns = 2
+  const data = this.data
+  const channels = data.channels
+  const messages = data.messages
+
   if (active === '#server') {
     view = views.server.render()
   } else if (channels[active] && views.channels[active]) {
@@ -288,36 +289,45 @@ App.prototype.login = function login(opts) {
   })
 
   this.irc.on('notice', (msg) => {
-    this.log(`-NOTICE- ${msg.message}`)
+    this.log({
+      type: 'notice'
+    , message: msg.message
+    , ts: new Date()
+    })
   })
 
   this.irc.on('welcome', (msg) => {
-    this.log(`-WELCOME- ${msg}`)
+    this.log({
+      type: 'welcome'
+    , message: msg
+    , ts: new Date()
+    })
   })
 
   this.irc.on('motd', (msg) => {
-    this.log(msg, '-MOTD- ')
+    this.log({
+      type: 'motd'
+    , message: msg.join('<br>')
+    , ts: new Date()
+    })
   })
 
   this.irc.on('topic', (msg) => {
     const name = msg.channel
     const topic = msg.topic
-    this.log(`-TOPIC- [${name}] ${topic}`)
+    this.log({
+      type: 'topic'
+    , message: topic
+    , channel: name
+    , ts: new Date()
+    })
+    debug('topic %s', name)
     const c = this.data.channels[name]
     if (!c) return
     c.topic = topic
 
     debug('channel topic %s %s', c.name, c.topic)
-    // once we get the topic, load all of the names
-    this.irc.names(name, (err, names) => {
-      if (err) {
-        console.error('error getting names', err.stack)
-        return
-      }
-
-      debug('emit nav %s', `channel-${name}`)
-      this.emit('nav', $(`channel-${name}`))
-    })
+    this.emit('render')
   })
 
   this.irc.on('message', (msg) => {
@@ -346,31 +356,11 @@ App.prototype.login = function login(opts) {
   })
 
   this.irc.on('names', (msg) => {
-    const names = msg.names
-    const channel = msg.channel
-    const chan = this.data.channels[channel]
-    if (!chan) return
-
-    chan.setNames(names)
-    this.emit('render')
+    require('./lib/handlers/names')(msg, this)
   })
 
   this.irc.on('part', (msg) => {
-    var nick = msg.prefix
-    if (!nick) return
-    nick = nick.split('!')[0]
-    const channel = msg.params.toLowerCase()
-    const chan = this.data.channels[channel]
-    if (!chan) return
-
-    if (nick) {
-      if (nick === this.data.user.nickname) {
-        // it's me
-        debug('I PARTED FROM %s', channel)
-      } else {
-        chan.removeUser(nick)
-      }
-    }
+    require('./lib/handlers/part')(msg, this)
   })
 
   this.irc.on('quit', (msg) => {
@@ -395,15 +385,20 @@ App.prototype.login = function login(opts) {
   })
 
   this.irc.on('join', (msg) => {
+    debug('join event', msg)
     const channel = msg.channel
     const nick = msg.nick
     const chan = this.data.channels[channel]
-    if (!chan) return
+    if (!chan) {
+      debug('got join event for channel that doesnt exist', msg)
+      return
+    }
 
     if (nick === this.data.user.nickname) {
       // we just joined
       const view = new ChannelView(this.target)
       this.views.channels[channel] = view
+      this.emit('render')
     } else {
       // the second arg is the mode.
       // is there a way to get this from the message?
@@ -418,14 +413,8 @@ App.prototype.showLogin = function showLogin() {
   this.render('login')
 }
 
-App.prototype.log = function log(msg, prefix) {
-  if (Array.isArray(msg)) {
-    for (var i = 0, len = msg.length; i < len; i++) {
-      this.data.logs.push((prefix || '') + msg[i])
-    }
-  } else {
-    this.data.logs.push(msg)
-  }
+App.prototype.log = function log(obj) {
+  this.data.logs.push(obj)
 
   if (this.nav.current === '#server') {
     this.emit('render')
