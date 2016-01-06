@@ -301,7 +301,7 @@ App.prototype.login = function login(opts) {
 
   this.irc.on('topic', (msg) => {
     const name = msg.channel
-    const topic = linker(msg.topic)
+    const topic = msg.topic
     this.log(`-TOPIC- [${name}] ${topic}`)
     const c = this.data.channels[name]
     if (!c) return
