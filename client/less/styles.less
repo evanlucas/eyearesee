@@ -320,3 +320,27 @@ span.username {
   font-weight: bold;
   margin-right: 5px;
 }
+
+span.ts {
+  margin-right: 5px;
+  color: lighten(@dusk, 20%);
+  font-weight: bold;
+}
+
+a {
+  color: @blue;
+
+  &:hover {
+    color: darken(@blue, 5%);
+  }
+
+  &:visited,
+  &:focus {
+    color: @blue;
+    text-decoration: none;
+  }
+}
+
+span.mention {
+  font-weight: bold;
+}
