@@ -20,7 +20,6 @@ const Server = require('./lib/elements/server')
 const Sidebar = require('./lib/elements/sidebar')
 const Login = require('./lib/elements/login')
 const Input = require('./lib/elements/input')
-const ChannelView = require('./lib/elements/channel')
 
 function App(el, currentWindow) {
   if (!(this instanceof App))
@@ -385,31 +384,7 @@ App.prototype.login = function login(opts) {
   })
 
   this.irc.on('join', (msg) => {
-    debug('join event', msg)
-    const channel = msg.channel
-    const nick = msg.nick
-    const chan = this.data.channels[channel]
-    if (!chan) {
-      debug('got join event for channel that doesnt exist', msg)
-      return
-    }
-
-    if (nick === this.data.user.nickname) {
-      // we just joined
-      const view = new ChannelView(this.target)
-      this.views.channels[channel] = view
-      // have to render to add the view
-      this.emit('render')
-
-      // now we actually show the channel
-      this.showChannel(channel)
-    } else {
-      // the second arg is the mode.
-      // is there a way to get this from the message?
-      chan.addUser(msg.nick, '')
-      this.emit('render')
-      debug('someone else joined %s %s', msg.nick, msg.channel)
-    }
+    require('./lib/handlers/join')(msg, this)
   })
 }
 
