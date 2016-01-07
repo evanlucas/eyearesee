@@ -2266,10 +2266,22 @@ ul.logs {
   overflow-y: scroll;
   top: 100px;
   padding-bottom: 160px;
-  left: 150px;
+  left: 180px;
   right: 180px;
 }
-#main {
+ul.logs li.notice {
+  background-color: rgba(223, 177, 20, 0.15);
+}
+ul.logs li.mention {
+  background-color: rgba(28, 184, 65, 0.15);
+}
+ul.logs li.error {
+  background-color: rgba(202, 60, 60, 0.15);
+}
+ul.logs li.motd {
+  background-color: rgba(128, 88, 165, 0.15);
+}
+#main.col-3 {
   width: 100%;
   height: 100%;
   padding: 0;
@@ -2277,52 +2289,52 @@ ul.logs {
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
 }
-#main .container {
+#main.col-3 .container {
   position: fixed;
   width: auto;
   height: 100%;
   right: 180px;
   bottom: 0;
   padding: 3px;
-  left: 150px;
+  left: 180px;
 }
-#main .container #header {
+#main.col-3 .container #header {
   position: fixed;
   height: 90px;
-  left: 150px;
+  left: 180px;
   right: 180px;
   border-bottom: 1px solid #555a71;
   padding: 0em 0.5em;
   overflow-y: scroll;
 }
-#main .container #header .title {
+#main.col-3 .container #header .title {
   margin: 0;
   margin-bottom: 1px;
 }
-#main .container #header p.subtitle {
+#main.col-3 .container #header p.subtitle {
   margin: 0;
   font-size: 1em;
   font-weight: normal;
   color: #1e2028;
 }
-#main #inputContainer {
+#main.col-3 #inputContainer {
   position: fixed;
   height: 50px;
   bottom: 0;
-  left: 150px;
+  left: 180px;
   right: 180px;
 }
-#main #inputContainer #footer {
+#main.col-3 #inputContainer #footer {
   height: 50px;
   margin: 0 auto;
 }
-#main #inputContainer #footer .inputMessage {
+#main.col-3 #inputContainer #footer .inputMessage {
   bottom: 0;
   height: 50px;
   outline: none;
   width: 100%;
 }
-#main2 {
+#main.col-2 {
   width: 100%;
   height: 100%;
   padding: 0;
@@ -2330,57 +2342,57 @@ ul.logs {
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
 }
-#main2 .container {
+#main.col-2 .container {
   position: fixed;
   width: auto;
   height: 100%;
   bottom: 0;
   padding: 3px;
-  left: 150px;
+  left: 180px;
   right: 0;
 }
-#main2 .container .logs-container {
+#main.col-2 .container .logs-container {
+  left: 180px;
   right: 0;
-  left: 150px;
 }
-#main2 .container #header {
+#main.col-2 .container #header {
   position: fixed;
   height: 90px;
-  left: 150px;
+  left: 180px;
   right: 0;
   border-bottom: 1px solid #555a71;
   padding: 0em 0.5em;
   overflow-y: scroll;
 }
-#main2 .container #header .title {
+#main.col-2 .container #header .title {
   margin: 0;
   margin-bottom: 1px;
 }
-#main2 .container #header p.subtitle {
+#main.col-2 .container #header p.subtitle {
   margin: 0;
   font-size: 1em;
   font-weight: normal;
   color: #1e2028;
 }
-#main2 #inputContainer {
+#main.col-2 #inputContainer {
   position: fixed;
   height: 50px;
   bottom: 0;
-  left: 150px;
+  left: 180px;
   right: 0;
 }
-#main2 #inputContainer #footer {
+#main.col-2 #inputContainer #footer {
   height: 50px;
   margin: 0 auto;
 }
-#main2 #inputContainer #footer .inputMessage {
+#main.col-2 #inputContainer #footer .inputMessage {
   bottom: 0;
   height: 50px;
   outline: none;
   width: 100%;
 }
 #sidebar {
-  width: 150px;
+  width: 180px;
   height: 100%;
   position: fixed;
   top: 0;
@@ -2402,10 +2414,14 @@ ul.logs {
 #sidebar .pure-menu-link .active {
   background-color: #00a0be;
 }
+#sidebar .pure-menu-link.server {
+  margin-left: 0;
+  font-size: 16px;
+}
 #sidebar .pure-menu-heading {
   border-bottom: none;
-  font-size: 110%;
-  color: #555a71;
+  font-size: 14px;
+  color: #60667f;
 }
 #sidebar .pure-menu-separator {
   background-color: #555a71;
@@ -2499,6 +2515,7 @@ span.username {
 }
 span.ts {
   margin-right: 5px;
+  margin-left: 3px;
   color: #4a4f62;
   font-weight: bold;
 }
