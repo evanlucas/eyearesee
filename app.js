@@ -400,6 +400,14 @@ App.prototype.login = function login(opts) {
     }
   })
 
+  this.irc.on('ircerror', (msg) => {
+    require('./lib/handlers/errors')(msg, this)
+  })
+
+  this.irc.on('errors', (msg) => {
+    require('./lib/handlers/errors')(msg, this)
+  })
+
   this.irc.on('names', (msg) => {
     require('./lib/handlers/names')(msg, this)
   })
