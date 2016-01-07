@@ -288,6 +288,32 @@ App.prototype.login = function login(opts) {
   })
 
   this.irc.on('notice', (msg) => {
+    // from, to, hostmask, message
+
+    const to = (msg.to || '').toLowerCase()
+    const from = msg.from
+    if (to[0] === '#') {
+      // probably a channel
+      const chan = this.data.channels[to]
+      if (!chan) {
+        debug('notice to what looks like a channel but doesnt exist', msg)
+        return
+      }
+
+      chan.logs.push({
+        type: 'notice'
+      , from: from
+      , message: msg.message
+      , ts: new Date()
+      })
+
+      if (this.nav.current === to) {
+        this.emit('render')
+      }
+    } else if (to) {
+      // maybe a personal notice?
+      // need to create a new window
+    }
     this.log({
       type: 'notice'
     , message: msg.message
@@ -331,25 +357,45 @@ App.prototype.login = function login(opts) {
 
   this.irc.on('message', (msg) => {
     debug('irc message', msg)
-    const name = msg.to
+    const to = msg.to
+    const from = msg.from
     const chans = this.data.channels
-    if (chans[name]) {
+    const msgs = this.data.messages
+
+    if (chans[to]) {
       debug('channel exists...adding to logs and rendering')
-      chans[name].logs.push({
-        from: msg.from
+      chans[to].logs.push({
+        from: from
       , message: msg.message
       , ts: new Date()
+      , type: 'message'
       })
       this.emit('render')
       if (msg.message.indexOf(this.data.user.nickname)) {
         this.setBadge()
         // TODO(evanlucas) Play sound or something?
       }
+    } else if (to === this.data.user.nickname) {
+      const message = msgs[from]
+      if (message) {
+        // the Message channel already exists
+        // just update the log
+        msgs[from].logs.push({
+          from: from
+        , message: msg.message
+        , ts: new Date()
+        , type: 'message'
+        })
+      } else {
+        // the Message channel does not exist
+        // it needs to be created along with the view
+
+      }
     }
 
-    if (this.nav.current !== name && chans[name]) {
-      debug('adding badge for channel %s', name)
-      chans[name].unread += 1
+    if (this.nav.current !== to && chans[to]) {
+      debug('adding badge for channel %s', to)
+      chans[to].unread += 1
       this.emit('render')
     }
   })
