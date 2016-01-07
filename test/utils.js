@@ -23,6 +23,26 @@ test('encode', (t) => {
   t.end()
 })
 
+test('pad', (t) => {
+  t.plan(2)
+  t.equal(utils.pad(0), '00')
+  t.equal(utils.pad(10), '10')
+})
+
+test('encodeConnection', (t) => {
+  t.plan(1)
+  const name = '#node.js'
+  const out = utils.encodeConnection(name)
+  t.equal(out, `#server_____${name}`)
+})
+
+test('decodeConnection', (t) => {
+  t.plan(1)
+  const name = '#server_____#node.js'
+  const out = utils.decodeConnection(name)
+  t.equal(out, '#node.js')
+})
+
 test('flatten', (t) => {
   const input = [
     { type: 'notice', message: 'A' }
