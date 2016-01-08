@@ -86,12 +86,10 @@ App.prototype.render = function render() {
   const data = this.data
 
   var active = this.nav.current
-  debug('render active %s', active ? active.name : 'login')
 
   if (active instanceof Connection) {
     view = views.connection.render(active)
   } else if (active instanceof Channel) {
-    debug('active is a channel')
     columns = 3
     active.unread = 0
     view = views.channel.render(active)
@@ -234,7 +232,7 @@ App.prototype.login = function login(opts) {
     , altnick: opts.altnick
     , password: opts.password
     }
-  })
+  }, this)
 
   this._addConnection(conn)
   conn.persist((err) => {
