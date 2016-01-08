@@ -14,7 +14,6 @@ function Desktop() {
   if (!(this instanceof Desktop))
     return new Desktop()
 
-  console.log('DESKTOP')
   App.call(this, document.body, currentWindow)
 
   currentWindow.on('focus', () => {
