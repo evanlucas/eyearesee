@@ -1,0 +1,20 @@
+.link,
+.link:hover,
+.link:visited {
+  color: #fff;
+  text-decoration: none;
+}
+
+a {
+  color: @blue;
+
+  &:hover {
+    color: darken(@blue, 5%);
+  }
+
+  &:visited,
+  &:focus {
+    color: @blue;
+    text-decoration: none;
+  }
+}

@@ -1,0 +1,58 @@
+.callout {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-radius: 3px;
+
+  h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+  }
+
+  p {
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &.callout-purple {
+    border-left-color: lighten(@purple, 10%);
+
+    h4 {
+      color: lighten(@purple, 10%);
+    }
+  }
+
+  &.callout-blue {
+    border-left-color: @blue;
+
+    h4 {
+      color: @blue;
+    }
+  }
+
+  &.callout-green {
+    border-left-color: @green;
+
+    h4 {
+      color: @green;
+    }
+  }
+
+  &.callout-yellow {
+    border-left-color: @yellow;
+
+    h4 {
+      color: @yellow;
+    }
+  }
+
+  &.callout-red {
+    border-left-color: @red;
+
+    h4 {
+      color: @red;
+    }
+  }
+}
