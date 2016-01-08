@@ -4,7 +4,7 @@
   "description": "Electron IRC Client",
   "main": "index.js",
   "scripts": {
-    "build-css": "lessc client/less/index.less > public/css/style.css",
+    "build-css": "lessc -x client/less/index.less > public/css/style.css",
     "dev": "npm run build-css && npm start",
     "start": "electron .",
     "test": "tap test/*.js --cov"
