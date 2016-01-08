@@ -31,22 +31,7 @@ function App(el, currentWindow) {
   this.db = require('./lib/db')
   this.nav = require('./lib/nav')(this)
   this.views = require('./lib/views')(this)
-
-  this.data = {
-    user: {
-      username: ''
-    , realname: ''
-    , alt: ''
-    , nickname: ''
-    }
-  , server: {
-      host: ''
-    , port: ''
-    }
-  , channels: {}
-  , messages: {}
-  , logs: []
-  }
+  this.inputHandler = require('./lib/handle-input')(this)
 
   this.connections = {}
 
@@ -124,55 +109,6 @@ App.prototype._addHandlers = function _addHandlers() {
     }
 
     return false
-  })
-
-  this.on('command', (msg) => {
-    const data = msg.data
-    const active = this.nav.current
-    if (!active) return
-    switch (msg.type) {
-      case '_message':
-        if (active instanceof Connection)
-          return
-
-        if (active instanceof Channel) {
-          active.send(data)
-          this.needsLayout()
-        }
-        break
-      case 'join':
-        if (!data[0]) return
-
-        var conn
-        if (active instanceof Connection) {
-          conn = active
-        } else if (active instanceof Channel) {
-          conn = active._connection
-        }
-
-        if (conn) {
-          const name = data[0]
-          conn.join(name)
-        } else {
-          debug('invalid connection to join', active)
-        }
-        break
-      case 'leave':
-      case 'part':
-        var conn
-        if (active instanceof Connection) {
-          conn = active
-        } else if (active instanceof Channel) {
-          conn = active._connection
-        }
-
-        if (conn) {
-          conn.part(data[0], data[1])
-        } else {
-          debug('invalid connection to part', active)
-        }
-        break
-    }
   })
 }
 
