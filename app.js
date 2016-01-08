@@ -99,7 +99,7 @@ App.prototype.render = function render() {
 
   var container = [
     view
-  , views.input.render()
+  , views.input.render(this.nav)
   ]
 
   const main = columns === 2
