@@ -29,6 +29,14 @@ test('pad', (t) => {
   t.equal(utils.pad(10), '10')
 })
 
+test('formatNameForType', (t) => {
+  t.plan(4)
+  t.equal(utils.formatNameForType('evan', 'action'), '● evan')
+  t.equal(utils.formatNameForType('evan', 'message'), '<evan>')
+  t.equal(utils.formatNameForType('evan', 'mention'), '<evan>')
+  t.equal(utils.formatNameForType('evan', 'notice'), 'evan')
+})
+
 test('encodeConnection', (t) => {
   t.plan(1)
   const name = '#node.js'
