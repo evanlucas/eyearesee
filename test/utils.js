@@ -50,20 +50,3 @@ test('decodeConnection', (t) => {
   const out = utils.decodeConnection(name)
   t.equal(out, '#node.js')
 })
-
-test('namesMatching', (t) => {
-  const input = [
-    'brad'
-  , 'dan'
-  , 'Donald'
-  , 'Bradley'
-  , 'evan'
-  ]
-
-  const o = utils.namesMatching('br', input)
-  t.deepEqual(o, ['brad', 'Bradley'])
-
-  const o2 = utils.namesMatching('d', input)
-  t.deepEqual(o2, ['dan', 'Donald'])
-  t.end()
-})
