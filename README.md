@@ -1,5 +1,8 @@
 # eyearesee
 
+[![Build Status](https://travis-ci.org/evanlucas/eyearesee.svg)](https://travis-ci.org/evanlucas/eyearesee)
+[![Coverage Status](https://coveralls.io/repos/evanlucas/eyearesee/badge.svg?branch=master&service=github)](https://coveralls.io/github/evanlucas/eyearesee?branch=master)
+
 A WIP IRC client using Electron.
 
 ![Screenshot](https://raw.githubusercontent.com/evanlucas/eyearesee/master/screenshot.png)
