@@ -1,3 +1,11 @@
+'use strict'
+
+const tap = require('tap')
+
+if (require.main === module) {
+  return tap.pass('ok')
+}
+
 module.exports = {
   join: [
     { input: '/join #foobar'
