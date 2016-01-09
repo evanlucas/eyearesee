@@ -3,15 +3,12 @@
 const EE = require('events')
 const inherits = require('util').inherits
 const delegate = require('delegate-dom')
-const parse = require('./lib/parse-message')
 const h = require('virtual-dom/h')
 const diff = require('virtual-dom/diff')
 const patch = require('virtual-dom/patch')
 const createElement = require('virtual-dom/create-element')
-const linker = require('./lib/linker')
 const debug = require('debug')('eyearesee:app')
 const auth = require('./lib/auth')
-const utils = require('./lib/utils')
 
 module.exports = window.App = App
 
@@ -69,7 +66,6 @@ App.prototype.render = function render() {
 
   var view
   var columns = 2
-  const data = this.data
 
   var active = this.nav.current
 
@@ -196,8 +192,4 @@ App.prototype._addConnection = function _addConnection(conn) {
 
 App.prototype.needsLayout = function needsLayout() {
   this.emit('render')
-}
-
-function $(str) {
-  return document.getElementById(str)
 }

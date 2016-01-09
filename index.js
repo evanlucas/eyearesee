@@ -4,7 +4,6 @@ const BrowserWindow = require('browser-window')
 const app = require('app')
 const Menu = require('menu')
 const path = require('path')
-const MenuItem = require('menu-item')
 
 const name = 'EyeAreSee'
 const index = `file://${path.join(__dirname, 'views', 'index.html')}`

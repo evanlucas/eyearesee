@@ -5,7 +5,6 @@ const App = require('./app')
 const remote = require('remote')
 const app = remote.require('app')
 const shell = require('shell')
-const BrowserWindow = remote.require('browser-window')
 const currentWindow = remote.getCurrentWindow()
 
 module.exports = Desktop
