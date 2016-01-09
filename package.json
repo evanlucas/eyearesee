@@ -13,6 +13,7 @@
   "dependencies": {
     "argsplit": "~1.0.4",
     "autolinker": "~0.22.0",
+    "completor": "~1.0.0",
     "debug": "~2.2.0",
     "delegate-dom": "0.0.1",
     "electron-prebuilt": "~0.36.2",
