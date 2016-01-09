@@ -1,16 +1,106 @@
+// Serverbar
+// contains all of the connections
+#serverbar {
+  width: @serverbarWidth;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+  background: @dusk;
+
+  .nav {
+    .menu {
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+          padding: 0;
+          text-decoration: none;
+          text-align: center;
+          margin-left: auto;
+          margin-right: auto;
+          display: block;
+          width: 46px;
+          height: 46px;
+          line-height: 46px;
+
+          a {
+            letter-spacing: normal;
+            font-size: 24px;
+            margin: 10px auto;
+            text-align: center;
+            width: 46px;
+            display: block;
+            height: 46px;
+            line-height: 46px;
+            border-radius: 50px;
+            border: 2px solid transparent;
+
+            &.active {
+              background: lighten(@dusk, 10%);
+              border: 2px solid rgba(255, 255, 255, 0.5);
+            }
+
+            &:hover {
+              cursor: pointer;
+              border: 2px solid rgba(255, 255, 255, 0.5);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .bottom {
+    position: fixed;
+    bottom: 15px;
+    width: @serverbarWidth;
+
+    a.add-connection {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: bold;
+      display: block;
+      font-size: 42px;
+      color: @cyan;
+      cursor: pointer;
+      width: @serverbarWidth - 20;
+      height: @serverbarWidth - 20;
+      line-height: @serverbarWidth - 20;
+      border: 2px solid transparent;
+
+      &:active,
+      &:hover {
+        color: darken(@cyan, 10%);
+        text-decoration: none;
+        background-color: lighten(@dusk, 10%);
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        border-radius: 50px;
+      }
+    }
+  }
+}
+
 // Sidebar
-// contains the connections and channels
+// contains the channels and messages
 #sidebar {
   width: @sidebarWidth;
   height: 100%;
   position: fixed;
   top: 0;
+  left: @serverbarWidth;
   bottom: 0;
   overflow: auto;
-  background: @dusk;
+  background: lighten(@dusk, 10%);
 
   .active {
     background: @cyan !important;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
   }
 
   .pure-menu-link {

@@ -89,7 +89,8 @@ App.prototype.render = function render() {
     : '#main.col-3.pure-g'
 
   return h(main, [
-    h('#sidebar.pure-u', [
+    views.serverbar.render()
+  , h('#sidebar.pure-u', [
       views.sidebar.render()
     ])
   , h('.container.pure-u-1', container)
