@@ -6,6 +6,7 @@
   "scripts": {
     "build-css": "lessc -x client/less/index.less > public/css/style.css",
     "dev": "npm run build-css && npm start",
+    "lint": "eslint *.js lib/**.js test/**.js",
     "start": "electron .",
     "test": "tap test/*.js --cov"
   },
@@ -26,6 +27,7 @@
   "devDependencies": {
     "electron-packager": "~5.2.0",
     "electron-rebuild": "~1.0.2",
+    "eslint": "~1.10.3",
     "less": "~2.5.3",
     "tap": "~5.0.0"
   },

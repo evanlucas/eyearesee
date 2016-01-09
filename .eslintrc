@@ -1,0 +1,22 @@
+{
+  "env": {
+    "node": true,
+    "browser": true,
+    "commonjs": true
+  },
+  "ecmaFeatures": {
+    "arrowFunctions": true,
+    "blockBindings": true,
+    "forOf": true,
+    "objectLiteralComputedProperties": true,
+    "objectLiteralShorthandProperties": true,
+    "templateStrings": true,
+    "globalReturn": true
+  },
+  "rules": {
+    "quotes": [2, "single"],
+    "semi": [2, "never"],
+    "comma-style": [2, "first"],
+    "no-unused-vars": [2, { "vars": "all", "args": "none" }]
+  }
+}
