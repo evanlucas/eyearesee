@@ -5,6 +5,7 @@ const InputView = require('../../lib/views/input')
 const EE = require('events')
 
 test('InputView', (t) => {
+  t.plan(57)
   const app = new EE()
   app.nav = {
     current: {
@@ -181,17 +182,57 @@ test('InputView', (t) => {
   }
 
   input._tabOrig = ''
-  app.nav.current._onlyNames = ['abc']
+  app.nav.current._onlyNames = ['abc', 'abcd']
   input.keypressed(opts, app.nav)
   t.equal(input.isTabbing, true)
   // the value changes from ab => abc
   t.equal(opts.target.value, 'abc')
 
-  opts.target.value = 'ab'
   input.keypressed(opts, app.nav)
   t.equal(input.isTabbing, true)
-  t.equal(input._tabChar, 'ab')
+  t.equal(input._tabChar, 'abc')
+  t.equal(input._tabOrig, 'ab')
+  t.equal(opts.target.value, 'abcd')
+
+  // one more time should take us back to abc
+  input.keypressed(opts, app.nav)
+  t.equal(input.isTabbing, true)
+  t.equal(input._tabChar, 'abcd')
+  t.equal(input._tabOrig, 'ab')
+  t.equal(opts.target.value, 'abc')
+
+  // now check if there are no completions
+  opts = {
+    keyCode: 9
+  , target: {
+      value: 'ab'
+    , type: 'text'
+    }
+  , preventDefault: function() {
+      t.pass('called preventDefault')
+    }
+  }
+
+  input._tabOrig = ''
+  input._tabChar = ''
+  app.nav.current._onlyNames = ['abc']
+  input.keypressed(opts, app.nav)
+  t.equal(input._tabChar, '')
   t.equal(input._tabOrig, 'ab')
 
-  t.end()
+  // no type another character
+  opts = {
+    keyCode: 97
+  , target: {
+      value: 'ab'
+    , type: 'text'
+    }
+  , preventDefault: function() {
+      t.fail('called preventDefault')
+    }
+  }
+  input.keypressed(opts, app.nav)
+  t.equal(input.isTabbing, false)
+  t.equal(input._tabChar, '')
+  t.equal(input._tabOrig, '')
 })
