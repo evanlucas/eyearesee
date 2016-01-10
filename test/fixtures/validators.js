@@ -176,4 +176,13 @@ module.exports = {
     { input: '/away', output: { type: 'away', message: null } }
   , { input: '/away Bye bye', output: { type: 'away', message: 'Bye bye' } }
   ]
+, whois: [
+    { input: '/whois', output: null }
+  , { input: '/whois evanlucas'
+    , output: { type: 'whois', target: null, mask: 'evanlucas' }
+    }
+  , { input: '/whois chat.freenode.net evanlucas'
+    , output: { type: 'whois', target: 'chat.freenode.net', mask: 'evanlucas' }
+    }
+  ]
 }
