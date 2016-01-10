@@ -2,6 +2,7 @@
 
 const test = require('tap').test
 const LoginView = require('../../lib/views/login')
+const common = require('../common')
 
 test('LoginView', (t) => {
   t.plan(47)
@@ -12,8 +13,8 @@ test('LoginView', (t) => {
   const view = new LoginView(app)
 
   const v = view.render()
-  
-  const verify = Verify(t)
+
+  const verify = common.VerifyNode(t)
   verify(v, 'DIV', { id: 'loginForm' }, 2, 'loginForm')
 
   const h3 = v.children[0]
@@ -111,11 +112,3 @@ test('LoginView', (t) => {
     }
   })
 })
-
-function Verify(t) {
-  return function(node, tagName, props, kids, type) {
-    t.equal(node.tagName, tagName, `${type} tagName`)
-    t.deepEqual(node.properties, props, `${type} properties`)
-    t.equal(node.children.length, kids, `${type} children.length`)
-  }
-}
