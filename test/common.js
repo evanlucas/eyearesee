@@ -9,8 +9,16 @@ if (require.main === module) {
 
 exports.VerifyNode = function VerifyNode(t) {
   return function(node, tagName, props, kids, type) {
+    const ps = {}
+    const keys = Object.keys(node.properties)
+    const len = keys.length
+    for (var i = 0; i < len; i++) {
+      if (typeof node.properties[keys[i]] !== 'function') {
+        ps[keys[i]] = node.properties[keys[i]]
+      }
+    }
     t.equal(node.tagName, tagName, `${type} tagName`)
-    t.deepEqual(node.properties, props, `${type} properties`)
+    t.deepEqual(ps, props, `${type} properties`)
     t.equal(node.children.length, kids, `${type} children.length`)
   }
 }

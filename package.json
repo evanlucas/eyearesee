@@ -8,7 +8,7 @@
     "dev": "npm run build-css && npm start",
     "lint": "eslint *.js lib/**.js test/**.js",
     "start": "electron .",
-    "test": "tap test/*.js test/**/*.js --cov"
+    "test": "tap test/*.js test/**/*.js test/**/**/*.js --cov"
   },
   "dependencies": {
     "argsplit": "~1.0.4",
