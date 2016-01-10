@@ -62,7 +62,7 @@ test('ChannelView', (t) => {
   })
 
   t.equal(title.children.length, 1)
-  t.equal(title.children[0].text, '#node.js')
+  t.equal(title.children[0].text, '#Node.js')
 
   const container = out[1]
   t.equal(container.tagName, 'DIV')
