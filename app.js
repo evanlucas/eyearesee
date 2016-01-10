@@ -107,6 +107,42 @@ App.prototype._addHandlers = function _addHandlers() {
 
     return false
   })
+
+  delegate.on(this.el, 'a.add-connection', 'mouseover', (e) => {
+    debug('hover')
+    const ele = document.querySelector('.tooltip.create')
+    if (ele) {
+      ele.classList.toggle('in')
+    }
+  })
+
+  delegate.on(this.el, 'a.add-connection', 'mouseout', (e) => {
+    debug('unhover')
+    const ele = document.querySelector('.tooltip.create')
+    if (ele) {
+      ele.classList.toggle('in')
+    }
+  })
+
+  delegate.on(this.el, '#serverbar .menu a', 'mouseover', (e) => {
+    const target = e.target
+    const name = target.getAttribute('tooltipid')
+    const ele = document.getElementById(name)
+    if (ele) {
+      ele.classList.toggle('in')
+    } else {
+      debug('could not find ele')
+    }
+  })
+
+  delegate.on(this.el, '#serverbar .menu a', 'mouseout', (e) => {
+    const target = e.target
+    const name = target.getAttribute('tooltipid')
+    const ele = document.getElementById(name)
+    if (ele) {
+      ele.classList.toggle('in')
+    }
+  })
 }
 
 App.prototype._checkAuth = function _checkAuth() {

@@ -45,23 +45,24 @@ test('ServerbarView', (t) => {
 
   // connection portion of serverbar
   const li = ul.children[0]
-  verify(li, 'LI', {}, 1, 'li')
+  verify(li, 'LI', {}, 2, 'li')
 
-  const a1 = li.children[0]
+  const a1 = li.children[1]
   t.equal(a1.tagName, 'A', 'li a tagName')
   t.equal(a1.properties.className, 'active')
   t.deepEqual(a1.properties.attributes, {
     navtype: 'connection'
   , navname: 'Freenode'
+  , tooltipid: 'tooltip-Freenode'
   })
   t.equal(a1.children.length, 1, 'li a children.length')
 
   const bottom = v.children[1]
   verify(bottom, 'DIV', {
     className: 'bottom'
-  }, 1, 'bottom')
+  }, 2, 'bottom')
 
-  const a2 = bottom.children[0]
+  const a2 = bottom.children[1]
   verify(a2, 'A', {
     className: 'add-connection'
   , innerHTML: '&#65291;'
