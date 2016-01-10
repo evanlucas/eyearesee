@@ -24,10 +24,20 @@ $ npm run dev
 $ npm test
 ```
 
-## Known Issues:
+## TODO
 
-- Private messages do not work
-- Only joining and sending channel messages really works right now
+- Allow creating more than one connection.
+- Fix updating connection settings.
+- Implement more commands. Basic functionality works though.
+- Respect `showEvents` property for connections.
+- Better logo
+- UI definitely still needs some work (Header, logs, etc).
+- Don't allow refresh via Cmd+R as it jacks everything up
+- Get tooltips for the serverbar to show properly (not sure why they are hidden yet)
+- Don't lowercase all names in userbar
+- Decide if we do really want to show users in private messages.
+- Allow having channel properties
+- Persist channels so they can be auto joined on re-open.
 
 ## Author
 
