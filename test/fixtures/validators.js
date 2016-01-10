@@ -185,4 +185,8 @@ module.exports = {
     , output: { type: 'whois', target: 'chat.freenode.net', mask: 'evanlucas' }
     }
   ]
+, nick: [
+    { input: '/nick', output: null }
+  , { input: '/nick evanlucas', output: { type: 'nick', 'nick': 'evanlucas' } }
+  ]
 }
