@@ -189,4 +189,10 @@ module.exports = {
     { input: '/nick', output: null }
   , { input: '/nick evanlucas', output: { type: 'nick', 'nick': 'evanlucas' } }
   ]
+, action: [
+    { input: '/me', output: null }
+  , { input: '/me does something'
+    , output: { type: 'action', message: 'does something' }
+    }
+  ]
 }
