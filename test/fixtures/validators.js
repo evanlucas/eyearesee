@@ -162,7 +162,7 @@ module.exports = {
     { input: '/msg', output: null }
   , { input: '/msg #a', output: null }
   , { input: '/msg #A This is a test'
-    , output: { type: 'msg', target: '#a', message: 'This is a test'}
+    , output: { type: 'msg', target: '#A', message: 'This is a test'}
     }
   ]
 , who: [
