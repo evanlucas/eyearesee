@@ -33,7 +33,6 @@ $ npm test
 - Better logo
 - UI definitely still needs some work (Header, logs, etc).
 - Don't allow refresh via Cmd+R as it jacks everything up
-- Get tooltips for the serverbar to show properly (not sure why they are hidden yet)
 - Don't lowercase all names in userbar
 - Decide if we do really want to show users in private messages.
 - Allow having channel properties
