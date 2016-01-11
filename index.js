@@ -27,7 +27,7 @@ function setup() {
 
   mainWindow = new BrowserWindow({
     width: 1200
-  , height: 650
+  , height: 730
   , 'min-height': 400
   , 'min-width': 600
   , resizable: true
