@@ -27,7 +27,6 @@ $ npm test
 ## TODO
 
 - Allow creating more than one connection.
-- Fix updating connection settings.
 - Implement more commands. Basic functionality works though.
 - Respect `showEvents` property for connections.
 - Better logo
