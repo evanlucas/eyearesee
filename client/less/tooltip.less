@@ -12,10 +12,7 @@
   position: absolute;
   z-index: 1070;
   display: block;
-  // Our parent element can be arbitrary since tooltips are by default inserted as a sibling of their target element.
-  // So reset our font and text properties to avoid inheriting weird values.
-  //.reset-text();
-  font-size: 14px;
+  font-size: 16px;
 
   opacity: 0;
 
@@ -41,7 +38,6 @@
   border-color: transparent;
   border-style: solid;
 }
-// Note: Deprecated .top-left, .top-right, .bottom-left, and .bottom-right as of v3.3.1
 .tooltip {
 
   top: 8px;
