@@ -232,8 +232,9 @@ App.prototype.removeConnection = function removeConnection(conn) {
   this.emit('render')
 }
 
-App.prototype.renameConnection = function renameConnection(conn, prev, next) {
-
+App.prototype.renameConnection = function renameConnection(conn, prev) {
+  this.connections.delete(prev.toLowerCase())
+  this.connections.set(conn.name.toLowerCase(), conn)
 }
 
 App.prototype.needsLayout = function needsLayout() {
