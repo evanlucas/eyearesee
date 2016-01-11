@@ -5,7 +5,8 @@ const LoginView = require('../../lib/views/login')
 const common = require('../common')
 
 test('LoginView', (t) => {
-  t.plan(47)
+  t.plan(122)
+
   const app = {
     nav: {}
   }
@@ -15,67 +16,168 @@ test('LoginView', (t) => {
   const v = view.render()
 
   const verify = common.VerifyNode(t)
-  verify(v, 'DIV', { id: 'loginForm' }, 2, 'loginForm')
 
-  const h3 = v.children[0]
-  verify(h3, 'H3', {}, 1, 'h3')
-  const h3Text = h3.children[0]
-  t.equal(h3Text.text, 'Login')
+  function verifyGroup(node, id, type, text, ph, req) {
+    verify(node, 'DIV', { className: 'group' }, 2, type)
 
-  const form = v.children[1]
-  verify(form, 'FORM', {
-    className: 'pure-form pure-form-aligned'
-  }, 1, 'form')
+    const span = node.children[0]
+    verify(span, 'SPAN', {
+      className: 'label'
+    , attributes: {
+        for: id
+      }
+    }, 1, `${text} span`)
 
-  const fieldset = form.children[0]
-  verify(fieldset, 'FIELDSET', {}, 8, 'fieldset')
+    const spanText = span.children[0]
+    t.equal(spanText.text, text)
 
-  const usernameCG = fieldset.children[0]
-  verify(usernameCG, 'DIV', {
-    className: 'pure-control-group'
-  }, 2, 'username control group')
+    const input = node.children[1]
+    verify(input, 'INPUT', {
+      className: 'input'
+    , id: id
+    , type: type
+    , placeholder: ph
+    , required: req
+    }, 0, `${text} input`)
+  }
 
-  const realnameCG = fieldset.children[1]
-  verify(realnameCG, 'DIV', {
-    className: 'pure-control-group'
-  }, 2, 'realname control group')
+  function verifyCB(node, id, text, checked) {
+    verify(node, 'DIV', {
+      className: 'checkbox'
+    }, 1, `${text} checkbox group`)
 
-  const nicknameCG = fieldset.children[2]
-  verify(nicknameCG, 'DIV', {
-    className: 'pure-control-group'
-  }, 2, 'nickname control group')
+    const label = node.children[0]
+    verify(label, 'LABEL', {
+      attributes: {
+        for: id
+      }
+    }, 2, `${text} label`)
 
-  const passwordCG = fieldset.children[3]
-  verify(passwordCG, 'DIV', {
-    className: 'pure-control-group'
-  }, 2, 'password control group')
+    const input = label.children[0]
+    verify(input, 'INPUT', {
+      type: 'checkbox'
+    , id: id
+    , checked: checked
+    }, 0, `${text} input`)
 
-  const altusernameCG = fieldset.children[4]
-  verify(altusernameCG, 'DIV', {
-    className: 'pure-control-group'
-  }, 2, 'altusername control group')
+    const textPart = label.children[1]
+    t.equal(textPart.text, ` ${text}`)
+  }
 
-  const serverurlCG = fieldset.children[5]
-  verify(serverurlCG, 'DIV', {
-    className: 'pure-control-group'
-  }, 2, 'serverurl control group')
+  verify(v, 'DIV', { id: 'login' }, 1, 'loginForm')
 
-  const portCG = fieldset.children[6]
-  verify(portCG, 'DIV', {
-    className: 'pure-control-group'
-  }, 2, 'port control group')
+  const formClass = v.children[0]
+  verify(formClass, 'DIV', {
+    className: 'form'
+  }, 2, 'formClass')
 
-  const controls = fieldset.children[7]
-  verify(controls, 'DIV', {
-    className: 'pure-controls'
-  }, 1, 'controls')
+  const close = formClass.children[0]
+  verify(close, 'A', {
+    className: 'close'
+  , innerHTML: '&times;'
+  }, 0, 'close')
+
+  const form = formClass.children[1]
+  verify(form, 'FORM', {}, 11, 'form')
+
+  const h3 = form.children[0]
+  verify(h3, 'H3', {}, 1)
+
+  const h3text = h3.children[0]
+  t.equal(h3text.text, 'Create Connection')
+
+  // username group
+  const username = form.children[1]
+  verifyGroup(
+    username
+  , 'username'
+  , 'text'
+  , 'Username'
+  , 'Username'
+  , true
+  )
+
+  const realname = form.children[2]
+  verifyGroup(
+    realname
+  , 'realname'
+  , 'text'
+  , 'Real Name'
+  , 'Real Name'
+  , true
+  )
+
+  const nickname = form.children[3]
+  verifyGroup(
+    nickname
+  , 'nickname'
+  , 'text'
+  , 'Nickname'
+  , 'Nickname'
+  , true
+  )
+
+  const password = form.children[4]
+  verifyGroup(
+    password
+  , 'password'
+  , 'password'
+  , 'Password'
+  , 'Password'
+  , true
+  )
+
+  const altnick = form.children[5]
+  verifyGroup(
+    altnick
+  , 'altnick'
+  , 'text'
+  , 'Alt. Nick'
+  , 'Alt. Nick'
+  , false
+  )
+
+  const serverurl = form.children[6]
+  verifyGroup(
+    serverurl
+  , 'serverurl'
+  , 'text'
+  , 'Server'
+  , 'irc.freenode.org'
+  , true
+  )
+
+  const port = form.children[7]
+  verifyGroup(
+    port
+  , 'port'
+  , 'number'
+  , 'Port'
+  , '6667'
+  , true
+  )
+
+  const autoConnect = form.children[8]
+  verifyCB(autoConnect, 'autoConnect', 'Auto Connect', true)
+
+  const showEvents = form.children[9]
+  verifyCB(showEvents, 'showEvents', 'Show General Events', true)
+
+  const input = form.children[10]
+  verify(input, 'INPUT', {
+    id: 'loginButton'
+  , type: 'submit'
+  }, 1, 'create connection input')
+
+  const inputText = input.children[0]
+  t.equal(inputText.text, 'Create Connection')
 
   var opts = {
     username: 'evanlucas'
   , realname: 'Evan Lucas'
   , nickname: 'evanlucas'
   , password: 'password'
-  , altusername: 'evanluca_'
+  , altnick: 'evanluca_'
   , serverurl: 'chat.freenode.org'
   , port: 6667
   }
@@ -98,17 +200,35 @@ test('LoginView', (t) => {
     t.equal(options.realname, opts.realname)
     t.equal(options.nickname, opts.nickname)
     t.equal(options.password, opts.password)
-    t.equal(options.altnick, opts.altusername)
+    t.equal(options.altnick, opts.altnick)
     t.equal(options.host, opts.serverurl)
     t.equal(options.port, opts.port)
   }
 
-  const button = controls.children[0]
-  const props = button.properties
+  const props = input.properties
   t.equal(props.hasOwnProperty('onclick'), true, 'button has onclick')
   props.onclick({
     preventDefault: function() {
       t.pass('called preventDefault')
     }
   })
+
+  // now let's click cancel
+  const conn = {
+    name: 'Freenode'
+  , active: true
+  }
+
+  app.connections = new Map([[ 'Freenode', conn ]])
+  app.nav.showConnection = function(conn) {
+    t.equal(conn.name, 'Freenode', 'connection name is correct')
+  }
+
+  const e = {
+    preventDefault: function() {
+      t.pass('called preventDefault')
+    }
+  }
+
+  close.properties.onclick(e)
 })
