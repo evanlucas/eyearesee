@@ -32,7 +32,6 @@ $ npm test
 - Respect `showEvents` property for connections.
 - Better logo
 - UI definitely still needs some work (Header, logs, etc).
-- Don't lowercase all names in userbar
 - Decide if we do really want to show users in private messages.
 - Allow having channel properties
 - Persist channels so they can be auto joined on re-open.
