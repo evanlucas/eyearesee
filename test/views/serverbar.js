@@ -15,9 +15,7 @@ test('ServerbarView', (t) => {
     nav: {
       current: conn
     }
-  , connections: {
-      Freenode: conn
-    }
+  , connections: new Map([['Freenode', conn]])
   }
 
   const verify = common.VerifyNode(t)

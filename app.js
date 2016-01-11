@@ -30,7 +30,7 @@ function App(el, currentWindow) {
   this.views = require('./lib/views')(this)
   this.inputHandler = require('./lib/handle-input')(this)
 
-  this.connections = {}
+  this.connections = new Map()
 
   var tree = this.render('login')
   var rootNode = createElement(tree)
@@ -221,8 +221,19 @@ App.prototype.showLogin = function showLogin() {
 }
 
 App.prototype._addConnection = function _addConnection(conn) {
-  this.connections[conn.name] = conn
+  debug('add connection %s', conn.name.toLowerCase())
+  this.connections.set(conn.name.toLowerCase(), conn)
   this.emit('render')
+}
+
+App.prototype.removeConnection = function removeConnection(conn) {
+  debug('removeConnection %s', conn.name.toLowerCase(), this.connections.keys())
+  this.connections.delete(conn.name.toLowerCase())
+  this.emit('render')
+}
+
+App.prototype.renameConnection = function renameConnection(conn, prev, next) {
+
 }
 
 App.prototype.needsLayout = function needsLayout() {
