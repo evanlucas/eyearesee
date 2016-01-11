@@ -4,6 +4,8 @@ const BrowserWindow = require('browser-window')
 const app = require('app')
 const Menu = require('menu')
 const path = require('path')
+const electron = require('electron')
+const shortcuts = electron.globalShortcut
 
 const name = 'EyeAreSee'
 const index = `file://${path.join(__dirname, 'views', 'index.html')}`
@@ -20,6 +22,8 @@ var mainWindow
 
 function setup() {
   setupMenu()
+
+  shortcuts.unregister('ctrl+r')
 
   mainWindow = new BrowserWindow({
     width: 1200
