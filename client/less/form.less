@@ -1,0 +1,148 @@
+.form {
+  width: 600px;
+  color: lighten(@dusk, 10%);
+  position: relative;
+  background: @lightGray;
+  margin: 0 auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 10px;
+  font-family: sans-serif;
+
+  h1,
+  h2,
+  h3 {
+    text-align: center;
+    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+  }
+
+  a.close {
+    content: "&times;";
+    font-size: 30px;
+    color: lighten(@dusk, 30%);
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-weight: bold;
+
+    &:hover {
+      color: @dusk;
+    }
+  }
+
+  input:focus {
+    outline: none;
+  }
+
+  input[type="text"],
+  input[type="password"],
+  input[type="number"],
+  input[type="url"],
+  select {
+    height: 35px;
+    width: 300px;
+    margin: 15px auto;
+    margin-left: 15px;
+    background: #fff;
+    padding: 5px;
+    font-size: 16px;
+    border: 2px solid #fff;
+    transition: all 0.5s ease;
+    border-radius: 5px;
+
+    &:focus {
+      border: 2px solid @pink;
+      box-shadow: inset 0 1px 1px .075;
+    }
+  }
+
+  ::-webkit-input-placeholder {
+     color: lighten(@dusk, 30%);
+  }
+
+  input[type="submit"] {
+    display: block;
+    background: @cyan;
+    width: 300px;
+    padding: 12px;
+    cursor: pointer;
+    color: #fff;
+    border: 0px;
+    margin: auto;
+    border-radius: 5px;
+    font-size: 17px;
+    transition: all 0.5s ease;
+  }
+
+  .group {
+    width: 100%;
+    display: block;
+
+    &.red {
+      color: @red;
+
+      .input {
+        border: 2px solid @red;
+      }
+    }
+  }
+
+  .label {
+    text-align: right;
+    width: 100px;
+    display: inline-block;
+    margin-left: 35px;
+  }
+
+  .input {
+    display: inline-block;
+    margin-left: 15px;
+    width: 300px;
+  }
+
+  input[type='checkbox'] {
+    margin: 4px 0 0;
+    line-height: normal;
+  }
+
+  .checkbox {
+    position: relative;
+    display: block;
+    margin-top: 4px;
+    margin-bottom: 10px;
+    margin-left: 130px;
+
+    label {
+      padding-left: 20px;
+      margin-bottom: 0;
+      font-weight: normal;
+      cursor: pointer;
+    }
+  }
+}
+
+.form.form-dark {
+  color: @lightGray;
+  background: lighten(@dusk, 10%);
+
+  a.close {
+    color: @lightGray;
+
+    &:hover {
+      color: darken(@lightGray, 10%);
+    }
+  }
+
+  input[type="text"],
+  input[type="password"],
+  input[type="number"],
+  input[type="url"] {
+    color: @dusk;
+  }
+}
