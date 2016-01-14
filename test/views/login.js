@@ -17,7 +17,7 @@ test('LoginView', (t) => {
 
   const verify = common.VerifyNode(t)
 
-  function verifyGroup(node, id, type, text, ph, req) {
+  function verifyGroup(node, id, type, text, ph, req, min, max) {
     verify(node, 'DIV', { className: 'group' }, 2, type)
 
     const span = node.children[0]
@@ -32,13 +32,19 @@ test('LoginView', (t) => {
     t.equal(spanText.text, text)
 
     const input = node.children[1]
-    verify(input, 'INPUT', {
+    var opts = {
       className: 'input'
     , id: id
     , type: type
     , placeholder: ph
     , required: req
-    }, 0, `${text} input`)
+    }
+    if (typeof min !== 'undefined')
+      opts.min = min
+
+    if (typeof max !== 'undefined')
+      opts.max = max
+    verify(input, 'INPUT', opts, 0, `${text} input`)
   }
 
   function verifyCB(node, id, text, checked) {
@@ -143,7 +149,7 @@ test('LoginView', (t) => {
   , 'serverurl'
   , 'text'
   , 'Server'
-  , 'irc.freenode.org'
+  , 'chat.freenode.net'
   , true
   )
 
@@ -155,6 +161,8 @@ test('LoginView', (t) => {
   , 'Port'
   , '6667'
   , true
+  , 0
+  , 65535
   )
 
   const autoConnect = form.children[8]
