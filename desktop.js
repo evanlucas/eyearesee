@@ -36,6 +36,10 @@ Desktop.prototype.setBadge = function setBadge(n) {
   if (n === false) {
     return app.dock.setBadge('')
   } else if (n == null) {
+    // Don't add a badge if the current window is already focused
+    if (currentWindow.isFocused())
+      return app.dock.setBadge('')
+
     this._notifications++
   } else {
     this._notifications = n
