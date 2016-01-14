@@ -55,7 +55,7 @@ test('MessageLogView', (t) => {
 
   t.equal(v.tagName, 'LI')
   t.deepEqual(v.properties, {
-    className: 'message mention'
+    className: 'message'
   })
   const kids = v.children
   t.equal(kids.length, 3)
