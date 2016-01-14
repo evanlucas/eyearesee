@@ -34,7 +34,7 @@ test('formatNameForType', (t) => {
   t.equal(utils.formatNameForType('evan', 'action'), '● evan')
   t.equal(utils.formatNameForType('evan', 'message'), '<evan>')
   t.equal(utils.formatNameForType('evan', 'mention'), '<evan>')
-  t.equal(utils.formatNameForType('evan', 'notice'), 'evan')
+  t.equal(utils.formatNameForType('evan', 'notice'), '«evan»')
 })
 
 test('encodeConnection', (t) => {
