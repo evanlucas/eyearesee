@@ -25,7 +25,8 @@ test('MessageLogView', (t) => {
   })
 
   const log = chan.addMessage({
-    message: 'Hi evanlucas'
+    message: 'Hi evanlucas. https://gist.github.com/evanlucas/' +
+      '07e4771bbf7a83ca3b16'
   , type: 'message'
   , to: chan.name
   , from: 'evanlucas2'
@@ -76,7 +77,10 @@ test('MessageLogView', (t) => {
   t.equal(msg.properties.className, 'content')
   t.equal(
     msg.properties.innerHTML
-  , 'Hi <span class="mention green">evanlucas</span>'
+  , 'Hi <span class="mention green">evanlucas</span>. <a href="https://gist.' +
+    'github.com/evanlucas/07e4771bbf7a83ca3b16" class="external-url external-' +
+    'url-url" target="_blank">gist.github.com/evanlucas/07e4771bbf7a83ca3b16' +
+    '</a>'
   )
 
   t.end()
