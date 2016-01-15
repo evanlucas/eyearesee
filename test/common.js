@@ -1,6 +1,7 @@
 'use strict'
 
 const tap = require('tap')
+const path = require('path')
 
 if (require.main === module) {
   tap.pass('ok')
@@ -22,3 +23,5 @@ exports.VerifyNode = function VerifyNode(t) {
     t.equal(node.children.length, kids, `${type} children.length`)
   }
 }
+
+exports.fixtures = path.join(__dirname, 'fixtures')
