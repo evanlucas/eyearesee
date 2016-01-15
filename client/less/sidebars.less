@@ -98,10 +98,9 @@
   background: lighten(@dusk, 10%);
 
   .active {
-    background: @cyan !important;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
-    border-right: 5px solid darken(@cyan, 10%);
+    border-right: 10px solid darken(@cyan, 10%);
   }
 
   .pure-menu-link {
@@ -111,12 +110,27 @@
     font-weight: 700;
     font-size: 14px;
 
-    &:hover,
-    &:focus,
-    .active {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+
+    &:focus {
+      background-color: transparent;
+    }
+
+    &:hover {
       border-top-left-radius: 5px;
       border-bottom-left-radius: 5px;
       background-color: @cyan;
+    }
+
+    &.joined {
+      color: white;
+    }
+
+    &.not-joined {
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: normal;
     }
 
     &.server {
@@ -175,6 +189,11 @@
       text-decoration: none;
       text-align: left;
       color: #fff;
+      width: 100%;
+      cursor: pointer;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
     }
   }
 }
