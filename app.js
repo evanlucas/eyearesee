@@ -14,7 +14,7 @@ module.exports = window.App = App
 
 const Connection = require('./lib/models/connection')
 const Channel = require('./lib/models/channel')
-const Settings = require('./lib/models/connection-settings')
+const ConnSettings = require('./lib/models/connection-settings')
 
 function App(el, currentWindow) {
   if (!(this instanceof App))
@@ -75,8 +75,8 @@ App.prototype.render = function render() {
     columns = 3
     active.unread = 0
     view = views.channel.render(active)
-  } else if (active instanceof Settings) {
-    view = views.settings.render(active)
+  } else if (active instanceof ConnSettings) {
+    view = views.connSettings.render(active)
   }
 
   var container = [

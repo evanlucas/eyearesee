@@ -25,7 +25,7 @@ test('views', (t) => {
   t.type(views.channel, require('../lib/views/channel'))
   t.type(views.channel.render, 'function')
 
-  t.type(views.settings, require('../lib/views/settings'))
+  t.type(views.settings, require('../lib/views/connection-settings'))
   t.type(views.settings.render, 'function')
 
   t.type(views.serverbar, require('../lib/views/serverbar'))
