@@ -43,7 +43,7 @@ test('ChannelsView', (t) => {
   verify(a, 'A', {
     href: '#node.js'
   , id: 'channel-#node.js'
-  , className: 'pure-menu-link active'
+  , className: 'pure-menu-link active not-joined'
   , attributes: {
       navtype: 'channel'
     , navname: '#node.js'
