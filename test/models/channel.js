@@ -120,6 +120,7 @@ test('methods', (t) => {
     render: function() {
       t.pass('called render')
     }
+  , removeChannel: function() {}
   , app: {
       nav: {
         current: null
