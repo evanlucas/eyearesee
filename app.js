@@ -57,6 +57,11 @@ function App(el, currentWindow) {
 }
 inherits(App, EE)
 
+App.prototype.playMessageSound = function playMessageSound() {
+  const ele = document.getElementById('messageSound')
+  ele.play()
+}
+
 App.prototype.render = function render() {
   const views = this.views
 
