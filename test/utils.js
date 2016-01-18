@@ -50,3 +50,18 @@ test('decodeConnection', (t) => {
   const out = utils.decodeConnection(name)
   t.equal(out, '#node.js')
 })
+
+test('processMessage', (t) => {
+  const colors = new Map()
+  colors.set('[diecast]', 'red')
+  colors.set('evanlucas', 'blue')
+  colors.set('esya|', 'green')
+  let msg = 'this is a test'
+  let out = utils.processMessage(msg, colors)
+  t.equal(out, 'this is a test')
+
+  msg = 'hi evanlucas: this is a test'
+  out = utils.processMessage(msg, colors)
+  t.equal(out, 'hi <span class="mention blue">evanlucas</span>: this is a test')
+  t.end()
+})
