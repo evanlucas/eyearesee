@@ -24,16 +24,6 @@ test('MessageLogView', (t) => {
   , connection: {}
   })
 
-  const log = chan.addMessage({
-    message: 'Hi evanlucas. https://gist.github.com/evanlucas/' +
-      '07e4771bbf7a83ca3b16'
-  , type: 'message'
-  , to: chan.name
-  , from: 'evanlucas2'
-  , hostmask: {}
-  , ts: d
-  })
-
   const u1 = chan.addUser({
     nickname: 'evanlucas'
   , username: 'evanlucas'
@@ -50,6 +40,16 @@ test('MessageLogView', (t) => {
   , realname: 'Evan Biscuits'
   , mode: ''
   , color: 'red'
+  })
+
+  const log = chan.addMessage({
+    message: 'Hi evanlucas. https://gist.github.com/evanlucas/' +
+      '07e4771bbf7a83ca3b16'
+  , type: 'message'
+  , to: chan.name
+  , from: 'evanlucas2'
+  , hostmask: {}
+  , ts: d
   })
 
   const v = conn.render(log, chan)

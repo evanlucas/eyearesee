@@ -11,12 +11,28 @@ test('Message', (t) => {
   , from: 'evanlucas'
   , hostmask: null
   , type: 'mention'
-  , channel: 'test'
+  , channel: {
+      colorMap: new Map()
+    }
   , ts: d
   }
 
   let m = new Message(opts)
-  t.deepEqual(m, opts)
-  t.deepEqual(Message(m), opts)
+  t.equal(m.message, 'This is a test')
+  t.equal(m.to, '#node.js')
+  t.equal(m.from, 'evanlucas')
+  t.equal(m.hostmask, null)
+  t.equal(m.type, 'mention')
+  t.equal(m.ts, d)
+  t.equal(m.formatted, 'This is a test')
+
+  m = Message(opts)
+  t.equal(m.message, 'This is a test')
+  t.equal(m.to, '#node.js')
+  t.equal(m.from, 'evanlucas')
+  t.equal(m.hostmask, null)
+  t.equal(m.type, 'mention')
+  t.equal(m.ts, d)
+  t.equal(m.formatted, 'This is a test')
   t.end()
 })
