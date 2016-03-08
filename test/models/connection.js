@@ -122,6 +122,10 @@ test('Connection#persist', (t) => {
       , altnick: 'Test'
       , realname: 'Test'
       }
+    , autoConnect: true
+    , logLocation: null
+    , logTranscripts: false
+    , showEvents: true
     , channels: [
         {
           type: 'channel'
