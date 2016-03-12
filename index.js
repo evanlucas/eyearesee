@@ -47,7 +47,7 @@ function setupMenu() {
     {
       label: 'EyeAreSee'
     , submenu: [
-        { label: 'About' }
+        { label: 'About', role: 'about' }
       , { type: 'separator' }
       , { label: 'Toggle DevTools'
         , accelerator: 'Alt+Command+I'
