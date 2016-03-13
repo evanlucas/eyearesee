@@ -2,7 +2,6 @@
 
 const BrowserWindow = require('browser-window')
 const app = require('app')
-const Menu = require('menu')
 const path = require('path')
 const electron = require('electron')
 const shortcuts = electron.globalShortcut
@@ -21,8 +20,6 @@ app.on('window-all-closed', () => {
 var mainWindow
 
 function setup() {
-  setupMenu()
-
   shortcuts.unregister('ctrl+r')
 
   mainWindow = new BrowserWindow({
@@ -40,40 +37,4 @@ function setup() {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
-}
-
-function setupMenu() {
-  const template = [
-    {
-      label: 'EyeAreSee'
-    , submenu: [
-        { label: 'About', role: 'about' }
-      , { type: 'separator' }
-      , { label: 'Toggle DevTools'
-        , accelerator: 'Alt+Command+I'
-        , click: function() {
-            BrowserWindow.getFocusedWindow().toggleDevTools()
-          }
-        }
-      , { label: 'Quit'
-        , accelerator: 'Command+Q'
-        , click: function() { app.quit() }
-        }
-      ]
-    }
-  , {
-      label: 'Edit'
-    , submenu: [
-        { label: 'Undo', accelerator: 'Command+Z', selector: 'undo:' }
-      , { label: 'Redo', accelerator: 'Shift+Command+Z', selector: 'redo:' }
-      , { type: 'separator' }
-      , { label: 'Cut', accelerator: 'Command+X', selector: 'cut:' }
-      , { label: 'Copy', accelerator: 'Command+C', selector: 'copy:' }
-      , { label: 'Paste', accelerator: 'Command+V', selector: 'paste:' }
-      ]
-    }
-  ]
-
-  const menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
 }

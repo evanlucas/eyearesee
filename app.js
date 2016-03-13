@@ -9,6 +9,9 @@ const patch = require('virtual-dom/patch')
 const createElement = require('virtual-dom/create-element')
 const debug = require('debug')('eyearesee:app')
 const auth = require('./lib/auth')
+const mapUtil = require('map-util')
+const nextVal = mapUtil.nextVal
+const prevVal = mapUtil.prevVal
 
 module.exports = window.App = App
 
@@ -60,6 +63,102 @@ inherits(App, EE)
 App.prototype.playMessageSound = function playMessageSound() {
   const ele = document.getElementById('messageSound')
   ele.play()
+}
+
+App.prototype.nextPanel = function nextPanel() {
+  const active = this.nav.current
+  if (!active) {
+    return
+  }
+
+  if (active instanceof Connection) {
+    // get the first channel
+    // if it does not exist, get the first message
+    // if it does not exist, get the next connection console
+    if (active.channels.size) {
+      const it = active.channels.values()
+      return this.nav.showChannel(it.next().value)
+    }
+
+    if (active.privateMessages.size) {
+      const it = active.privateMessages.values()
+      return this.nav.showChannel(it.next().value)
+    }
+
+    if (this.connections.size > 1) {
+      const n = nextVal(active, this.connections, true)
+      if (n) {
+        return this.nav.showConnection(n)
+      }
+    }
+
+    // just re-render
+    this.needsLayout()
+  } else if (active instanceof Channel) {
+    const conn = active._connection
+
+    let n = nextVal(active, conn._panels)
+    if (n) {
+      return this.nav.showChannel(n)
+    }
+
+    if (this.connections.size > 1) {
+      const n = nextVal(conn, this.connections, true)
+      if (n) {
+        return this.nav.showConnection(n)
+      }
+
+      this.needsLayout()
+    } else {
+      // show the channel
+      this.nav.showConnection(conn)
+    }
+  }
+}
+
+App.prototype.previousPanel = function previousPanel() {
+  const active = this.nav.current
+  if (!active) {
+    return
+  }
+
+  if (active instanceof Connection) {
+    // get the previous connections last _panel value
+    // if no panels, show the previous connection
+    // if no previous connection, show the current one
+    if (active._panels.size === 1) {
+      // show the connection
+      return this.nav.showConnection(active)
+    }
+
+    if (active._panels.size) {
+      let item = null
+      for (const thing of active._panels.values()) {
+        item = thing
+      }
+      return this.nav.showChannel(item)
+    }
+
+    if (this.connections.size > 1) {
+      const prevConn = prevVal(active, this.connections)
+      if (prevConn) {
+        return this.nav.showConnection(prevConn)
+      }
+    }
+
+    // just re-render
+    this.needsLayout()
+  } else if (active instanceof Channel) {
+    const conn = active._connection
+
+    let n = prevVal(active, conn._panels)
+    if (n) {
+      return this.nav.showChannel(n)
+    }
+
+    // show the connection
+    this.nav.showConnection(conn)
+  }
 }
 
 App.prototype.render = function render() {
