@@ -15,6 +15,8 @@ test('ConnectionLogView', (t) => {
     ts: d
   , type: 'notice'
   , message: 'This is a test. https://github.com'
+  , formatted: 'This is a test. <a href="https://github.com" class="external' +
+    '-url external-url-url" target="_blank">github.com</a>'
   }
 
   const v = conn.render(log)
