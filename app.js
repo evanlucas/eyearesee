@@ -75,14 +75,8 @@ App.prototype.nextPanel = function nextPanel() {
     // get the first channel
     // if it does not exist, get the first message
     // if it does not exist, get the next connection console
-    if (active.channels.size) {
-      const it = active.channels.values()
-      return this.nav.showChannel(it.next().value)
-    }
-
-    if (active.privateMessages.size) {
-      const it = active.privateMessages.values()
-      return this.nav.showChannel(it.next().value)
+    if (active._panels.size) {
+      return this.nav.showChannel(mapUtil.firstVal(active._panels))
     }
 
     if (this.connections.size > 1) {
