@@ -39,6 +39,12 @@ Desktop.prototype.setupMenu = function setupMenu() {
       label: 'EyeAreSee'
     , submenu: [
         { label: 'About', role: 'about' }
+      , { label: 'Settings'
+        , accelerator: 'CommandOrControl+,'
+        , click: () => {
+            this.showSettings()
+          }
+        }
       , { type: 'separator' }
       , { label: 'Toggle DevTools'
         , accelerator: 'Alt+Command+I'

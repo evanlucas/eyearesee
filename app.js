@@ -9,6 +9,8 @@ const patch = require('virtual-dom/patch')
 const createElement = require('virtual-dom/create-element')
 const debug = require('debug')('eyearesee:app')
 const auth = require('./lib/auth')
+const path = require('path')
+const fs = require('fs')
 const mapUtil = require('map-util')
 const nextVal = mapUtil.nextVal
 const prevVal = mapUtil.prevVal
@@ -18,6 +20,7 @@ module.exports = window.App = App
 const Connection = require('./lib/models/connection')
 const Channel = require('./lib/models/channel')
 const ConnSettings = require('./lib/models/connection-settings')
+const Settings = require('./lib/models/settings')
 
 function App(el, currentWindow) {
   if (!(this instanceof App))
@@ -32,6 +35,7 @@ function App(el, currentWindow) {
   this.nav = require('./lib/nav')(this)
   this.views = require('./lib/views')(this)
   this.inputHandler = require('./lib/handle-input')(this)
+  this.settings = new Settings()
 
   this.connections = new Map()
 
@@ -291,6 +295,7 @@ App.prototype.login = function login(opts) {
     name: opts.name || 'Freenode'
   , host: opts.host
   , port: opts.port
+  , logTranscripts: opts.logTranscripts
   , user: {
       username: opts.username
     , nickname: opts.nickname
@@ -314,6 +319,18 @@ App.prototype.login = function login(opts) {
 
 App.prototype.showLogin = function showLogin() {
   this.nav.showLogin()
+}
+
+App.prototype.showSettings = function showSettings() {
+  const active = this.nav.current
+  if (active instanceof Connection) {
+    return this.nav.showSettings(active.settings)
+  } else if (active instanceof Channel) {
+    const conn = active._connection
+    return this.nav.showSettings(conn.settings)
+  }
+
+  // otherwise, don't do anything
 }
 
 App.prototype._addConnection = function _addConnection(conn) {
