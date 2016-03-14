@@ -28,10 +28,17 @@ module.exports = {
   , { input: '/join &foo fubar'
     , output: { type: 'join', channels: ['&foo'], keys: ['fubar'] }
     }
-  , { input: '/join', output: null }
+  , { input: '/join'
+    , output:  { type: 'join', channels: [], keys: [] }
+    }
   ]
 , part: [
-    { input: '/part', output: null }
+    { input: '/part'
+    , output: { type: 'part', channels: [], message: '' }
+    }
+  , { input: '/part biscuits thing'
+    , output: { type: 'part', channels: [], message: 'biscuits thing' }
+    }
   , { input: '/part #node.js'
     , output: { type: 'part', channels: ['#node.js'], message: '' }
     }
