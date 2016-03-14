@@ -20,7 +20,8 @@ module.exports = window.App = App
 const Connection = require('./lib/models/connection')
 const Channel = require('./lib/models/channel')
 const ConnSettings = require('./lib/models/connection-settings')
-const Settings = require('./lib/models/settings')
+
+const Router = require('./lib/router')
 
 function App(el, currentWindow) {
   if (!(this instanceof App))
@@ -35,9 +36,11 @@ function App(el, currentWindow) {
   this.nav = require('./lib/nav')(this)
   this.views = require('./lib/views')(this)
   this.inputHandler = require('./lib/handle-input')(this)
-  this.settings = new Settings()
 
   this.connections = new Map()
+  this.router = new Router()
+
+  this._addRoutes()
 
   var tree = this.render('login')
   var rootNode = createElement(tree)
@@ -67,6 +70,57 @@ inherits(App, EE)
 App.prototype.playMessageSound = function playMessageSound() {
   const ele = document.getElementById('messageSound')
   ele.play()
+}
+
+App.prototype._addRoutes = function _addRoutes() {
+  this.router.add('/login', () => this.showLogin())
+
+  this.router.add('/settings', () => {
+    const active = this.nav.current
+    if (active instanceof Connection) {
+      return this.nav.showSettings(active.settings)
+    } else if (active instanceof Channel) {
+      const conn = active._connection
+      return this.nav.showSettings(conn.settings)
+    }
+  })
+
+  this.router.add('/connections/:name', (params) => {
+    const conn = this.connections.get(params.name.toLowerCase())
+    if (!conn) {
+      debug('404...cannot find connection %s', params.name)
+      return
+    }
+
+    debug('show connection', conn)
+    this.nav.showConnection(conn)
+  })
+
+  this.router.add('/connections/:name/settings', (params) => {
+    const conn = this.connections.get(params.name.toLowerCase())
+    if (!conn) {
+      debug('404...cannot find connection %s', params.name)
+      return
+    }
+
+    this.nav.showSettings(conn.settings)
+  })
+
+  this.router.add('/connections/:name/channels/:channelName', (params) => {
+    const conn = this.connections.get(params.name.toLowerCase())
+    if (!conn) {
+      debug('404...cannot find connection %s', params.name)
+      return
+    }
+
+    const chan = conn.channels.get(params.channelName)
+    if (!chan) {
+      debug('404...cannot find channel %s %s', conn.name, params.channelName)
+      return
+    }
+
+    this.nav.showChannel(chan)
+  })
 }
 
 App.prototype.nextPanel = function nextPanel() {
@@ -285,7 +339,7 @@ App.prototype._checkAuth = function _checkAuth() {
     }
 
     if (active)
-      this.nav.showConnection(active)
+      this.router.goto(active.url)
   })
 }
 
@@ -313,24 +367,19 @@ App.prototype.login = function login(opts) {
       debug('connection persisted')
     }
     conn.connect()
-    this.nav.showConnection(conn)
+    this.router.goto(conn.url)
   })
 }
 
 App.prototype.showLogin = function showLogin() {
-  this.nav.showLogin()
+  this.router.goto('/login')
 }
 
-App.prototype.showSettings = function showSettings() {
-  const active = this.nav.current
-  if (active instanceof Connection) {
-    return this.nav.showSettings(active.settings)
-  } else if (active instanceof Channel) {
-    const conn = active._connection
-    return this.nav.showSettings(conn.settings)
-  }
+App.prototype.showSettings = function showSettings(connName) {
+  if (connName)
+    return this.router.goto(`/connections/${connName.toLowerCase()}/settings`)
 
-  // otherwise, don't do anything
+  return this.router.goto('/settings')
 }
 
 App.prototype._addConnection = function _addConnection(conn) {
