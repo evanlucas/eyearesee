@@ -120,24 +120,22 @@ App.prototype.previousPanel = function previousPanel() {
     // get the previous connections last _panel value
     // if no panels, show the previous connection
     // if no previous connection, show the current one
-    if (active._panels.size === 1) {
-      // show the connection
-      return this.nav.showConnection(active)
-    }
-
-    if (active._panels.size) {
-      let item = null
-      for (const thing of active._panels.values()) {
-        item = thing
-      }
-      return this.nav.showChannel(item)
-    }
 
     if (this.connections.size > 1) {
       const prevConn = prevVal(active, this.connections)
       if (prevConn) {
+        if (prevCon._panels.size) {
+          // show the last panel in the previous connection
+          const last = mapUtil.lastVal(prevCon._panels)
+        }
+
+        // if no panels, just show the previous connection
         return this.nav.showConnection(prevConn)
       }
+    }
+
+    if (active._panels.size) {
+      return this.nav.showChannel(mapUtil.lastVal(active._panels))
     }
 
     // just re-render
