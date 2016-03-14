@@ -29,6 +29,16 @@ test('pad', (t) => {
   t.equal(utils.pad(10), '10')
 })
 
+test('isValidChannel', (t) => {
+  t.ok(utils.isValidChannel('#node.js'))
+  t.ok(utils.isValidChannel('&node.js'))
+  t.ok(utils.isValidChannel('+node.js'))
+  t.ok(utils.isValidChannel('!node.js'))
+  t.notOk(utils.isValidChannel('~node.js'))
+  t.notOk(utils.isValidChannel())
+  t.end()
+})
+
 test('formatNameForType', (t) => {
   t.plan(4)
   t.equal(utils.formatNameForType('evan', 'action'), '● evan')
