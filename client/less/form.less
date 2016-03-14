@@ -1,8 +1,7 @@
 .form {
   width: 600px;
-  color: lighten(@dusk, 10%);
+  color: @lightGray;
   position: relative;
-  background: @lightGray;
   margin: 0 auto;
   padding-top: 20px;
   padding-bottom: 20px;
@@ -22,7 +21,7 @@
   a.close {
     content: "&times;";
     font-size: 30px;
-    color: lighten(@dusk, 30%);
+    color: @lightGray;
     position: absolute;
     top: 5px;
     right: 5px;
@@ -32,7 +31,7 @@
     font-weight: bold;
 
     &:hover {
-      color: @dusk;
+      color: lighten(@dusk, 30%);
     }
   }
 
@@ -45,6 +44,7 @@
   input[type="number"],
   input[type="url"],
   select {
+    color: lighten(@dusk, 10%);
     height: 35px;
     width: 300px;
     margin: 15px auto;
