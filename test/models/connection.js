@@ -142,6 +142,7 @@ test('Connection#persist', (t) => {
         , topic: ''
         }
       ]
+    , partMsg: 'eyearesee https://github.com/evanlucas/eyearesee'
     }, 'obj is correct')
     cb()
   }

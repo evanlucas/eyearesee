@@ -5,7 +5,13 @@ const Channel = require('../../lib/models/channel')
 const User = require('../../lib/models/user')
 
 test('Channel - type channel', (t) => {
-  const conn = {}
+  const conn = {
+    settings: {
+      get: () => {
+        return null
+      }
+    }
+  }
 
   const opts = {
     name: '#Node.js'
@@ -53,6 +59,11 @@ test('Channel - type private', (t) => {
     , address: 'unaffiliated/evan'
     , realname: 'Evan'
     , color: 'green'
+    }
+  , settings: {
+      get: () => {
+        return null
+      }
     }
   , whois: function(from, cb) {
       t.pass('called whois')
@@ -119,6 +130,11 @@ test('methods', (t) => {
   const conn = {
     render: function() {
       t.pass('called render')
+    }
+  , settings: {
+      get: () => {
+        return null
+      }
     }
   , removeChannel: function() {}
   , app: {

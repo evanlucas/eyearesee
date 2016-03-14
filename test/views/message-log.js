@@ -21,7 +21,11 @@ test('MessageLogView', (t) => {
   , unread: 0
   , type: 'channel'
   , autoJoin: false
-  , connection: {}
+  , connection: {
+      settings: {
+        get: () => {}
+      }
+    }
   })
 
   const u1 = chan.addUser({

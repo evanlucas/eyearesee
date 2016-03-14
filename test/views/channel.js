@@ -24,7 +24,11 @@ test('ChannelView', (t) => {
   , unread: 0
   , type: 'channel'
   , autoJoin: false
-  , connection: {}
+  , connection: {
+      settings: {
+        get: () => {}
+      }
+    }
   })
 
   c.addMessage({
