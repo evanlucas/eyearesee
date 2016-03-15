@@ -21,6 +21,7 @@ module.exports = window.App = App
 const Connection = require('./lib/models/connection')
 const Channel = require('./lib/models/channel')
 const ConnSettings = require('./lib/models/connection-settings')
+const About = require('./lib/about')
 
 const Router = require('./lib/router')
 
@@ -37,6 +38,8 @@ function App(el, currentWindow) {
   this.nav = require('./lib/nav')(this)
   this.views = require('./lib/views')(this)
   this.inputHandler = require('./lib/handle-input')(this)
+
+  this.about = new About()
 
   this.connections = new Map()
   this.tooltips = new Map()
@@ -77,7 +80,13 @@ App.prototype.playMessageSound = function playMessageSound() {
 }
 
 App.prototype._addRoutes = function _addRoutes() {
-  this.router.add('/login', () => this.showLogin())
+  this.router.add('/login', () => {
+    this.nav.showLogin()
+  })
+
+  this.router.add('/about', () => {
+    this.nav.showAbout()
+  })
 
   this.router.add('/settings', () => {
     const active = this.nav.current
@@ -96,7 +105,7 @@ App.prototype._addRoutes = function _addRoutes() {
       return
     }
 
-    debug('show connection', conn)
+    debug('show connection', conn.name)
     this.nav.showConnection(conn)
   })
 
@@ -356,6 +365,10 @@ App.prototype.showLogin = function showLogin() {
   this.router.goto('/login')
 }
 
+App.prototype.showAbout = function showAbout() {
+  this.router.goto('/about')
+}
+
 App.prototype.showSettings = function showSettings(connName) {
   if (connName)
     return this.router.goto(`/connections/${connName.toLowerCase()}/settings`)
@@ -395,4 +408,15 @@ App.prototype.renameConnection = function renameConnection(conn, prev) {
 
 App.prototype.needsLayout = function needsLayout() {
   this.emit('render')
+}
+
+App.prototype.showConnection = function showConnection() {
+  if (this.connections.size) {
+    // show the first connection
+    const conn = mapUtil.firstVal(this.connections)
+    this.nav.showConnection(conn)
+  } else {
+    // show the login
+    this.showLogin()
+  }
 }
