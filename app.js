@@ -12,6 +12,7 @@ const auth = require('./lib/auth')
 const path = require('path')
 const fs = require('fs')
 const mapUtil = require('map-util')
+const Tooltip = require('./lib/tooltip')
 const nextVal = mapUtil.nextVal
 const prevVal = mapUtil.prevVal
 
@@ -38,10 +39,13 @@ function App(el, currentWindow) {
   this.inputHandler = require('./lib/handle-input')(this)
 
   this.connections = new Map()
+  this.tooltips = new Map()
   this.router = new Router()
 
   this._addRoutes()
 
+  // TODO(evanlucas) Add a loading screen instead of always showing login
+  // initially.
   var tree = this.render('login')
   var rootNode = createElement(tree)
   el.appendChild(rootNode)
@@ -262,39 +266,16 @@ App.prototype._addHandlers = function _addHandlers() {
     return false
   })
 
-  delegate.on(this.el, 'a.add-connection', 'mouseover', (e) => {
-    const ele = document.querySelector('.tooltip.create')
-    if (ele) {
-      ele.classList.toggle('in')
-    }
+  const addConnTooltip = new Tooltip(this.el, {
+    selector: 'a.add-connection'
+  , placement: 'right'
+  , container: 'body'
+  , viewportPadding: 2
+  , title: 'Create Connection'
+  , delay: null
   })
 
-  delegate.on(this.el, 'a.add-connection', 'mouseout', (e) => {
-    const ele = document.querySelector('.tooltip.create')
-    if (ele) {
-      ele.classList.toggle('in')
-    }
-  })
-
-  delegate.on(this.el, '#serverbar .menu a', 'mouseover', (e) => {
-    const target = e.target
-    const name = target.getAttribute('tooltipid')
-    if (!name) return
-    const ele = document.getElementById(name)
-    if (ele) {
-      ele.classList.toggle('in')
-    }
-  })
-
-  delegate.on(this.el, '#serverbar .menu a', 'mouseout', (e) => {
-    const target = e.target
-    const name = target.getAttribute('tooltipid')
-    if (!name) return
-    const ele = document.getElementById(name)
-    if (ele) {
-      ele.classList.toggle('in')
-    }
-  })
+  this.newConnectionTip = addConnTooltip
 }
 
 App.prototype._checkAuth = function _checkAuth() {
@@ -384,19 +365,32 @@ App.prototype.showSettings = function showSettings(connName) {
 
 App.prototype._addConnection = function _addConnection(conn) {
   debug('add connection %s', conn.name.toLowerCase())
-  this.connections.set(conn.name.toLowerCase(), conn)
+  const key = conn.name.toLowerCase()
+  this.connections.set(key, conn)
+  const addConnTooltip = new Tooltip(this.el, {
+    selector: `#serverbar a[navtype=connection][navname="${conn.name}"]`
+  , placement: 'right'
+  , container: 'body'
+  , viewportPadding: 2
+  , title: conn.name
+  , delay: null
+  })
+  this.tooltips.set(key, addConnTooltip)
   this.emit('render')
 }
 
 App.prototype.removeConnection = function removeConnection(conn) {
-  debug('removeConnection %s', conn.name.toLowerCase(), this.connections.keys())
-  this.connections.delete(conn.name.toLowerCase())
+  const key = conn.name.toLowerCase()
+  debug('removeConnection %s', key, this.connections.keys())
+  this.connections.delete(key)
+  this.tooltips.get(key).destroy()
+  this.tooltips.delete(key)
   this.emit('render')
 }
 
 App.prototype.renameConnection = function renameConnection(conn, prev) {
-  this.connections.delete(prev.toLowerCase())
-  this.connections.set(conn.name.toLowerCase(), conn)
+  this.removeConnection(prev)
+  this._addConnection(conn)
 }
 
 App.prototype.needsLayout = function needsLayout() {
