@@ -227,29 +227,28 @@ App.prototype.previousPanel = function previousPanel() {
 App.prototype.render = function render() {
   const views = this.views
 
-  if (!this.nav.current) {
-    return views.login.render()
-  }
-
   var view
   var columns = 2
 
   var active = this.nav.current
+  const container = []
 
-  if (active instanceof Connection) {
-    view = views.connection.render(active)
+  if (!active) {
+    container.push(views.login.render())
+  } else if (active instanceof About) {
+    return views.about.render()
+  } else if (active instanceof Connection) {
+    container.push(views.connection.render(active))
+    container.push(views.input.render(this.nav))
   } else if (active instanceof Channel) {
     columns = 3
     active.unread = 0
-    view = views.channel.render(active)
+    container.push(views.channel.render(active))
+    container.push(views.input.render(this.nav))
   } else if (active instanceof ConnSettings) {
-    view = views.connSettings.render(active)
+    container.push(views.connSettings.render(active))
+    container.push(views.input.render(this.nav))
   }
-
-  var container = [
-    view
-  , views.input.render(this.nav)
-  ]
 
   const main = columns === 2
     ? '#main.col-2.pure-g'

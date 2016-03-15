@@ -1,8 +1,6 @@
 .form {
-  width: 600px;
   color: @lightGray;
   position: relative;
-  margin: 0 auto;
   padding-top: 20px;
   padding-bottom: 20px;
   border-radius: 10px;
@@ -39,49 +37,8 @@
     outline: none;
   }
 
-  input[type="text"],
-  input[type="password"],
-  input[type="number"],
-  input[type="url"],
-  select {
-    color: lighten(@dusk, 10%);
-    height: 35px;
-    width: 300px;
-    margin: 15px auto;
-    margin-left: 15px;
-    background: #fff;
-    padding: 5px;
-    font-size: 16px;
-    border: 2px solid #fff;
-    transition: all 0.5s ease;
-    border-radius: 5px;
-
-    &:focus {
-      border: 2px solid @pink;
-      box-shadow: inset 0 1px 1px .075;
-    }
-
-    &:invalid {
-      border: 2px solid @red;
-    }
-  }
-
   ::-webkit-input-placeholder {
      color: lighten(@dusk, 30%);
-  }
-
-  input[type="submit"] {
-    display: block;
-    background: @cyan;
-    width: 300px;
-    padding: 12px;
-    cursor: pointer;
-    color: #fff;
-    border: 0px;
-    margin: auto;
-    border-radius: 5px;
-    font-size: 17px;
-    transition: all 0.5s ease;
   }
 
   .group {
@@ -108,26 +65,6 @@
     display: inline-block;
     margin-left: 15px;
     width: 300px;
-  }
-
-  input[type='checkbox'] {
-    margin: 4px 0 0;
-    line-height: normal;
-  }
-
-  .checkbox {
-    position: relative;
-    display: block;
-    margin-top: 4px;
-    margin-bottom: 10px;
-    margin-left: 130px;
-
-    label {
-      padding-left: 20px;
-      margin-bottom: 0;
-      font-weight: normal;
-      cursor: pointer;
-    }
   }
 }
 
