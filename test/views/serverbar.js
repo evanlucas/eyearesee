@@ -58,9 +58,9 @@ test('ServerbarView', (t) => {
   const bottom = v.children[1]
   verify(bottom, 'DIV', {
     className: 'bottom'
-  }, 2, 'bottom')
+  }, 1, 'bottom')
 
-  const a2 = bottom.children[1]
+  const a2 = bottom.children[0]
   verify(a2, 'A', {
     className: 'add-connection'
   , innerHTML: '&#65291;'

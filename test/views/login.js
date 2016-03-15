@@ -5,7 +5,7 @@ const LoginView = require('../../lib/views/login')
 const common = require('../common')
 
 test('LoginView', (t) => {
-  t.plan(122)
+  t.plan(156)
 
   const app = {
     nav: {}
@@ -18,11 +18,11 @@ test('LoginView', (t) => {
   const verify = common.VerifyNode(t)
 
   function verifyGroup(node, id, type, text, ph, req, min, max) {
-    verify(node, 'DIV', { className: 'group' }, 2, type)
+    verify(node, 'DIV', { className: 'form-group' }, 2, type)
 
     const span = node.children[0]
-    verify(span, 'SPAN', {
-      className: 'label'
+    verify(span, 'LABEL', {
+      className: 'control-label col-sm-3'
     , attributes: {
         for: id
       }
@@ -31,9 +31,11 @@ test('LoginView', (t) => {
     const spanText = span.children[0]
     t.equal(spanText.text, text)
 
-    const input = node.children[1]
+    const outer = node.children[1]
+    verify(outer, 'DIV', { className: 'col-sm-9' }, 1, type)
+    const input = outer.children[0]
     var opts = {
-      className: 'input'
+      className: 'form-control'
     , id: id
     , type: type
     , placeholder: ph
@@ -48,16 +50,24 @@ test('LoginView', (t) => {
   }
 
   function verifyCB(node, id, text, checked) {
+    // node is the form-group
     verify(node, 'DIV', {
-      className: 'checkbox'
-    }, 1, `${text} checkbox group`)
+      className: 'form-group'
+    }, 1, `${text} form-group`)
 
-    const label = node.children[0]
-    verify(label, 'LABEL', {
-      attributes: {
-        for: id
-      }
-    }, 2, `${text} label`)
+    let child = node.children[0]
+    verify(child, 'DIV', {
+      className: 'col-sm-offset-3 col-sm-9'
+    }, 1, `${text} col`)
+
+    child = child.children[0]
+
+    verify(child, 'DIV', {
+      className: 'checkbox'
+    }, 1, `${text} checkbox`)
+
+    const label = child.children[0]
+    verify(label, 'LABEL', {}, 2, `${text} label`)
 
     const input = label.children[0]
     verify(input, 'INPUT', {
@@ -74,17 +84,13 @@ test('LoginView', (t) => {
 
   const formClass = v.children[0]
   verify(formClass, 'DIV', {
-    className: 'form'
-  }, 2, 'formClass')
+    className: 'form col-sm-12'
+  }, 1, 'formClass')
 
-  const close = formClass.children[0]
-  verify(close, 'A', {
-    className: 'close'
-  , innerHTML: '&times;'
-  }, 0, 'close')
-
-  const form = formClass.children[1]
-  verify(form, 'FORM', {}, 11, 'form')
+  const form = formClass.children[0]
+  verify(form, 'FORM', {
+    className: 'form-horizontal'
+  }, 13, 'form')
 
   const h3 = form.children[0]
   verify(h3, 'H3', {}, 1)
@@ -92,8 +98,11 @@ test('LoginView', (t) => {
   const h3text = h3.children[0]
   t.equal(h3text.text, 'Create Connection')
 
+  const br = form.children[1]
+  verify(br, 'BR', {}, 0, 'br')
+
   // username group
-  const username = form.children[1]
+  const username = form.children[2]
   verifyGroup(
     username
   , 'username'
@@ -103,7 +112,7 @@ test('LoginView', (t) => {
   , true
   )
 
-  const realname = form.children[2]
+  const realname = form.children[3]
   verifyGroup(
     realname
   , 'realname'
@@ -113,7 +122,7 @@ test('LoginView', (t) => {
   , true
   )
 
-  const nickname = form.children[3]
+  const nickname = form.children[4]
   verifyGroup(
     nickname
   , 'nickname'
@@ -123,7 +132,7 @@ test('LoginView', (t) => {
   , true
   )
 
-  const password = form.children[4]
+  const password = form.children[5]
   verifyGroup(
     password
   , 'password'
@@ -133,7 +142,7 @@ test('LoginView', (t) => {
   , true
   )
 
-  const altnick = form.children[5]
+  const altnick = form.children[6]
   verifyGroup(
     altnick
   , 'altnick'
@@ -143,7 +152,7 @@ test('LoginView', (t) => {
   , false
   )
 
-  const serverurl = form.children[6]
+  const serverurl = form.children[7]
   verifyGroup(
     serverurl
   , 'serverurl'
@@ -153,7 +162,7 @@ test('LoginView', (t) => {
   , true
   )
 
-  const port = form.children[7]
+  const port = form.children[8]
   verifyGroup(
     port
   , 'port'
@@ -165,20 +174,24 @@ test('LoginView', (t) => {
   , 65535
   )
 
-  const autoConnect = form.children[8]
+  const autoConnect = form.children[9]
   verifyCB(autoConnect, 'autoConnect', 'Auto Connect', true)
 
-  const showEvents = form.children[9]
+  const showEvents = form.children[10]
   verifyCB(showEvents, 'showEvents', 'Show General Events', true)
 
-  const input = form.children[10]
-  verify(input, 'INPUT', {
-    id: 'loginButton'
-  , type: 'submit'
-  }, 1, 'create connection input')
+  let col = form.children[11]
+  verify(col, 'DIV', {
+    className: 'col-sm-3'
+  }, 0, 'offset')
 
-  const inputText = input.children[0]
-  t.equal(inputText.text, 'Create Connection')
+  col = form.children[12]
+  verify(col, 'DIV', {
+    className: 'col-sm-9'
+  }, 2, 'close button')
+
+  const close = col.children[0].children[0]
+  const input = col.children[1].children[0]
 
   var opts = {
     username: 'evanlucas'
@@ -227,6 +240,7 @@ test('LoginView', (t) => {
   , active: true
   }
 
+  app.showConnection = function() {}
   app.connections = new Map([[ 'Freenode', conn ]])
   app.nav.showConnection = function(conn) {
     t.equal(conn.name, 'Freenode', 'connection name is correct')

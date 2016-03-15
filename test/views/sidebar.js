@@ -182,7 +182,7 @@ test('SidebarView with active channel', (t) => {
   }, 1, 'connection')
 })
 
-test('SidebarView with no active throws', (t) => {
+test('SidebarView with no active does not throw', (t) => {
   const app = {
     nav: {
       current: null
@@ -195,9 +195,35 @@ test('SidebarView with no active throws', (t) => {
   t.type(view.views.connection, ConnectionView)
   t.type(view.views.logo, LogoView)
 
-  t.throws(function() {
-    view.render()
-  }, /An error occurred. Should have connection/)
+  const verify = common.VerifyNode(t)
+
+  const v = view.render()
+  verify(v, 'DIV', {
+    className: 'nav-inner'
+  }, 2, 'nav-inner')
+
+  const logo = v.children[0]
+  verify(logo, 'DIV', {
+    id: 'logo'
+  }, 2, 'logo')
+
+  const eye = logo.children[0]
+  verify(eye, 'I', {
+    className: 'fa fa-eye fa-2x'
+  }, 0, 'eye')
+
+  const logoname = logo.children[1]
+  verify(logoname, 'SPAN', {
+    className: 'logoname'
+  }, 1, 'logoname')
+
+  const logotext = logoname.children[0]
+  t.equal(logotext.text, 'EyeAreSee')
+
+  const menu = v.children[1]
+  verify(menu, 'DIV', {
+    className: 'pure-menu'
+  }, 0, 'pure-menu')
 
   t.end()
 })
