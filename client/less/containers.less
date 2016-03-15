@@ -111,11 +111,15 @@
     #footer {
       height: @bottomHeight;
       margin: 0 auto;
+      padding: @inputVerticalPadding @inputHorizontalPadding;
 
       .inputMessage {
-        // border: 2px solid #000;
+        border: 2px solid darken(white, 10%);
+        border-radius: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
         bottom: 0;
-        height: @bottomHeight;
+        height: @inputHeight;
         outline: none;
         width: 100%;
       }

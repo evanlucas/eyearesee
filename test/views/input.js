@@ -5,7 +5,7 @@ const InputView = require('../../lib/views/input')
 const EE = require('events')
 
 test('InputView', (t) => {
-  t.plan(57)
+  t.plan(55)
   const app = new EE()
   app.nav = {
     current: {
@@ -37,17 +37,12 @@ test('InputView', (t) => {
   t.deepEqual(kids[0].properties, { id: 'footer' })
 
   const kids2 = kids[0].children
-  t.equal(kids2.length, 1)
-  t.equal(kids2[0].tagName, 'INPUT')
+  t.equal(kids2.length, 2)
+  t.equal(kids2[0].tagName, 'DIV')
   t.match(kids2[0].properties, {
-    id: 'inputMessage'
-  , type: 'text'
-  , placeholder: 'Send message...'
-  , className: 'inputMessage'
+    id: 'commandbar'
+  , className: 'panel panel-default'
   })
-
-  t.type(kids2[0].properties.onkeydown, 'function')
-  t.equal(kids2[0].children.length, 0)
 
   // [ENTER]
   input.keypressed({

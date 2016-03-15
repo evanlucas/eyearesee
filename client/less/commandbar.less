@@ -1,0 +1,59 @@
+#commandbar {
+  position: fixed;
+  height: auto;
+  bottom: 45px;
+  left: 260px;
+  right: 10px;
+
+  box-shadow: -1px 1px #d3d3d3, 1px -1 #d3d3d3;
+
+  .panel-body {
+    margin: 0;
+    padding: 0;
+    max-height: 200px;
+    overflow: scroll;
+  }
+
+  background-color: white;
+
+  ul.commands {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li.command {
+      margin: 0;
+      padding: 5px;
+      text-decoration: none;
+
+      &:last-child {
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+
+      strong {
+        line-height: 30px;
+        height: 30px;
+      }
+
+      span.description {
+        line-height: 30px;
+        height: 30px;
+        float: right;
+        margin-right: 15px;
+        font-style: italic;
+        color: lighten(@dusklight, 10%);
+      }
+
+      &:hover {
+        background-color: @cyan;
+        color: white;
+        cursor: pointer;
+
+        span.description {
+          color: @lightGray;
+        }
+      }
+    }
+  }
+}
