@@ -3,6 +3,7 @@
 const test = require('tap').test
 const InputView = require('../../lib/views/input')
 const EE = require('events')
+const CommandManager = require('../../lib/command-manager')
 
 test('InputView', (t) => {
   t.plan(55)
@@ -13,6 +14,8 @@ test('InputView', (t) => {
     , _onlyNames: []
     }
   }
+
+  app.commandManager = new CommandManager()
 
   const input = InputView(app)
   t.deepEqual(input.history, [])

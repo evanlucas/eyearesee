@@ -11,6 +11,7 @@ const debug = require('debug')('eyearesee:app')
 const auth = require('./lib/auth')
 const path = require('path')
 const fs = require('fs')
+const CommandManager = require('./lib/command-manager')
 const mapUtil = require('map-util')
 const Tooltip = require('./lib/tooltip')
 const nextVal = mapUtil.nextVal
@@ -36,8 +37,12 @@ function App(el, currentWindow) {
   this.window = currentWindow
   this.db = require('./lib/db')
   this.nav = require('./lib/nav')(this)
-  this.views = require('./lib/views')(this)
   this.inputHandler = require('./lib/handle-input')(this)
+  this.commandManager = new CommandManager()
+
+  this._addCommands()
+
+  this.views = require('./lib/views')(this)
 
   this.about = new About()
 
@@ -67,6 +72,13 @@ function App(el, currentWindow) {
         ele.scrollTop = ele.scrollHeight
       }
     }
+
+    if (this.views.input._showingCommandBar) {
+      const item = document.querySelector('.command.active')
+      if (item) {
+        item.scrollIntoViewIfNeeded(false)
+      }
+    }
   })
 
   this._checkAuth()
@@ -77,6 +89,25 @@ inherits(App, EE)
 App.prototype.playMessageSound = function playMessageSound() {
   const ele = document.getElementById('messageSound')
   ele.play()
+}
+
+App.prototype._addCommands = function _addCommands() {
+  const m = this.commandManager
+  m.add('/action', 'Send action message to target', '[channel|nickname] [msg]')
+  m.add('/away', 'Set away status', '[away msg]')
+  m.add('/join', 'Join a channel', '( [channel[,channel]], [key[,key]] ) || 0')
+  m.add('/kick', 'Kick user from channel', '<channel> <user>')
+  m.add('/mode'
+      , 'Set the mode for the given target'
+      , '<nickname|channel> <mode>'
+      )
+  m.add('/motd', 'Get the MOTD for the target', '[target]')
+  m.add('/msg', 'Send message to target', '[nickname|channel] [msg]')
+  m.add('/nick', 'Set/change your nickname', '<nickname>')
+  m.add('/notice', 'Send notice message to target', '[nickname|channel] [msg]')
+  m.add('/part', '(or /leave) Part from a channel', '[channel] [msg]')
+  m.add('/quit', 'Terminate session', '[msg]')
+  m.add('/topic', `Set/remove a channel's topic`, '[channel] [topic]')
 }
 
 App.prototype._addRoutes = function _addRoutes() {
