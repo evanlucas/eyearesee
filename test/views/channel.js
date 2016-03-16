@@ -28,6 +28,7 @@ test('ChannelView', (t) => {
       settings: {
         get: () => {}
       }
+    , channels: new Map()
     }
   })
 

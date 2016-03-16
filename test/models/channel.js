@@ -11,6 +11,7 @@ test('Channel - type channel', (t) => {
         return null
       }
     }
+  , channels: new Map()
   }
 
   const opts = {
@@ -26,6 +27,7 @@ test('Channel - type channel', (t) => {
   }
 
   const chan = Channel(opts)
+  conn.channels.set(chan.name.toLowerCase(), chan)
 
   t.equal(chan.name, '#Node.js', 'name is correct')
   t.equal(chan.topic, 'This is the topic', 'topic is correct')
@@ -60,6 +62,7 @@ test('Channel - type private', (t) => {
     , realname: 'Evan'
     , color: 'green'
     }
+  , channels: new Map()
   , settings: {
       get: () => {
         return null
@@ -90,6 +93,7 @@ test('Channel - type private', (t) => {
   }
 
   const chan = Channel(opts)
+  conn.channels.set(chan.name.toLowerCase(), chan)
 
   t.equal(chan.name, '#Node.js', 'name is correct')
   t.equal(chan.topic, 'This is the topic', 'topic is correct')
@@ -136,6 +140,7 @@ test('methods', (t) => {
         return null
       }
     }
+  , channels: new Map()
   , removeChannel: function() {}
   , app: {
       nav: {
@@ -165,6 +170,7 @@ test('methods', (t) => {
   }
 
   const chan = Channel(opts)
+  conn.channels.set(chan.name.toLowerCase(), chan)
   conn.app.nav.current = chan
 
   // adds a message
