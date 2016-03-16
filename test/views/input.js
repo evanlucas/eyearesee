@@ -6,7 +6,7 @@ const EE = require('events')
 const CommandManager = require('../../lib/command-manager')
 
 test('InputView', (t) => {
-  t.plan(55)
+  t.plan(56)
   const app = new EE()
   app.nav = {
     current: {
@@ -48,8 +48,8 @@ test('InputView', (t) => {
   })
 
   // [ENTER]
-  input.keypressed({
-    keyCode: 13
+  input.onKeydown({
+    which: 13
   , target: {
       value: ''
     , type: 'text'
@@ -69,8 +69,8 @@ test('InputView', (t) => {
   })
 
   // Hello [ENTER]
-  input.keypressed({
-    keyCode: 13
+  input.onKeydown({
+    which: 13
   , target: node
   })
 
@@ -79,7 +79,7 @@ test('InputView', (t) => {
   t.equal(input.historyIndex, -1)
 
   let opts = {
-    keyCode: 38
+    which: 38
   , target: {
       value: 'biscuits'
     , type: 'text'
@@ -90,7 +90,7 @@ test('InputView', (t) => {
   }
 
   // biscuits [UP]
-  input.keypressed(opts)
+  input.onKeydown(opts)
 
   t.equal(opts.target.value, 'Hello')
   t.deepEqual(input.history, ['Hello'])
@@ -99,8 +99,8 @@ test('InputView', (t) => {
 
   node.value = 'biscuits'
   // biscuits [ENTER]
-  input.keypressed({
-    keyCode: 13
+  input.onKeydown({
+    which: 13
   , target: node
   })
 
@@ -111,7 +111,7 @@ test('InputView', (t) => {
   // biscuits [UP]
   // Hello [DOWN]
   opts = {
-    keyCode: 38
+    which: 38
   , target: {
       value: 'biscuits'
     , type: 'text'
@@ -121,10 +121,10 @@ test('InputView', (t) => {
     }
   }
 
-  input.keypressed(opts)
+  input.onKeydown(opts)
 
   opts = {
-    keyCode: 40
+    which: 40
   , target: {
       value: 'Hello'
     , type: 'text'
@@ -134,13 +134,13 @@ test('InputView', (t) => {
     }
   }
 
-  input.keypressed(opts)
+  input.onKeydown(opts)
   t.equal(input.historyIndex, -1)
   t.deepEqual(input.history, ['biscuits', 'Hello'])
   t.equal(input.isTabbing, false)
 
   opts = {
-    keyCode: 9
+    which: 9
   , target: {
       value: ''
     , type: 'text'
@@ -150,11 +150,11 @@ test('InputView', (t) => {
     }
   }
 
-  input.keypressed(opts)
+  input.onKeydown(opts)
   t.equal(input.isTabbing, false)
 
   opts = {
-    keyCode: 9
+    which: 9
   , target: {
       value: 'fasd'
     , type: 'text'
@@ -164,12 +164,12 @@ test('InputView', (t) => {
     }
   }
 
-  input.keypressed(opts, app.nav)
+  input.onKeydown(opts, app.nav)
   // !names.length
   t.equal(input.isTabbing, false)
 
   opts = {
-    keyCode: 9
+    which: 9
   , target: {
       value: 'ab'
     , type: 'text'
@@ -181,19 +181,19 @@ test('InputView', (t) => {
 
   input._tabOrig = ''
   app.nav.current._onlyNames = ['abc', 'abcd']
-  input.keypressed(opts, app.nav)
+  input.onKeydown(opts, app.nav)
   t.equal(input.isTabbing, true)
   // the value changes from ab => abc
   t.equal(opts.target.value, 'abc')
 
-  input.keypressed(opts, app.nav)
+  input.onKeydown(opts, app.nav)
   t.equal(input.isTabbing, true)
   t.equal(input._tabChar, 'abc')
   t.equal(input._tabOrig, 'ab')
   t.equal(opts.target.value, 'abcd')
 
   // one more time should take us back to abc
-  input.keypressed(opts, app.nav)
+  input.onKeydown(opts, app.nav)
   t.equal(input.isTabbing, true)
   t.equal(input._tabChar, 'abcd')
   t.equal(input._tabOrig, 'ab')
@@ -201,7 +201,7 @@ test('InputView', (t) => {
 
   // now check if there are no completions
   opts = {
-    keyCode: 9
+    which: 9
   , target: {
       value: 'ab'
     , type: 'text'
@@ -214,13 +214,13 @@ test('InputView', (t) => {
   input._tabOrig = ''
   input._tabChar = ''
   app.nav.current._onlyNames = ['abc']
-  input.keypressed(opts, app.nav)
+  input.onKeydown(opts, app.nav)
   t.equal(input._tabChar, '')
   t.equal(input._tabOrig, 'ab')
 
-  // no type another character
+  // now type another character
   opts = {
-    keyCode: 97
+    which: 97
   , target: {
       value: 'ab'
     , type: 'text'
@@ -229,7 +229,7 @@ test('InputView', (t) => {
       t.fail('called preventDefault')
     }
   }
-  input.keypressed(opts, app.nav)
+  input.onKeydown(opts, app.nav)
   t.equal(input.isTabbing, false)
   t.equal(input._tabChar, '')
   t.equal(input._tabOrig, '')

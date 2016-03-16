@@ -73,7 +73,7 @@ function App(el, currentWindow) {
       }
     }
 
-    if (this.views.input._showingCommandBar) {
+    if (this.views.input.commandBar.isShowing()) {
       const item = document.querySelector('.command.active')
       if (item) {
         item.scrollIntoViewIfNeeded(false)
