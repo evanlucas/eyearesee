@@ -17,24 +17,21 @@ test('parse', (t) => {
   var out = parse(input)
   t.deepEqual(out, {
     type: 'list'
-  , channels: []
-  , server: null
+  , data: ''
   })
 
   var input = '/invite evanlucas #node.js'
   var out = parse(input)
   t.deepEqual(out, {
     type: 'invite'
-  , channel: '#node.js'
-  , nick: 'evanlucas'
+  , data: 'evanlucas #node.js'
   })
 
   var input = '/msg biscuits "hello my name" is tom'
   var out = parse(input)
   t.deepEqual(out, {
     type: 'msg'
-  , target: 'biscuits'
-  , message: '"hello my name" is tom'
+  , data: 'biscuits "hello my name" is tom'
   })
   t.end()
 })
