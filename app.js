@@ -16,6 +16,7 @@ const mapUtil = require('map-util')
 const Tooltip = require('./lib/tooltip')
 const nextVal = mapUtil.nextVal
 const prevVal = mapUtil.prevVal
+const Styles = require('./lib/styles/manager')
 
 module.exports = window.App = App
 
@@ -39,6 +40,7 @@ function App(el, currentWindow) {
   this.nav = require('./lib/nav')(this)
   this.inputHandler = require('./lib/handle-input')(this)
   this.commandManager = new CommandManager()
+  this.styles = new Styles()
 
   this._addCommands()
 
@@ -51,6 +53,7 @@ function App(el, currentWindow) {
   this.router = new Router()
 
   this._addRoutes()
+  this._addStyles()
 
   // TODO(evanlucas) Add a loading screen instead of always showing login
   // initially.
@@ -94,6 +97,19 @@ App.prototype.playMessageSound = function playMessageSound() {
 App.prototype._addCommands = function _addCommands() {
   const m = this.commandManager
   this.commandManager.addDefaults()
+}
+
+App.prototype._addStyles = function _addStyles() {
+  const ele = this.styles.buildElement()
+  document.head.appendChild(ele)
+
+  const main = process.mainModule
+  const root = path.join(main.filename, '../..')
+  const fp = path.join(root, 'public', 'css', 'style.css')
+  const contents = fs.readFileSync(fp, 'utf8')
+  this.styles.addStyleSheet(contents, {
+    sourcePath: fp
+  })
 }
 
 App.prototype._addRoutes = function _addRoutes() {

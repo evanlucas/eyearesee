@@ -28,6 +28,7 @@ This license applies to parts of eyearesee originating from the
 https://github.com/atom/atom repository:
 
 lib/tooltip.js
+lib/styles/{element.js,manager.js}
 
 """
 Copyright (c) 2016 GitHub Inc.
