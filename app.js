@@ -20,6 +20,9 @@ const Styles = require('./lib/styles/manager')
 
 module.exports = window.App = App
 
+const HOME = process.env.EYEARESEE_HOME
+const RESOURCES = process.env.EYEARESEE_RESOURCE_PATH
+
 const Connection = require('./lib/models/connection')
 const Channel = require('./lib/models/channel')
 const ConnSettings = require('./lib/models/connection-settings')
@@ -103,9 +106,7 @@ App.prototype._addStyles = function _addStyles() {
   const ele = this.styles.buildElement()
   document.head.appendChild(ele)
 
-  const main = process.mainModule
-  const root = path.join(main.filename, '../..')
-  const fp = path.join(root, 'public', 'css', 'style.css')
+  const fp = path.join(RESOURCES, 'public', 'css', 'style.css')
   const contents = fs.readFileSync(fp, 'utf8')
   this.styles.addStyleSheet(contents, {
     sourcePath: fp
