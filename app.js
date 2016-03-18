@@ -113,6 +113,20 @@ App.prototype._addStyles = function _addStyles() {
   })
 }
 
+App.prototype.getActiveConnection = function getActiveConnection() {
+  const active = this.nav.current
+  if (!active) return null
+
+  if (active instanceof Connection) {
+    return active
+  }
+
+  if (active.getConnection)
+    return active.getConnection()
+
+  return null
+}
+
 App.prototype._addRoutes = function _addRoutes() {
   this.router.add('/login', () => {
     this.nav.showLogin()
