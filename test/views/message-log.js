@@ -26,6 +26,7 @@ test('MessageLogView', (t) => {
         get: () => {}
       }
     , channels: new Map()
+    , app: app
     }
   })
 

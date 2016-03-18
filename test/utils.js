@@ -32,7 +32,6 @@ test('pad', (t) => {
 test('isValidChannel', (t) => {
   t.ok(utils.isValidChannel('#node.js'))
   t.ok(utils.isValidChannel('&node.js'))
-  t.ok(utils.isValidChannel('+node.js'))
   t.ok(utils.isValidChannel('!node.js'))
   t.notOk(utils.isValidChannel('~node.js'))
   t.notOk(utils.isValidChannel())

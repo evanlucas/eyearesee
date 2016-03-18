@@ -1,12 +1,11 @@
 // Serverbar
 // contains all of the connections
-#serverbar {
+irc-serverbar {
   width: @serverbarWidth;
   height: 100%;
   position: fixed;
   top: 0;
   bottom: 0;
-  background: @dusk;
   z-index: 50000;
 
   .nav {
@@ -89,7 +88,7 @@
 
 // Sidebar
 // contains the channels and messages
-#sidebar {
+irc-sidebar {
   width: @sidebarWidth;
   height: 100%;
   position: fixed;
@@ -98,13 +97,6 @@
   left: @serverbarWidth;
   bottom: 0;
   overflow: auto;
-  background: @sidebarBackgroundColor;
-
-  .active {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-right: 10px solid darken(@cyan, 10%);
-  }
 
   .pure-menu-link {
     color: #fff;
@@ -119,38 +111,14 @@
     -webkit-user-select: none;
     user-select: none;
 
-    &:focus {
-      background-color: transparent;
-    }
-
-    &:hover {
-      border-top-left-radius: 5px;
-      border-bottom-left-radius: 5px;
-      background-color: @cyan;
-      color: white;
-    }
-
-    &.joined {
-      color: white;
-    }
-
-    &.not-joined {
-      color: rgba(255, 255, 255, 0.5);
-      font-weight: normal;
-    }
-
     &.server {
       margin-left: 0;
       font-size: 16px;
     }
   }
 
-  .pure-menu-heading {
-    border-bottom: none;
-    font-size: 14px;
-    color: lighten(@dusk, 30%);
-    padding: .5em 1em;
-    text-transform: uppercase;
+  .nav > li > a {
+    padding: 7px 15px;
   }
 
   .pure-menu-separator {
@@ -178,7 +146,7 @@
 
 // right sidebar
 // only shown for channels
-#userbar {
+irc-userbar {
   width: @rightSidebarWidth;
   height: 100%;
   position: fixed;
@@ -186,7 +154,6 @@
   bottom: 0;
   right: 0;
   overflow: auto;
-  background: @dusk;
 
   ul.users {
     list-style: none;
@@ -196,7 +163,6 @@
     li.user {
       text-decoration: none;
       text-align: left;
-      color: #fff;
       width: 100%;
       cursor: pointer;
       -webkit-touch-callout: none;

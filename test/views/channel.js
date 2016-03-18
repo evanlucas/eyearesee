@@ -28,6 +28,7 @@ test('ChannelView', (t) => {
       settings: {
         get: () => {}
       }
+    , app: app
     , channels: new Map()
     }
   })
@@ -44,10 +45,9 @@ test('ChannelView', (t) => {
   t.type(out, Array)
   t.equal(out.length, 2, 'should have 2 objects')
   const header = out[0]
-  t.equal(header.tagName, 'DIV')
+  t.equal(header.tagName, 'IRC-HEADER')
   t.deepEqual(header.properties, {
-    id: 'header'
-  , className: 'pure-g'
+    className: 'pure-g'
   })
 
   const headerKids = header.children
@@ -78,8 +78,7 @@ test('ChannelView', (t) => {
   t.equal(container.children.length, 2)
   t.equal(container.children[0].tagName, 'UL')
   t.equal(container.children[0].properties.className, 'logs')
-  t.equal(container.children[1].tagName, 'DIV')
-  t.equal(container.children[1].properties.id, 'userbar')
+  t.equal(container.children[1].tagName, 'IRC-USERBAR')
 
   t.end()
 })

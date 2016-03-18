@@ -299,12 +299,12 @@ App.prototype.render = function render() {
   }
 
   const main = columns === 2
-    ? '#main.col-2.pure-g'
-    : '#main.col-3.pure-g'
+    ? 'irc-workspace.col-2.pure-g'
+    : 'irc-workspace.col-3.pure-g'
 
   return h(main, [
     views.serverbar.render()
-  , h('#sidebar.pure-u', [
+  , h('irc-sidebar.pure-u', [
       views.sidebar.render()
     ])
   , h('.container.pure-u-1', container)
@@ -428,7 +428,7 @@ App.prototype._addConnection = function _addConnection(conn) {
   const key = conn.name.toLowerCase()
   this.connections.set(key, conn)
   const addConnTooltip = new Tooltip(this.el, {
-    selector: `#serverbar a[navtype=connection][navname="${conn.name}"]`
+    selector: `irc-serverbar a[navtype=connection][navname="${conn.name}"]`
   , placement: 'right'
   , container: 'body'
   , viewportPadding: 2

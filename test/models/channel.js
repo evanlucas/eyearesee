@@ -130,7 +130,7 @@ test('Channel - type private', (t) => {
 })
 
 test('methods', (t) => {
-  t.plan(17)
+  t.plan(19)
   const conn = {
     render: function() {
       t.pass('called render')

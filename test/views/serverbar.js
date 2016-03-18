@@ -23,9 +23,8 @@ test('ServerbarView', (t) => {
   const view = ServerbarView(app)
   const v = view.render()
 
-  verify(v, 'DIV', {
-    id: 'serverbar'
-  , className: 'pure-u'
+  verify(v, 'IRC-SERVERBAR', {
+    className: 'pure-u'
   }, 2, 'serverbar')
 
   const nav = v.children[0]
