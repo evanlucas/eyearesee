@@ -3,7 +3,7 @@
   position: fixed;
   height: auto;
   overflow-y: scroll;
-  top: 90px;
+  top: @headerHeight;
   bottom: @bottomHeight;
   right: 0;
   left: @serverbarWidth + @sidebarWidth;
@@ -26,7 +26,7 @@
   position: fixed;
   height: auto;
   overflow-y: scroll;
-  top: 90px;
+  top: @headerHeight;
   bottom: @bottomHeight;
   left: @serverbarWidth + @sidebarWidth;
   right: @rightSidebarWidth;
@@ -34,6 +34,14 @@
 
   &.joined {
     background: #fff;
+  }
+
+  &.userbar-hidden {
+    right: 0;
+  }
+
+  &.userbar-shown {
+    right: @rightSidebarWidth;
   }
 }
 

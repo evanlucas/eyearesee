@@ -290,7 +290,11 @@ App.prototype.render = function render() {
     container.push(views.connection.render(active))
     container.push(views.input.render(this.nav))
   } else if (active instanceof Channel) {
-    columns = 3
+    if (this.settings.get('hideUserbar')) {
+      columns = 2
+    } else {
+      columns = 3
+    }
     active.unread = 0
     container.push(views.channel.render(active))
     container.push(views.input.render(this.nav))
