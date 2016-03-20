@@ -17,6 +17,7 @@ const Tooltip = require('./lib/tooltip')
 const nextVal = mapUtil.nextVal
 const prevVal = mapUtil.prevVal
 const Styles = require('./lib/styles/manager')
+const Themes = require('./lib/themes')
 
 module.exports = window.App = App
 
@@ -27,6 +28,7 @@ const Connection = require('./lib/models/connection')
 const Channel = require('./lib/models/channel')
 const ConnSettings = require('./lib/models/connection-settings')
 const About = require('./lib/about')
+const Settings = require('./lib/settings')
 
 const Router = require('./lib/router')
 
@@ -39,11 +41,15 @@ function App(el, currentWindow) {
 
   this.el = el
   this.window = currentWindow
+  this._isLoading = true
+
   this.db = require('./lib/db')
+  this.settings = new Settings(this.db.settings)
   this.nav = require('./lib/nav')(this)
   this.inputHandler = require('./lib/handle-input')(this)
   this.commandManager = new CommandManager()
   this.styles = new Styles()
+  this.themes = new Themes(this)
 
   this._addCommands()
 
@@ -58,37 +64,44 @@ function App(el, currentWindow) {
   this._addRoutes()
   this._addStyles()
 
-  // TODO(evanlucas) Add a loading screen instead of always showing login
-  // initially.
-  var tree = this.render('login')
-  var rootNode = createElement(tree)
-  el.appendChild(rootNode)
-
-  this.on('render', (view) => {
-    var newTree = this.render(view)
-    var patches = diff(tree, newTree)
-    rootNode = patch(rootNode, patches)
-    tree = newTree
-    const active = this.nav.current
-
-    if (active) {
-      const eleName = active.ele
-      const ele = document.querySelector(eleName)
-      if (ele) {
-        ele.scrollTop = ele.scrollHeight
-      }
+  this.once('loaded', () => {
+    // remove the loading view
+    const v = document.querySelector('irc-loading-view')
+    if (v) {
+      document.body.removeChild(v)
     }
 
-    if (this.views.input.commandBar.isShowing()) {
-      const item = document.querySelector('.command.active')
-      if (item) {
-        item.scrollIntoViewIfNeeded(false)
+    var tree = this.render()
+    var rootNode = createElement(tree)
+    el.appendChild(rootNode)
+
+    this.on('render', (view) => {
+      var newTree = this.render(view)
+      if (!newTree) return
+      var patches = diff(tree, newTree)
+      rootNode = patch(rootNode, patches)
+      tree = newTree
+      const active = this.nav.current
+
+      if (active) {
+        const eleName = active.ele
+        const ele = document.querySelector(eleName)
+        if (ele) {
+          ele.scrollTop = ele.scrollHeight
+        }
       }
-    }
+
+      if (this.views.input.commandBar.isShowing()) {
+        const item = document.querySelector('.command.active')
+        if (item) {
+          item.scrollIntoViewIfNeeded(false)
+        }
+      }
+    })
   })
 
-  this._checkAuth()
   this._addHandlers()
+  this.load()
 }
 inherits(App, EE)
 
@@ -105,12 +118,6 @@ App.prototype._addCommands = function _addCommands() {
 App.prototype._addStyles = function _addStyles() {
   const ele = this.styles.buildElement()
   document.head.appendChild(ele)
-
-  const fp = path.join(RESOURCES, 'public', 'css', 'style.css')
-  const contents = fs.readFileSync(fp, 'utf8')
-  this.styles.addStyleSheet(contents, {
-    sourcePath: fp
-  })
 }
 
 App.prototype.getActiveConnection = function getActiveConnection() {
@@ -137,13 +144,7 @@ App.prototype._addRoutes = function _addRoutes() {
   })
 
   this.router.add('/settings', () => {
-    const active = this.nav.current
-    if (active instanceof Connection) {
-      return this.nav.showSettings(active.settings)
-    } else if (active instanceof Channel) {
-      const conn = active._connection
-      return this.nav.showSettings(conn.settings)
-    }
+    return this.nav.showSettings()
   })
 
   this.router.add('/connections/:name', (params) => {
@@ -296,6 +297,8 @@ App.prototype.render = function render() {
   } else if (active instanceof ConnSettings) {
     container.push(views.connSettings.render(active))
     container.push(views.input.render(this.nav))
+  } else if (active === this.settings) {
+    container.push(views.settings.render())
   }
 
   const main = columns === 2
@@ -332,6 +335,24 @@ App.prototype._addHandlers = function _addHandlers() {
   })
 
   this.newConnectionTip = addConnTooltip
+}
+
+App.prototype.load = function load() {
+  this.settings.load((err) => {
+    if (err) {
+      console.error('settings load error', err)
+      return
+    }
+
+    const active = this.settings.get('theme.active') || 'dusk.css'
+    debug('active theme %s', active)
+
+    this.themes.load(active, () => {
+      this.emit('loaded')
+
+      this._checkAuth()
+    })
+  })
 }
 
 App.prototype._checkAuth = function _checkAuth() {
@@ -375,6 +396,8 @@ App.prototype._checkAuth = function _checkAuth() {
       }
     }
 
+    this._isLoading = false
+
     if (active)
       this.router.goto(active.url)
   })
@@ -409,6 +432,7 @@ App.prototype.login = function login(opts) {
 }
 
 App.prototype.showLogin = function showLogin() {
+  this._isLoading = false
   this.router.goto('/login')
 }
 

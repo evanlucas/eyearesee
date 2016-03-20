@@ -3,9 +3,47 @@
   <head>
     <title>EyeAreSee</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <style>
+      irc-loading-view {
+        background-color: #1e2028;
+        color: white;
+
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+      }
+
+      irc-loading-view .huge {
+        font-size: 200px;
+        color: #3f4354;
+
+        display: block;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 50px;
+      }
+
+      irc-loading-view .huge img.img {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 250px;
+        max-height: 250px;
+        margin-bottom: 100px;
+        display: block;
+      }
+    </style>
   </head>
   <body>
     <audio src="../public/sounds/message.mp3" id="messageSound" autostart="false"></audio>
+    <irc-loading-view>
+      <div class="huge">
+        <img class="img" src="../public/img/icon_512.png">
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+      </div>
+    </irc-loading-view>
     <script>
       require('../desktop')()
     </script>
