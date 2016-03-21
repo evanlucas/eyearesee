@@ -39,11 +39,13 @@ test('isValidChannel', (t) => {
 })
 
 test('formatNameForType', (t) => {
-  t.plan(4)
+  t.plan(6)
   t.equal(utils.formatNameForType('evan', 'action'), '● evan')
   t.equal(utils.formatNameForType('evan', 'message'), '<evan>')
   t.equal(utils.formatNameForType('evan', 'mention'), '<evan>')
   t.equal(utils.formatNameForType('evan', 'notice'), '«evan»')
+  t.equal(utils.formatNameForType('evan', 'join'), '⇾evan')
+  t.equal(utils.formatNameForType('evan', 'part'), '⇽evan')
 })
 
 test('encodeConnection', (t) => {
