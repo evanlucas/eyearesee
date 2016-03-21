@@ -69,6 +69,9 @@ test('Channel - type private', (t) => {
         return null
       }
     }
+  , log: () => {
+      t.pass('called log')
+    }
   , whois: function(from, cb) {
       t.pass('called whois')
       cb(null, {
