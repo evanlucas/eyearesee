@@ -13,5 +13,6 @@ test('Events', (t) => {
 
   t.equal(Events.isNav(40), true)
   t.equal(Events.isNav(Events.KEYS.SLASH), false)
+  t.equal(Events.nameForCode(40), 'DOWN', 'nameForCode')
   t.end()
 })
