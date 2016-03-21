@@ -18,7 +18,7 @@ test('LoginView', (t) => {
   const verify = common.VerifyNode(t)
 
   function verifyGroup(node, id, type, text, ph, req, min, max) {
-    verify(node, 'DIV', { className: 'form-group' }, 2, type)
+    verify(node, 'DIV', { className: 'form-group' }, 3, type)
 
     const span = node.children[0]
     verify(span, 'LABEL', {
@@ -32,7 +32,7 @@ test('LoginView', (t) => {
     t.equal(spanText.text, text)
 
     const outer = node.children[1]
-    verify(outer, 'DIV', { className: 'col-sm-9' }, 1, type)
+    verify(outer, 'DIV', { className: 'col-sm-6' }, 1, type)
     const input = outer.children[0]
     var opts = {
       className: 'form-control'
