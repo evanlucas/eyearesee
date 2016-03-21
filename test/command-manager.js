@@ -1,7 +1,7 @@
 'use strict'
 
 const test = require('tap').test
-const Manager = require('../lib/command-manager')
+const Manager = require('../lib/commands')
 const mapUtil = require('map-util')
 
 test('Manager', (t) => {

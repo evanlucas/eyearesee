@@ -3,7 +3,7 @@
 const test = require('tap').test
 const InputView = require('../../lib/views/input')
 const EE = require('events')
-const CommandManager = require('../../lib/command-manager')
+const CommandManager = require('../../lib/commands')
 
 test('InputView', (t) => {
   t.plan(56)
