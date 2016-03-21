@@ -9,7 +9,7 @@
     "lint": "eslint *.js lib/**.js test/**.js",
     "package-osx": "make package-osx",
     "start": "electron .",
-    "test": "tap test/*.js test/**/*.js test/**/**/*.js --cov"
+    "test": "EYEARESEE_HOME=$(pwd)/test/fixtures/HOME tap test/*.js test/**/*.js test/**/**/*.js --cov"
   },
   "dependencies": {
     "argsplit": "~1.0.4",
