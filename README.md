@@ -26,6 +26,20 @@ $ npm run dev
 $ npm test
 ```
 
+## Features
+
+### Custom themes
+
+#### Using a custom theme
+
+To use a custom theme, place a css file in `$HOME/.eyearesee/themes`.
+The theme will be picked up after you restart the application. To change
+to your new theme, open up the global settings (`cmd+,` on OS X) and
+select the theme you wish to enable.
+
+To see the available theme selectors, view
+[`client/less/theme.less`](client/less/theme.less)
+
 ## TODO
 
 - Better logo
