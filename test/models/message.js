@@ -34,5 +34,16 @@ test('Message', (t) => {
   t.equal(m.type, 'mention')
   t.equal(m.ts, d)
   t.equal(m.formatted, 'This is a test')
+
+  opts.type = 'join'
+  m = Message(opts)
+  t.equal(m.message, 'This is a test')
+  t.equal(m.to, '#node.js')
+  t.equal(m.from, 'evanlucas')
+  t.equal(m.hostmask, null)
+  t.equal(m.type, 'join')
+  t.equal(m.ts, d)
+  t.equal(m.formatted, 'This is a test')
+
   t.end()
 })
