@@ -64,6 +64,7 @@ function App(el, currentWindow) {
   this._addRoutes()
   this._addStyles()
 
+  this._showingNote = false
   this.once('loaded', () => {
     // remove the loading view
     const v = document.querySelector('irc-loading-view')
@@ -312,12 +313,33 @@ App.prototype.render = function render() {
     : 'irc-workspace.col-3.pure-g'
 
   return h(main, [
-    views.serverbar.render()
+    h('irc-notification.hide', [
+      h('p', '')
+    ])
+  , views.serverbar.render()
   , h('irc-sidebar.pure-u', [
       views.sidebar.render()
     ])
   , h('.container.pure-u-1', container)
   ])
+}
+
+App.prototype.showNote = function showNote(type, msg) {
+  if (this._showingNote) {
+    return setTimeout(() => {
+      this.showNote(type, msg)
+    }, 2500)
+  }
+  this._showingNote = true
+  const note = document.querySelector('irc-notification')
+  note.className = `${type} shown`
+  note.children[0].innerText = msg
+
+  setTimeout(() => {
+    note.className = 'hide'
+    note.children[0].innerText = ''
+    this._showingNote = false
+  }, 2500)
 }
 
 App.prototype._addHandlers = function _addHandlers() {

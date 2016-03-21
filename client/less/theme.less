@@ -74,3 +74,44 @@ irc-userbar {
 irc-settings {
   background-color: @dusk;
 }
+
+irc-notification {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+  animation-duration: .75s;
+  animation-fill-mode: both;
+
+  &.shown {
+    animation-name: bounceInDown;
+  }
+
+  &.hide {
+    animation-name: slideOutUp;
+  }
+
+  &.error {
+    background-color: lighten(@red, 20%);
+
+    .red5();
+  }
+
+  &.success {
+    background-color: lighten(@green, 20%);
+
+    .green4();
+  }
+
+  &.info {
+    background-color: lighten(@blue, 20%);
+
+    .blue4();
+  }
+
+  p {
+    font-weight: bold;
+    margin: 20px;
+    font-size: 18px;
+    text-align: center;
+  }
+}
