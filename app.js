@@ -106,8 +106,10 @@ function App(el, currentWindow) {
 inherits(App, EE)
 
 App.prototype.playMessageSound = function playMessageSound() {
-  const ele = document.getElementById('messageSound')
-  ele.play()
+  if (this.settings.get('playSounds')) {
+    const ele = document.getElementById('messageSound')
+    ele.play()
+  }
 }
 
 App.prototype._addCommands = function _addCommands() {
