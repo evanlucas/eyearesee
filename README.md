@@ -9,6 +9,8 @@ A WIP IRC client using Electron.
 
 There is still quite a bit of work to be done.
 
+**Note: Requires Node.js v5+ to run**
+
 ## To run locally:
 
 ```bash
@@ -26,14 +28,9 @@ $ npm test
 
 ## TODO
 
-- Allow creating more than one connection.
-- Implement more commands. Basic functionality works though.
-- Respect `showEvents` property for connections.
 - Better logo
 - UI definitely still needs some work (Header, logs, etc).
-- Decide if we do really want to show users in private messages.
 - Allow having channel properties
-- Persist channels so they can be auto joined on re-open.
 
 ## Author
 
