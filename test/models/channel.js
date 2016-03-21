@@ -38,6 +38,7 @@ test('Channel - type channel', (t) => {
   t.equal(chan.autoJoin, false, 'autoJoin is correct')
   t.equal(chan.from, null, 'from is correct')
   t.equal(chan._connection, conn, '_connection is correct')
+  t.equal(chan.getConnection(), conn, 'Channel#getConnection()')
   t.equal(chan.ele, '.channel-container', 'ele is correct')
   t.equal(chan.active, false, 'active is correct')
   t.type(chan.colorMap, Map)
@@ -126,6 +127,26 @@ test('Channel - type private', (t) => {
   t.equal(chan.users.size, 1, 'user.size is 1')
   t.equal(chan.names.length, 1, 'names.length is 1')
   t.equal(chan._onlyNames.length, 1, '_onlyNames.length is 1')
+
+  let orig = chan.addMessage
+  chan.addMessage = function(opts) {
+    chan.addMessage = orig
+    t.equal(opts.message, 'Topic: BISCUITS')
+    t.equal(opts.type, 'info')
+    t.pass('called addMessage')
+  }
+  chan.setTopic('BISCUITS')
+  t.equal(chan.topic, 'BISCUITS', 'topic')
+
+  orig = chan.setMode
+  chan.addMessage = function(opts) {
+    chan.addMessage = orig
+    t.equal(opts.message, 'Mode is +ab')
+    t.equal(opts.type, 'info')
+    t.pass('called addMessage')
+  }
+  chan.setMode('+ab')
+  t.equal(chan.mode, '+ab', 'mode')
   t.end()
 })
 
