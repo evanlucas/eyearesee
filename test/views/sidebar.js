@@ -5,7 +5,6 @@ const SidebarView = require('../../lib/views/sidebar')
 const ConnectionView = require('../../lib/views/sidebar/connection')
 const Connection = require('../../lib/models/connection')
 const Channel = require('../../lib/models/channel')
-const Settings = require('../../lib/models/connection-settings')
 const LogoView = require('../../lib/views/logo')
 const common = require('../common')
 

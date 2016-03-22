@@ -9,8 +9,6 @@ const patch = require('virtual-dom/patch')
 const createElement = require('virtual-dom/create-element')
 const debug = require('debug')('eyearesee:app')
 const auth = require('./lib/auth')
-const path = require('path')
-const fs = require('fs')
 const CommandManager = require('./lib/commands')
 const mapUtil = require('map-util')
 const Tooltip = require('./lib/tooltip')
@@ -20,9 +18,6 @@ const Styles = require('./lib/styles/manager')
 const Themes = require('./lib/themes')
 
 module.exports = window.App = App
-
-const HOME = process.env.EYEARESEE_HOME
-const RESOURCES = process.env.EYEARESEE_RESOURCE_PATH
 
 const Connection = require('./lib/models/connection')
 const Channel = require('./lib/models/channel')
@@ -114,7 +109,6 @@ App.prototype.playMessageSound = function playMessageSound() {
 }
 
 App.prototype._addCommands = function _addCommands() {
-  const m = this.commandManager
   this.commandManager.addDefaults()
 }
 
@@ -250,6 +244,8 @@ App.prototype.previousPanel = function previousPanel() {
         if (prevCon._panels.size) {
           // show the last panel in the previous connection
           const last = mapUtil.lastVal(prevCon._panels)
+          if (last)
+            return this.nav.showConnection(last)
         }
 
         // if no panels, just show the previous connection
@@ -279,7 +275,6 @@ App.prototype.previousPanel = function previousPanel() {
 App.prototype.render = function render() {
   const views = this.views
 
-  var view
   var columns = 2
 
   var active = this.nav.current

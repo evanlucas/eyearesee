@@ -30,7 +30,7 @@ test('MessageLogView', (t) => {
     }
   })
 
-  const u1 = chan.addUser({
+  chan.addUser({
     nickname: 'evanlucas'
   , username: 'evanlucas'
   , address: 'biscuits.local'
@@ -39,7 +39,7 @@ test('MessageLogView', (t) => {
   , color: 'green'
   })
 
-  const u2 = chan.addUser({
+  chan.addUser({
     nickname: 'evanlucas2'
   , username: 'evanlucas2'
   , address: 'biscuits.local'

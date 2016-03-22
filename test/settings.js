@@ -38,6 +38,7 @@ test('load', (t) => {
 
     // now let's try to load it
     settings.load((err) => {
+      t.error(err, 'err should not exist')
       t.equal(settings.get('logLimit'), 300)
       settings.del('logLimit', (err) => {
         if (err) throw err

@@ -2,7 +2,6 @@
 
 const test = require('tap').test
 const Channel = require('../../lib/models/channel')
-const User = require('../../lib/models/user')
 
 test('Channel - type channel', (t) => {
   const conn = {

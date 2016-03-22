@@ -2,7 +2,6 @@
 
 const test = require('tap').test
 const Connection = require('../../lib/models/connection')
-const Channel = require('../../lib/models/channel')
 const Settings = require('../../lib/models/connection-settings')
 const auth = require('../../lib/auth')
 const IRC = require('../../lib/irc')
