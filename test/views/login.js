@@ -5,7 +5,7 @@ const LoginView = require('../../lib/views/login')
 const common = require('../common')
 
 test('LoginView', (t) => {
-  t.plan(156)
+  t.plan(132)
 
   const app = {
     nav: {}
@@ -18,11 +18,11 @@ test('LoginView', (t) => {
   const verify = common.VerifyNode(t)
 
   function verifyGroup(node, id, type, text, ph, req, min, max) {
-    verify(node, 'DIV', { className: 'form-group' }, 3, type)
+    verify(node, 'DIV', { className: 'form-group' }, 2, type)
 
     const span = node.children[0]
     verify(span, 'LABEL', {
-      className: 'control-label col-sm-3'
+      className: 'control-label'
     , attributes: {
         for: id
       }
@@ -32,8 +32,6 @@ test('LoginView', (t) => {
     t.equal(spanText.text, text)
 
     const outer = node.children[1]
-    verify(outer, 'DIV', { className: 'col-sm-6' }, 1, type)
-    const input = outer.children[0]
     var opts = {
       className: 'form-control'
     , id: id
@@ -41,12 +39,13 @@ test('LoginView', (t) => {
     , placeholder: ph
     , required: req
     }
+
     if (typeof min !== 'undefined')
       opts.min = min
 
     if (typeof max !== 'undefined')
       opts.max = max
-    verify(input, 'INPUT', opts, 0, `${text} input`)
+    verify(outer, 'INPUT', opts, 0, type)
   }
 
   function verifyCB(node, id, text, checked) {
@@ -55,19 +54,14 @@ test('LoginView', (t) => {
       className: 'form-group'
     }, 1, `${text} form-group`)
 
-    let child = node.children[0]
-    verify(child, 'DIV', {
-      className: 'col-sm-offset-3 col-sm-9'
-    }, 1, `${text} col`)
-
-    child = child.children[0]
-
+    const child = node.children[0]
     verify(child, 'DIV', {
       className: 'checkbox'
-    }, 1, `${text} checkbox`)
+    }, 1, `${text} col`)
 
     const label = child.children[0]
-    verify(label, 'LABEL', {}, 2, `${text} label`)
+
+    verify(label, 'LABEL', {}, 2, `${text} checkbox`)
 
     const input = label.children[0]
     verify(input, 'INPUT', {
@@ -77,23 +71,33 @@ test('LoginView', (t) => {
     }, 0, `${text} input`)
 
     const textPart = label.children[1]
-    t.equal(textPart.text, ` ${text}`)
+    verify(textPart, 'DIV', {
+      className: 'setting-title'
+    }, 1, 'setting-title')
+
+    const c = textPart.children[0]
+    t.equal(c.text, ` ${text}`)
   }
 
-  verify(v, 'DIV', { id: 'login' }, 1, 'loginForm')
+  verify(v, 'DIV', {
+    id: 'login'
+  , className: 'settings-container'
+  }, 1, 'loginForm')
 
   const formClass = v.children[0]
   verify(formClass, 'DIV', {
-    className: 'form col-sm-12'
+    className: 'form form-dark col-sm-8 col-sm-offset-1'
   }, 1, 'formClass')
 
   const form = formClass.children[0]
   verify(form, 'FORM', {
-    className: 'form-horizontal'
-  }, 13, 'form')
+    className: 'form'
+  }, 12, 'form')
 
   const h3 = form.children[0]
-  verify(h3, 'H3', {}, 1)
+  verify(h3, 'H3', {
+    className: 'form-title'
+  }, 1)
 
   const h3text = h3.children[0]
   t.equal(h3text.text, 'Create Connection')
@@ -182,13 +186,8 @@ test('LoginView', (t) => {
 
   let col = form.children[11]
   verify(col, 'DIV', {
-    className: 'col-sm-3'
-  }, 0, 'offset')
-
-  col = form.children[12]
-  verify(col, 'DIV', {
-    className: 'col-sm-9'
-  }, 2, 'close button')
+    className: 'form-group'
+  }, 2, 'offset')
 
   const close = col.children[0].children[0]
   const input = col.children[1].children[0]

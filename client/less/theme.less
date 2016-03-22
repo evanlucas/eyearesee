@@ -115,3 +115,42 @@ irc-notification {
     text-align: center;
   }
 }
+
+.checkbox input[type="checkbox"] {
+  background-color: @dusko;
+
+  &:focus {
+    box-shadow: 0 0 0 1px @dusko;
+  }
+
+  &:active {
+    background-color: @green;
+  }
+
+  &:before,
+  &:after {
+    background-color: @dusk;
+  }
+
+  &:checked {
+    background-color: @cyan;
+    &:active {
+      background-color: @dusk;
+    }
+  }
+
+  &:indeterminate {
+    background-color: @dusko;
+    &:active {
+      background-color: @dusk;
+    }
+  }
+}
+
+.form {
+  select.form-control {
+    color: @lightGray;
+    background-color: @dusk;
+    border-color: @dusklight;
+  }
+}
