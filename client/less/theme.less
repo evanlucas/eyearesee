@@ -22,13 +22,13 @@ irc-serverbar {
 irc-sidebar {
   background: @sidebarBackgroundColor;
 
-  .active {
+  .current {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     border-right: 10px solid darken(@cyan, 10%);
   }
 
-  .nav > li > a {
+  .nav-pills > li > a {
     &:hover {
       border-top-left-radius: 5px;
       border-bottom-left-radius: 5px;
@@ -37,9 +37,9 @@ irc-sidebar {
     }
 
     &:focus {
-      background-color: transparent;
       color: white;
       outline: none;
+      text-decoration: none;
     }
 
     &.joined {

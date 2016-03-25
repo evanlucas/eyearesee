@@ -117,8 +117,25 @@ irc-sidebar {
     }
   }
 
-  .nav > li > a {
-    padding: 7px 15px;
+  .nav-pills {
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style: none;
+    &:extend(.clearfix all);
+
+    > li {
+      position: relative;
+      display: block;
+
+      > a {
+        position: relative;
+        display: block;
+        padding: 7px 15px;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
   }
 
   .pure-menu-separator {

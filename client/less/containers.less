@@ -77,6 +77,26 @@ irc-workspace {
       .title {
         margin: 0;
         margin-bottom: 1px;
+
+        &.settings-title {
+          i.fa.fa-pencil {
+            .hidden();
+          }
+
+          &:hover {
+            i.fa.fa-pencil {
+              display: inline-block !important;
+              margin-left: 5px;
+              font-size: 20px;
+              line-height: inherit;
+
+              &:hover {
+                cursor: pointer;
+                color: @cyan;
+              }
+            }
+          }
+        }
       }
 
       p.subtitle {
