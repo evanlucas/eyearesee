@@ -1,8 +1,9 @@
 'use strict'
 
 const test = require('tap').test
+const IRC = require('eyearesee-client')
 const MessageLog = require('../../lib/views/message-log')
-const Channel = require('../../lib/models/channel')
+const Channel = IRC.Channel
 const utils = require('../../lib/utils')
 
 test('MessageLogView', (t) => {
@@ -26,7 +27,13 @@ test('MessageLogView', (t) => {
         get: () => {}
       }
     , channels: new Map()
+    , emit: () => {}
     , app: app
+    , messageFormatter: (msg) => {
+        const chan = msg.channel || {}
+
+        return utils.processMessage(msg.message, chan.colorMap, chan.conn)
+      }
     }
   })
 

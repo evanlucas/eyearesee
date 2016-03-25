@@ -5,10 +5,14 @@ const LoginView = require('../../lib/views/login')
 const common = require('../common')
 
 test('LoginView', (t) => {
-  t.plan(132)
+  t.plan(102)
 
   const app = {
-    nav: {}
+    router: {
+      goto: () => {
+        t.pass('called router.goto')
+      }
+    }
   }
 
   const view = new LoginView(app)
@@ -52,7 +56,7 @@ test('LoginView', (t) => {
     // node is the form-group
     verify(node, 'DIV', {
       className: 'form-group'
-    }, 1, `${text} form-group`)
+    }, 2, `${text} form-group`)
 
     const child = node.children[0]
     verify(child, 'DIV', {
@@ -92,7 +96,7 @@ test('LoginView', (t) => {
   const form = formClass.children[0]
   verify(form, 'FORM', {
     className: 'form'
-  }, 12, 'form')
+  }, 11, 'form')
 
   const h3 = form.children[0]
   verify(h3, 'H3', {
@@ -178,13 +182,13 @@ test('LoginView', (t) => {
   , 65535
   )
 
-  const autoConnect = form.children[9]
-  verifyCB(autoConnect, 'autoConnect', 'Auto Connect', true)
+  // const autoConnect = form.children[9]
+  // verifyCB(autoConnect, 'autoConnect', 'Auto Connect', true)
+  //
+  // const showEvents = form.children[10]
+  // verifyCB(showEvents, 'showEvents', 'Show General Events', true)
 
-  const showEvents = form.children[10]
-  verifyCB(showEvents, 'showEvents', 'Show General Events', true)
-
-  let col = form.children[11]
+  let col = form.children[10]
   verify(col, 'DIV', {
     className: 'form-group'
   }, 2, 'offset')
@@ -200,6 +204,7 @@ test('LoginView', (t) => {
   , altnick: 'evanluca_'
   , serverurl: 'chat.freenode.org'
   , port: 6667
+  , name: 'Freenode'
   }
 
   if (typeof document === 'undefined') {
@@ -223,6 +228,7 @@ test('LoginView', (t) => {
     t.equal(options.altnick, opts.altnick)
     t.equal(options.host, opts.serverurl)
     t.equal(options.port, opts.port)
+    t.equal(options.name, opts.name)
   }
 
   const props = input.properties
@@ -241,9 +247,6 @@ test('LoginView', (t) => {
 
   app.showConnection = function() {}
   app.connections = new Map([[ 'Freenode', conn ]])
-  app.nav.showConnection = function(conn) {
-    t.equal(conn.name, 'Freenode', 'connection name is correct')
-  }
 
   const e = {
     preventDefault: function() {

@@ -3,24 +3,25 @@
 const test = require('tap').test
 const Button = require('../../../lib/views/components/show-hide-button')
 const common = require('../../common')
+const IRC = require('eyearesee-client')
+const Settings = IRC.Settings
 
 test('ShowHideButton', (t) => {
-  t.plan(21)
+  t.plan(22)
   const verify = common.VerifyNode(t)
 
   const app = {
-    settings: {
-      set: (k, v, cb) => {
-        t.pass('called set')
-        t.equal(k, 'hideUserbar', 'key')
-        t.equal(v, true, 'value')
-        cb()
-      }
-    }
+    settings: new Settings()
   , needsLayout: () => {
       t.pass('called needsLayout')
     }
   }
+
+  app.settings.once('settingChanged', (key, orig, val) => {
+    t.pass('called set')
+    t.equal(key, 'userbar.hidden', 'key')
+    t.equal(val, true, 'value')
+  })
 
   const btn = new Button(app)
   let res = btn.render(false)
@@ -28,6 +29,10 @@ test('ShowHideButton', (t) => {
   verify(res, 'BUTTON', {
     id: 'showHideButton'
   , className: 'btn btn-primary'
+  , tabindex: '-1'
+  , attributes: {
+      tabindex: '-1'
+    }
   }, 1, 'show hide button')
 
   let i = res.children[0]
@@ -43,18 +48,21 @@ test('ShowHideButton', (t) => {
 
   res.properties.onclick(obj)
 
-  app.settings.set = function(k, v, cb) {
-    t.pass('called set again')
-    t.equal(k, 'hideUserbar', 'key')
-    t.equal(v, false, 'value')
-    cb(new Error('NOPE'))
-  }
+  app.settings.once('settingChanged', (key, orig, val) => {
+    t.pass('called set')
+    t.equal(key, 'userbar.hidden', 'key')
+    t.equal(val, false, 'value')
+  })
 
   res = btn.render(true)
 
   verify(res, 'BUTTON', {
     id: 'showHideButton'
   , className: 'btn btn-primary'
+  , tabindex: '-1'
+  , attributes: {
+      tabindex: '-1'
+    }
   }, 1, 'show hide button')
 
   i = res.children[0]

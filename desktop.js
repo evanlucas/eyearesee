@@ -40,13 +40,13 @@ Desktop.prototype.setupMenu = function setupMenu() {
     , submenu: [
         { label: 'About'
         , click: () => {
-            this.showAbout()
+            this.router.goto('/about')
           }
         }
       , { label: 'Settings'
         , accelerator: 'CommandOrControl+,'
         , click: () => {
-            this.showSettings()
+            this.router.goto('/settings')
           }
         }
       , { type: 'separator' }
@@ -79,13 +79,13 @@ Desktop.prototype.setupMenu = function setupMenu() {
         { label: 'Next Panel'
         , accelerator: 'CommandOrControl+Alt+Down'
         , click: () => {
-            this.nextPanel()
+            this.panels.nextPanel()
           }
         }
       , { label: 'Previous Panel'
         , accelerator: 'CommandOrControl+Alt+Up'
         , click: () => {
-            this.previousPanel()
+            this.panels.previousPanel()
           }
         }
       ]

@@ -3,21 +3,27 @@
 const test = require('tap').test
 const ChannelsView = require('../../../lib/views/sidebar/channels')
 const common = require('../../common')
+const IRC = require('eyearesee-client')
+const Channel = IRC.Channel
 
 test('ChannelsView', (t) => {
-  const chan = {
+  const chan = new Channel({
     name: '#node.js'
   , unread: 1
   , active: true
-  , _connection: {
+  , connection: {
       name: 'Freenode'
+    , emit: () => {}
+    , url: '/connections/Freenode'
+    , channels: new Map()
     }
-  }
+  })
 
   const app = {
-    nav: {
-      showChannel: function(c) {
-        t.deepEqual(c, chan, 'showChannel called correctly')
+    url: '/'
+  , router: {
+      goto: (u) => {
+        app.url = u
       }
     }
   }
@@ -36,18 +42,20 @@ test('ChannelsView', (t) => {
   const li = v[0]
 
   verify(li, 'LI', {
-    className: 'pure-menu-item'
+    className: 'pure-menu-item not-joined'
   }, 1, 'li')
 
   const a = li.children[0]
   verify(a, 'A', {
     href: '#node.js'
   , id: 'channel-#node.js'
-  , className: 'pure-menu-link active not-joined'
+  , className: 'pure-menu-link'
+  , key: null
   , attributes: {
       navtype: 'channel'
     , navname: '#node.js'
     , connection: 'Freenode'
+    , tabindex: '-1'
     }
   }, 2, 'a')
 
@@ -73,8 +81,6 @@ test('ChannelsView', (t) => {
     }
   }
   a.properties.onclick(opts)
-
-  t.equal(opts.target.classList.has('active'), true)
 
   t.end()
 })

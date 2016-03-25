@@ -1,10 +1,11 @@
 'use strict'
 
 const test = require('tap').test
+const IRC = require('eyearesee-client')
 const SidebarView = require('../../lib/views/sidebar')
 const ConnectionView = require('../../lib/views/sidebar/connection')
-const Connection = require('../../lib/models/connection')
-const Channel = require('../../lib/models/channel')
+const Connection = IRC.Connection
+const Channel = IRC.Channel
 const LogoView = require('../../lib/views/logo')
 const common = require('../common')
 
@@ -12,13 +13,17 @@ test('SidebarView with active connection', (t) => {
   t.plan(22)
   const conn = new Connection({
     name: 'Freenode'
-  , user: {}
+  , user: {
+      nickname: 'biscuits'
+    }
+  , server: {
+      host: '127.0.0.1'
+    , port: 6667
+    }
   })
 
   const app = {
-    nav: {
-      current: conn
-    }
+    activeModel: conn
   , connections: new Map([['Freenode', conn]])
   }
 
@@ -68,13 +73,17 @@ test('SidebarView with active connection settings', (t) => {
   t.plan(22)
   const conn = new Connection({
     name: 'Freenode'
-  , user: {}
+  , user: {
+      nickname: 'biscuits'
+    }
+  , server: {
+      host: '127.0.0.1'
+    , port: 6667
+    }
   })
 
   const app = {
-    nav: {
-      current: conn.settings
-    }
+    activeModel: conn.settings
   , connections: new Map([['Freenode', conn]])
   }
 
@@ -124,7 +133,13 @@ test('SidebarView with active channel', (t) => {
   t.plan(22)
   const conn = new Connection({
     name: 'Freenode'
-  , user: {}
+  , user: {
+      nickname: 'biscuits'
+    }
+  , server: {
+      host: '127.0.0.1'
+    , port: 6667
+    }
   })
 
   const chan = new Channel({
@@ -133,9 +148,7 @@ test('SidebarView with active channel', (t) => {
   })
 
   const app = {
-    nav: {
-      current: chan
-    }
+    activeModel: conn
   , connections: new Map([['Freenode', conn]])
   }
 

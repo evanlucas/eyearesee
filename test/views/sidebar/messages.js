@@ -3,21 +3,26 @@
 const test = require('tap').test
 const MessagesView = require('../../../lib/views/sidebar/messages')
 const common = require('../../common')
+const IRC = require('eyearesee-client')
+const Channel = IRC.Channel
 
 test('MessagesView', (t) => {
-  const chan = {
+  const chan = new Channel({
     name: '#node.js'
   , unread: 1
   , active: true
-  , _connection: {
+  , url: '/'
+  , connection: {
       name: 'Freenode'
+    , emit: () => {}
+    , url: '/connections/Freenode'
     }
-  }
+  })
 
   const app = {
-    nav: {
-      showChannel: function(c) {
-        t.deepEqual(c, chan, 'showChannel called correctly')
+    router: {
+      goto: (u) => {
+        app.url = u
       }
     }
   }
@@ -43,7 +48,7 @@ test('MessagesView', (t) => {
   verify(a, 'A', {
     href: '#node.js'
   , id: 'channel-#node.js'
-  , className: 'pure-menu-link active'
+  , className: 'pure-menu-link'
   , attributes: {
       navtype: 'private'
     , navname: '#node.js'
@@ -68,13 +73,9 @@ test('MessagesView', (t) => {
     preventDefault: function() {
       t.pass('called preventDefault')
     }
-  , target: {
-      classList: new Set()
-    }
+  , target: {}
   }
   a.properties.onclick(opts)
-
-  t.equal(opts.target.classList.has('active'), true)
 
   t.end()
 })

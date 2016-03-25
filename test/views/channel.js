@@ -2,17 +2,15 @@
 
 const test = require('tap').test
 const ChannelView = require('../../lib/views/channel')
-const Channel = require('../../lib/models/channel')
+const IRC = require('eyearesee-client')
+const Channel = IRC.Channel
+const Settings = IRC.Settings
 const UserbarView = require('../../lib/views/userbar')
 const MessageView = require('../../lib/views/message-log')
 
 test('ChannelView', (t) => {
   const app = {
-    nav: {}
-  , settings: {
-      get: () => {}
-    , set: () => {}
-    }
+    settings: new Settings()
   }
 
   const chan = ChannelView(app)
@@ -33,6 +31,7 @@ test('ChannelView', (t) => {
         get: () => {}
       }
     , app: app
+    , emit: () => {}
     , channels: new Map()
     }
   })

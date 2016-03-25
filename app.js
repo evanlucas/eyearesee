@@ -1,6 +1,7 @@
 'use strict'
 
 const EE = require('events')
+const path = require('path')
 const inherits = require('util').inherits
 const delegate = require('delegate-dom')
 const h = require('virtual-dom/h')
@@ -8,7 +9,6 @@ const diff = require('virtual-dom/diff')
 const patch = require('virtual-dom/patch')
 const createElement = require('virtual-dom/create-element')
 const debug = require('debug')('eyearesee:app')
-const auth = require('./lib/auth')
 const CommandManager = require('./lib/commands')
 const mapUtil = require('map-util')
 const Tooltip = require('./lib/tooltip')
@@ -16,16 +16,26 @@ const nextVal = mapUtil.nextVal
 const prevVal = mapUtil.prevVal
 const Styles = require('./lib/styles/manager')
 const Themes = require('./lib/themes')
+const Router = require('./lib/router')
+const Panels = require('./lib/panels')
+const utils = require('./lib/utils')
+const About = require('./lib/about')
+const Logger = require('./lib/logger')
 
 module.exports = window.App = App
 
-const Connection = require('./lib/models/connection')
-const Channel = require('./lib/models/channel')
-const ConnSettings = require('./lib/models/connection-settings')
-const About = require('./lib/about')
-const Settings = require('./lib/settings')
+const IRC = require('eyearesee-client')
+const Connection = IRC.Connection
+const Channel = IRC.Channel
+const Settings = IRC.Settings
+const auth = IRC.auth
 
-const Router = require('./lib/router')
+const defaultSettings = new Map([
+  ['theme.active', 'dusk.css']
+, ['invites.accept.auto', false]
+, ['sounds.enabled', true]
+, ['userbar.hidden', false]
+])
 
 function App(el, currentWindow) {
   if (!(this instanceof App))
@@ -34,56 +44,67 @@ function App(el, currentWindow) {
   EE.call(this)
   this._notifications = 0
 
+  global.app = this
+
   this.el = el
   this.window = currentWindow
   this._isLoading = true
-
   this.db = require('./lib/db')
-  this.settings = new Settings(this.db.settings)
-  this.nav = require('./lib/nav')(this)
+  this.settings = new Settings(defaultSettings)
+
   this.inputHandler = require('./lib/handle-input')(this)
   this.commandManager = new CommandManager()
   this.styles = new Styles()
   this.themes = new Themes(this)
+  this.panels = new Panels(this)
+  this.about = new About()
+
+  this.loggers = new Map()
+
+  this.activeModel = null
 
   this._addCommands()
 
   this.views = require('./lib/views')(this)
-
-  this.about = new About()
+  this._views = new WeakMap()
 
   this.connections = new Map()
   this.tooltips = new Map()
-  this.router = new Router()
+  this.router = new Router(this)
+  this.url = '/'
 
   this._addRoutes()
   this._addStyles()
+  this._addHandlers()
 
-  this._showingNote = false
   this.once('loaded', () => {
-    // remove the loading view
     const v = document.querySelector('irc-loading-view')
     if (v) {
       document.body.removeChild(v)
     }
 
-    var tree = this.render()
+    var tree = this._renderInside(this.views.login.render(), 2)
     var rootNode = createElement(tree)
     el.appendChild(rootNode)
 
     this.on('render', (view) => {
-      var newTree = this.render(view)
+      var newTree = view
       if (!newTree) return
-      var patches = diff(tree, newTree)
+      const patches = diff(tree, newTree)
       rootNode = patch(rootNode, patches)
       tree = newTree
-      const active = this.nav.current
 
-      if (active) {
-        const eleName = active.ele
-        const ele = document.querySelector(eleName)
-        if (ele) {
-          ele.scrollTop = ele.scrollHeight
+      if (this.activeModel) {
+        if (this.activeModel.ele) {
+          const ele = document.querySelector(this.activeModel.ele)
+          if (ele) {
+            ele.scrollTop = ele.scrollHeight
+          }
+        } else if (this.activeModel instanceof Settings) {
+          const ele = document.querySelector('.settings-container')
+          if (ele) {
+            ele.scrollTop = 0
+          }
         }
       }
 
@@ -95,18 +116,9 @@ function App(el, currentWindow) {
       }
     })
   })
-
-  this._addHandlers()
   this.load()
 }
 inherits(App, EE)
-
-App.prototype.playMessageSound = function playMessageSound() {
-  if (this.settings.get('playSounds')) {
-    const ele = document.getElementById('messageSound')
-    ele.play()
-  }
-}
 
 App.prototype._addCommands = function _addCommands() {
   this.commandManager.addDefaults()
@@ -117,31 +129,32 @@ App.prototype._addStyles = function _addStyles() {
   document.head.appendChild(ele)
 }
 
-App.prototype.getActiveConnection = function getActiveConnection() {
-  const active = this.nav.current
-  if (!active) return null
-
-  if (active instanceof Connection) {
-    return active
-  }
-
-  if (active.getConnection)
-    return active.getConnection()
-
-  return null
+App.prototype.isActive = function isActive(item) {
+  return this.url === item.url
 }
 
 App.prototype._addRoutes = function _addRoutes() {
+  const views = this.views
   this.router.add('/login', () => {
-    this.nav.showLogin()
+    this.activeModel = null
+    this.renderInside(views.login.render(), 2)
   })
 
   this.router.add('/about', () => {
-    this.nav.showAbout()
+    this.activeModel = this.about
+    this.renderOutside(views.about.render())
   })
 
   this.router.add('/settings', () => {
-    return this.nav.showSettings()
+    this.activeModel = this.settings
+    this.renderInside(views.settings.render(), 2)
+  })
+
+  this.router.add('/connection', () => {
+    const conn = mapUtil.firstVal(this.connections)
+    if (conn) {
+      this.router.goto(conn.url)
+    }
   })
 
   this.router.add('/connections/:name', (params) => {
@@ -152,7 +165,13 @@ App.prototype._addRoutes = function _addRoutes() {
     }
 
     debug('show connection', conn.name)
-    this.nav.showConnection(conn)
+
+    this.activeModel = conn
+
+    this.renderInside([
+      views.connection.render(conn)
+    , views.input.render()
+    ], 2)
   })
 
   this.router.add('/connections/:name/settings', (params) => {
@@ -162,7 +181,12 @@ App.prototype._addRoutes = function _addRoutes() {
       return
     }
 
-    this.nav.showSettings(conn.settings)
+    this.activeModel = conn.settings
+
+    this.renderInside([
+      views.connSettings.render(conn.settings)
+    , views.input.render()
+    ], 2)
   })
 
   this.router.add('/connections/:name/channels/:channelName', (params) => {
@@ -172,142 +196,45 @@ App.prototype._addRoutes = function _addRoutes() {
       return
     }
 
-    const chan = conn.channels.get(params.channelName)
+    const name = params.channelName.toLowerCase()
+
+    let chan = conn.channels.get(name)
     if (!chan) {
-      debug('404...cannot find channel %s %s', conn.name, params.channelName)
-      return
+      chan = conn.queries.get(name)
+      if (!chan) {
+        debug('404...cannot find channel %s %s', conn.name, name)
+        return
+      }
     }
 
-    this.nav.showChannel(chan)
+    const cols = this.settings.get('userbar.hidden')
+      ? 2
+      : 3
+
+    this.activeModel = chan
+
+    this.renderInside([
+      views.channel.render(chan)
+    , views.input.render()
+    ], cols)
   })
 }
 
-App.prototype.nextPanel = function nextPanel() {
-  const active = this.nav.current
-  if (!active) {
-    return
-  }
-
-  if (active instanceof Connection) {
-    // get the first channel
-    // if it does not exist, get the first message
-    // if it does not exist, get the next connection console
-    if (active._panels.size) {
-      return this.nav.showChannel(mapUtil.firstVal(active._panels))
-    }
-
-    if (this.connections.size > 1) {
-      const n = nextVal(active, this.connections, true)
-      if (n) {
-        return this.nav.showConnection(n)
-      }
-    }
-
-    // just re-render
-    this.needsLayout()
-  } else if (active instanceof Channel) {
-    const conn = active._connection
-
-    let n = nextVal(active, conn._panels)
-    if (n) {
-      return this.nav.showChannel(n)
-    }
-
-    if (this.connections.size > 1) {
-      const n = nextVal(conn, this.connections, true)
-      if (n) {
-        return this.nav.showConnection(n)
-      }
-
-      this.needsLayout()
-    } else {
-      // show the channel
-      this.nav.showConnection(conn)
-    }
-  }
+App.prototype.renderOutside = function renderOutside(args) {
+  this.emit('render', args)
 }
 
-App.prototype.previousPanel = function previousPanel() {
-  const active = this.nav.current
-  if (!active) {
-    return
-  }
-
-  if (active instanceof Connection) {
-    // get the previous connections last _panel value
-    // if no panels, show the previous connection
-    // if no previous connection, show the current one
-
-    if (this.connections.size > 1) {
-      const prevConn = prevVal(active, this.connections)
-      if (prevConn) {
-        if (prevCon._panels.size) {
-          // show the last panel in the previous connection
-          const last = mapUtil.lastVal(prevCon._panels)
-          if (last)
-            return this.nav.showConnection(last)
-        }
-
-        // if no panels, just show the previous connection
-        return this.nav.showConnection(prevConn)
-      }
-    }
-
-    if (active._panels.size) {
-      return this.nav.showChannel(mapUtil.lastVal(active._panels))
-    }
-
-    // just re-render
-    this.needsLayout()
-  } else if (active instanceof Channel) {
-    const conn = active._connection
-
-    let n = prevVal(active, conn._panels)
-    if (n) {
-      return this.nav.showChannel(n)
-    }
-
-    // show the connection
-    this.nav.showConnection(conn)
-  }
+App.prototype.renderInside = function renderInside(args, cols) {
+  this.emit('render', this._renderInside(args, cols))
 }
 
-App.prototype.render = function render() {
+App.prototype._renderInside = function _renderInside(args, cols) {
+  cols = cols || 2
   const views = this.views
 
-  var columns = 2
+  if (!Array.isArray(args)) args = [args]
 
-  var active = this.nav.current
-  const container = []
-
-  if (!active) {
-    container.push(views.login.render())
-  } else if (active instanceof About) {
-    return views.about.render()
-  } else if (active instanceof Connection) {
-    container.push(views.connection.render(active))
-    container.push(views.input.render(this.nav))
-  } else if (active instanceof Channel) {
-    if (this.settings.get('hideUserbar')) {
-      columns = 2
-    } else {
-      columns = 3
-    }
-    active.unread = 0
-    container.push(views.channel.render(active))
-    container.push(views.input.render(this.nav))
-  } else if (active instanceof ConnSettings) {
-    container.push(views.connSettings.render(active))
-    container.push(views.input.render(this.nav))
-  } else if (active === this.settings) {
-    container.push(views.settings.render())
-  }
-
-  const main = columns === 2
-    ? 'irc-workspace.col-2.pure-g'
-    : 'irc-workspace.col-3.pure-g'
-
-  return h(main, [
+  return h(`irc-workspace.col-${cols}.pure-g`, [
     h('irc-notification.hide', [
       h('p', '')
     ])
@@ -315,26 +242,8 @@ App.prototype.render = function render() {
   , h('irc-sidebar.pure-u', [
       views.sidebar.render()
     ])
-  , h('.container.pure-u-1', container)
+  , h('.container.pure-u-1', args)
   ])
-}
-
-App.prototype.showNote = function showNote(type, msg) {
-  if (this._showingNote) {
-    return setTimeout(() => {
-      this.showNote(type, msg)
-    }, 2500)
-  }
-  this._showingNote = true
-  const note = document.querySelector('irc-notification')
-  note.className = `${type} shown`
-  note.children[0].innerText = msg
-
-  setTimeout(() => {
-    note.className = 'hide'
-    note.children[0].innerText = ''
-    this._showingNote = false
-  }, 2500)
 }
 
 App.prototype._addHandlers = function _addHandlers() {
@@ -358,24 +267,89 @@ App.prototype._addHandlers = function _addHandlers() {
   })
 
   this.newConnectionTip = addConnTooltip
+
+  this.settings.on('settingChanged', (key, orig, val) => {
+    this.db.settings.put(key, val, (err) => {
+      if (err) {
+        console.error('Unable to persist setting changed', key, val, err)
+      } else {
+        debug('persisted %s from %j => %j', key, orig, val)
+      }
+    })
+  })
 }
 
 App.prototype.load = function load() {
-  this.settings.load((err) => {
+  this._loadSettings((err) => {
     if (err) {
       console.error('settings load error', err)
       return
     }
 
-    const active = this.settings.get('theme.active') || 'dusk.css'
-    debug('active theme %s', active)
-
+    const active = this.settings.get('theme.active')
     this.themes.load(active, () => {
       this.emit('loaded')
-
       this._checkAuth()
     })
   })
+}
+
+App.prototype.persistConn = function persistConn(conn, cb) {
+  this.checkConnLogging(conn)
+  this.db.persistConnection(conn.toJSON(), cb)
+}
+
+App.prototype.login = function login(opts) {
+  const conn = new Connection({
+    name: opts.name
+  , server: {
+      host: opts.host
+    , port: opts.port
+    }
+  , user: {
+      username: opts.username
+    , nickname: opts.nickname
+    , realname: opts.realname
+    , altNick: opts.altnick
+    , password: opts.password
+    }
+  , settings: {
+      'connect.auto': true
+    , 'persist.password': true
+    }
+  }, this)
+
+  this._addConnection(conn)
+  this.persistConn(conn, (err) => {
+    if (err) {
+      console.error('persist error', err)
+    }
+
+    this.router.goto(conn.url)
+  })
+}
+
+App.prototype._loadSettings = function _loadSettings(cb) {
+  const data = {}
+  var called = false
+
+  const done = (err) => {
+    if (called) return
+    called = true
+    this.settings.load(data)
+    cb(err)
+  }
+
+  this.db.settings.createReadStream()
+    .on('data', (item) => {
+      const o = {}
+      o[item.key] = item.value
+
+      Object.assign(data, o)
+    })
+    .on('error', done)
+    .on('close', done)
+
 }
 
 App.prototype._checkAuth = function _checkAuth() {
@@ -395,28 +369,37 @@ App.prototype._checkAuth = function _checkAuth() {
 
     if (!len) {
       debug('no saved connections...show login')
-      this.showLogin()
+      this.router.goto('/login')
       return
     }
 
     // we have saved connections
-    debug('saved', connections)
     var active
 
     for (var i = 0; i < len; i++) {
       const opts = connections[i]
       const user = opts.user
-      if (user.username) {
+      if (user.username && !user.password) {
+        debug('PASS', auth.getCreds(opts.name, user.username))
         opts.user.password = auth.getCreds(opts.name, user.username)
       }
+
+      opts.messageFormatter = function messageFormatter(msg) {
+        if (msg.type === 'join' || msg.type === 'part') {
+          return utils.encode(msg)
+        }
+
+        const chan = msg.channel || {}
+
+        return utils.processMessage(msg.message, chan.colorMap, chan.conn)
+      }
+
       const conn = new Connection(opts, this)
       if (!active) {
         active = conn
       }
       this._addConnection(conn)
-      if (conn.autoConnect) {
-        conn.connect()
-      }
+      this.checkConnLogging(conn)
     }
 
     this._isLoading = false
@@ -424,50 +407,6 @@ App.prototype._checkAuth = function _checkAuth() {
     if (active)
       this.router.goto(active.url)
   })
-}
-
-App.prototype.login = function login(opts) {
-  // create a new connection
-  const conn = new Connection({
-    name: opts.name || 'Freenode'
-  , host: opts.host
-  , port: opts.port
-  , logTranscripts: opts.logTranscripts
-  , user: {
-      username: opts.username
-    , nickname: opts.nickname
-    , realname: opts.realname
-    , altnick: opts.altnick
-    , password: opts.password
-    }
-  }, this)
-
-  this._addConnection(conn)
-  conn.persist((err) => {
-    if (err) {
-      console.error('persist error', err.stack)
-    } else {
-      debug('connection persisted')
-    }
-    conn.connect()
-    this.router.goto(conn.url)
-  })
-}
-
-App.prototype.showLogin = function showLogin() {
-  this._isLoading = false
-  this.router.goto('/login')
-}
-
-App.prototype.showAbout = function showAbout() {
-  this.router.goto('/about')
-}
-
-App.prototype.showSettings = function showSettings(connName) {
-  if (connName)
-    return this.router.goto(`/connections/${connName.toLowerCase()}/settings`)
-
-  return this.router.goto('/settings')
 }
 
 App.prototype._addConnection = function _addConnection(conn) {
@@ -483,7 +422,148 @@ App.prototype._addConnection = function _addConnection(conn) {
   , delay: null
   })
   this.tooltips.set(key, addConnTooltip)
-  this.emit('render')
+  const evs = [ 'channelUpdated'
+              , 'whois'
+              ]
+
+  evs.forEach((ev) => {
+    conn.on(ev, () => {
+      this.needsLayout()
+    })
+  })
+
+  conn.on('log', (msg) => {
+    this.needsLayout()
+    const logger = this.loggers.get(conn)
+    if (logger) {
+      const d = new Date(msg.ts)
+      if (msg.from) {
+        logger.write(`[${d.toISOString()}] ${msg.from}: ${msg.message}`)
+      } else {
+        logger.write(`[${d.toISOString()}] ${msg.message}`)
+      }
+    }
+  })
+
+  conn.on('channelLog', (chan, msg) => {
+    const logger = this.loggers.get(chan)
+    if (logger) {
+      const d = new Date(msg.ts)
+      if (msg.from) {
+        logger.write(`[${d.toISOString()}] ${msg.from}: ${msg.message}`)
+      } else {
+        logger.write(`[${d.toISOString()}] ${msg.message}`)
+      }
+    }
+  })
+
+  const persistEvents = [
+    'channelAdded'
+  , 'channelRemoved'
+  , 'queryAdded'
+  , 'queryRemoved'
+  ]
+
+  persistEvents.forEach((ev) => {
+    conn.on(ev, (chan) => {
+      this.needsLayout()
+      this.persistConn(conn, (err) => {
+        if (err) {
+          debug('failed to persist connection %s', conn.name, err)
+        } else {
+          debug('connection persisted %s', conn.name)
+        }
+      })
+    })
+  })
+
+  this.router.goto(conn.url)
+
+  conn.settings.on('settingChanged', (key, orig, val) => {
+    this.persistConn(conn, (err) => {
+      if (err) {
+        console.error('cannot persist conn setting', key, orig, val)
+      } else {
+        debug('persisted connection setting %s %j => %j', key, orig, val)
+      }
+    })
+  })
+}
+
+App.prototype.checkConnLogging = function checkConnLogging(conn) {
+  debug('checkConnLogging %s', conn.name)
+  const enabled = conn.settings.get('transcripts.enabled')
+  const logger = this.loggers.get(conn)
+  if (enabled && !logger) {
+    debug('logging enabled, no logger...creating')
+    const fp = utils.connectionLogLocation(conn)
+    if (fp) {
+      debug('%s logging to %s', conn.name, fp)
+      const l = new Logger({
+        path: fp
+      })
+      l._createStream()
+      this.loggers.set(conn, l)
+    }
+  } else if (!enabled && logger) {
+    debug('logger not enabled, but exists...closing')
+    logger.close()
+    this.loggers.delete(conn)
+  } else if (enabled && logger) {
+    const fp = utils.connectionLogLocation(conn)
+    if (path.dirname(logger.fp) !== fp) {
+      debug('logger enabled and exists, diff path %s %s', fp)
+      logger.close()
+    }
+
+    if (fp) {
+      const l = new Logger({
+        path: fp
+      })
+      l._createStream()
+      this.loggers.set(conn, l)
+    }
+  }
+
+  // Now, make sure all of the children are correct
+  for (const chan of conn._panels.values()) {
+    this.checkChannelLogging(chan)
+  }
+}
+
+App.prototype.checkChannelLogging = function checkChannelLogging(chan) {
+  debug('check channel logging %s', chan.name)
+  const enabled = chan.getConnection().settings.get('transcripts.enabled')
+  const logger = this.loggers.get(chan)
+  if (enabled && !logger) {
+    debug('enabled, no logger')
+    const fp = utils.channelLogLocation(chan)
+    debug('create logger %s %s', chan.name, fp)
+    if (fp) {
+      const l = new Logger({
+        path: fp
+      })
+      l._createStream()
+      this.loggers.set(chan, l)
+    }
+  } else if (!enabled && logger) {
+    logger.close()
+    this.loggers.delete(chan)
+  } else if (enabled && logger) {
+    // check that the path is the same, otherwise, close and reopen
+    const fp = utils.channelLogLocation(chan)
+    if (path.dirname(logger.fp) !== fp) {
+      this.logger.close()
+    }
+
+    if (fp) {
+      const l = new Logger({
+        path: fp
+      })
+      l._createStream()
+      this.loggers.set(chan, l)
+    }
+  }
 }
 
 App.prototype.removeConnection = function removeConnection(conn) {
@@ -492,7 +572,13 @@ App.prototype.removeConnection = function removeConnection(conn) {
   this.connections.delete(key)
   this.tooltips.get(key).destroy()
   this.tooltips.delete(key)
-  this.emit('render')
+  this.checkConnLogging(conn)
+
+  if (this.connections.size) {
+    this.router.goto('/connection')
+  } else {
+    this.router.goto('/login')
+  }
 }
 
 App.prototype.renameConnection = function renameConnection(conn, prev) {
@@ -501,16 +587,15 @@ App.prototype.renameConnection = function renameConnection(conn, prev) {
 }
 
 App.prototype.needsLayout = function needsLayout() {
-  this.emit('render')
+  this.router.goto(this.url)
 }
 
-App.prototype.showConnection = function showConnection() {
-  if (this.connections.size) {
-    // show the first connection
-    const conn = mapUtil.firstVal(this.connections)
-    this.nav.showConnection(conn)
-  } else {
-    // show the login
-    this.showLogin()
+App.prototype.getActiveConnection = function getActiveConnection() {
+  if (this.activeModel) {
+    if (this.activeModel.getConnection) {
+      return this.activeModel.getConnection()
+    }
   }
+
+  return null
 }

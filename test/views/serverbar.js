@@ -9,13 +9,13 @@ test('ServerbarView', (t) => {
   const conn = {
     name: 'Freenode'
   , active: true
+  , url: '/connections/Freenode'
   }
 
   const app = {
-    nav: {
-      current: conn
-    }
+    activeModel: conn
   , connections: new Map([['Freenode', conn]])
+  , url: '/connections/Freenode'
   }
 
   const verify = common.VerifyNode(t)

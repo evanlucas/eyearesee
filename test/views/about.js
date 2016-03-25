@@ -5,10 +5,13 @@ const About = require('../../lib/views/about')
 const common = require('../common')
 
 test('AboutView', (t) => {
-  t.plan(25)
+  t.plan(26)
   const app = {
-    showConnection: () => {
-      t.pass('called showConnection')
+    router: {
+      goto: (a) => {
+        t.equal(a, '/connection', 'url')
+        t.pass('called router.goto')
+      }
     }
   , about: {
       name: 'eyearesee'
