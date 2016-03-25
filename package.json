@@ -17,7 +17,6 @@
     "bootstrap": "~3.3.6",
     "completor": "~1.0.0",
     "debug": "~2.2.0",
-    "delegate-dom": "0.0.1",
     "electron-prebuilt": "~0.36.11",
     "eyearesee-client": "~1.0.0",
     "keytar": "~3.0.0",
@@ -38,6 +37,9 @@
     "lintit": "~1.0.1",
     "tap": "~5.0.0"
   },
+  "bundledDependencies": [
+    "delegate-dom"
+  ],
   "license": "MIT",
   "author": "Evan Lucas <evanlucas@me.com>",
   "repository": {

@@ -4,3 +4,6 @@ coverage/
 public/css/style.css
 build/
 public/css/dusk.css
+!node_modules/
+node_modules/*
+!node_modules/delegate-dom
