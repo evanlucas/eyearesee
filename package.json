@@ -1,6 +1,6 @@
 {
   "name": "eyearesee",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Electron IRC Client",
   "main": "index.js",
   "scripts": {
