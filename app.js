@@ -78,6 +78,7 @@ function App(el, currentWindow) {
   this._addRoutes()
   this._addStyles()
   this._addHandlers()
+  this._addWindowHandlers()
 
   this.once('loaded', () => {
     const v = document.querySelector('irc-loading-view')
@@ -122,6 +123,19 @@ function App(el, currentWindow) {
 }
 inherits(App, EE)
 
+App.prototype._addWindowHandlers = function _addWindowHandlers() {
+  this.window.on('focus', () => {
+    if (this.activeModel && this.activeModel.unread) {
+      // clear the sidebar badges for this channel
+      const before = this.activeModel.unread
+      this.activeModel.unread = 0
+      // decrement the badge count by _before_
+      this.decrementBadgeCount(before)
+      this.needsLayout()
+    }
+  })
+}
+
 App.prototype._addCommands = function _addCommands() {
   this.commandManager.addDefaults()
 }
@@ -133,6 +147,24 @@ App.prototype._addStyles = function _addStyles() {
 
 App.prototype.isActive = function isActive(item) {
   return this.url === item.url
+}
+
+App.prototype.decrementBadgeCount = function decrementBadgeCount(n) {
+  const diff = this._notifications - n
+  if (diff > 0) {
+    this.setBadge(diff)
+  } else if (diff === 0) {
+    this.setBadge(false)
+  }
+}
+
+App.prototype._clearViewBadge = function _clearViewBadge(model) {
+  if (!model) return
+  const unread = model.unread
+  if (unread) {
+    model.unread = 0
+    this.decrementBadgeCount(unread)
+  }
 }
 
 App.prototype._addRoutes = function _addRoutes() {
@@ -210,6 +242,8 @@ App.prototype._addRoutes = function _addRoutes() {
     const cols = this.settings.get('userbar.hidden')
       ? 2
       : 3
+
+    this._clearViewBadge(chan)
 
     this.activeModel = chan
 
@@ -446,6 +480,18 @@ App.prototype._addConnection = function _addConnection(conn) {
   })
 
   conn.on('channelLog', (chan, msg) => {
+    // all mentions should get a sound, a bubble, and a dock icon
+    // if it is a query and it is to me, get sound, a bubble, and dock icon
+    // if the window is focused, don't add dock badge
+    if (msg.mention || msg.to === chan.nick) {
+      if (this.settings.get('sounds.enabled')) {
+        this.notifications.playSound('message')
+      }
+      if (!this.window.isFocused()) {
+        this.setBadge()
+      }
+    }
+
     const logger = this.loggers.get(chan)
     if (logger) {
       const d = new Date(msg.ts)
