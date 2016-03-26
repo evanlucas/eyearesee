@@ -21,6 +21,7 @@ const Panels = require('./lib/panels')
 const utils = require('./lib/utils')
 const About = require('./lib/about')
 const Logger = require('./lib/logger')
+const Notifications = require('./lib/notifications')
 
 module.exports = window.App = App
 
@@ -58,6 +59,7 @@ function App(el, currentWindow) {
   this.themes = new Themes(this)
   this.panels = new Panels(this)
   this.about = new About()
+  this.notifications = new Notifications(this)
 
   this.loggers = new Map()
 
