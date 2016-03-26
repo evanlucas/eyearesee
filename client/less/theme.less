@@ -154,3 +154,28 @@ irc-notification {
     border-color: @dusklight;
   }
 }
+
+irc-command-bar {
+  box-shadow: -1px 1px #d3d3d3, 1px -1 #d3d3d3;
+  background-color: white;
+
+  ul.commands {
+    li.command {
+      span.description,
+      span.args {
+        color: lighten(@dusklight, 10%);
+      }
+
+      &:hover,
+      &.active {
+        background-color: @cyan;
+        color: white;
+
+        span.description,
+        span.args {
+          color: @lightGray;
+        }
+      }
+    }
+  }
+}

@@ -1,11 +1,9 @@
-#commandbar {
+irc-command-bar {
   position: fixed;
   height: auto;
   bottom: 45px;
-  left: 260px;
-  right: 10px;
-
-  box-shadow: -1px 1px #d3d3d3, 1px -1 #d3d3d3;
+  left: @serverbarWidth + @sidebarWidth + @inputHorizontalPadding;
+  right: @inputHorizontalPadding;
 
   .panel-body {
     margin: 0;
@@ -13,8 +11,6 @@
     max-height: 200px;
     overflow: scroll;
   }
-
-  background-color: white;
 
   ul.commands {
     list-style: none;
@@ -44,29 +40,17 @@
         float: right;
         margin-right: 15px;
         font-style: italic;
-        color: lighten(@dusklight, 10%);
       }
 
       span.args {
         line-height: 30px;
         height: 30px;
         margin-left: 5px;
-        color: lighten(@dusklight, 10%);
       }
 
       &:hover,
       &.active {
-        background-color: @cyan;
-        color: white;
         cursor: pointer;
-
-        span.description {
-          color: @lightGray;
-        }
-
-        span.args {
-          color: @lightGray;
-        }
       }
     }
   }
