@@ -1,6 +1,6 @@
 NAME ?= eyearesee
 VERSION ?= $(shell node -pe 'require(`./package`).version')
-ELECTRON_VERSION ?= 0.36.11
+ELECTRON_VERSION ?= 0.37.2
 BUNDLE_ID ?= com.evanlucas.$(NAME)
 OUT ?= build/
 
