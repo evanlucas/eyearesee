@@ -11,7 +11,7 @@ if (require.main === module) {
 exports.VerifyNode = function VerifyNode(t) {
   return function(node, tagName, props, kids, type) {
     const ps = {}
-    const keys = Object.keys(node.properties)
+    const keys = Object.keys(node.properties || {})
     const len = keys.length
     for (var i = 0; i < len; i++) {
       if (typeof node.properties[keys[i]] !== 'function') {
