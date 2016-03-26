@@ -164,8 +164,6 @@ App.prototype._addRoutes = function _addRoutes() {
       return
     }
 
-    debug('show connection', conn.name)
-
     this.activeModel = conn
 
     this.renderInside([
