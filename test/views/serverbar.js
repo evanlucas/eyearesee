@@ -5,7 +5,7 @@ const ServerbarView = require('../../lib/views/serverbar')
 const common = require('../common')
 
 test('ServerbarView', (t) => {
-  t.plan(25)
+  t.plan(28)
   const conn = {
     name: 'Freenode'
   , active: true
@@ -16,6 +16,17 @@ test('ServerbarView', (t) => {
     activeModel: conn
   , connections: new Map([['Freenode', conn]])
   , url: '/connections/Freenode'
+  , router: {
+      goto: (u) => {
+        t.equal(u, '/login')
+      }
+    }
+  , newConnectionTip: {
+      hide: (cb) => {
+        t.pass('called newConnectionTip.hide()')
+        cb && cb()
+      }
+    }
   }
 
   const verify = common.VerifyNode(t)
@@ -64,4 +75,10 @@ test('ServerbarView', (t) => {
     className: 'add-connection'
   , innerHTML: '&#65291;'
   }, 0, 'bottom a')
+
+  a2.properties.onclick({
+    preventDefault: () => {
+      t.pass('called preventDefault')
+    }
+  })
 })
