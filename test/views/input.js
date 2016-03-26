@@ -39,10 +39,9 @@ test('InputView', (t) => {
 
   const kids2 = kids[0].children
   t.equal(kids2.length, 2)
-  t.equal(kids2[0].tagName, 'DIV')
+  t.equal(kids2[0].tagName, 'IRC-COMMAND-BAR')
   t.match(kids2[0].properties, {
-    id: 'commandbar'
-  , className: 'panel panel-default'
+    className: 'panel panel-default'
   })
 
   // [ENTER]
