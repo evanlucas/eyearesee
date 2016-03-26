@@ -22,6 +22,10 @@ irc-serverbar {
 irc-sidebar {
   background: @sidebarBackgroundColor;
 
+  .pure-menu-link {
+    color: white;
+  }
+
   .current {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
@@ -41,14 +45,20 @@ irc-sidebar {
       outline: none;
       text-decoration: none;
     }
+  }
 
-    &.joined {
-      color: white;
-    }
+  .joined {
+    color: white;
+  }
 
-    &.not-joined {
+  .not-joined {
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: normal;
+
+    .pure-menu-link,
+    .pure-menu-link:hover,
+    .pure-menu-link:focus, {
       color: rgba(255, 255, 255, 0.5);
-      font-weight: normal;
     }
   }
 
