@@ -189,3 +189,31 @@ irc-command-bar {
     }
   }
 }
+
+p.form-control-static {
+  font-size: 14px;
+  margin-left: 5px;
+}
+
+label p.form-control-static {
+  margin-left: 1.5em;
+}
+
+irc-login {
+  background-color: @dusk;
+}
+
+irc-login,
+irc-settings {
+  input[type='text'],
+  input[type='number'],
+  input[type='password'] {
+    color: @lightGray;
+    background-color: @dusk;
+    border-color: @dusklight;
+
+    &:focus {
+      background-color: darken(@dusk, 10%);
+    }
+  }
+}
