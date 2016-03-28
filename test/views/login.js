@@ -5,7 +5,7 @@ const LoginView = require('../../lib/views/login')
 const common = require('../common')
 
 test('LoginView', (t) => {
-  t.plan(102)
+  t.plan(105)
 
   const app = {
     router: {
@@ -83,20 +83,20 @@ test('LoginView', (t) => {
     t.equal(c.text, ` ${text}`)
   }
 
-  verify(v, 'DIV', {
+  verify(v, 'IRC-LOGIN', {
     id: 'login'
   , className: 'settings-container'
-  }, 1, 'loginForm')
+}, 2, 'loginForm')
 
-  const formClass = v.children[0]
+  const formClass = v.children[1]
   verify(formClass, 'DIV', {
-    className: 'form form-dark col-sm-8 col-sm-offset-1'
+    className: 'form form-dark col-sm-8'
   }, 1, 'formClass')
 
   const form = formClass.children[0]
   verify(form, 'FORM', {
     className: 'form'
-  }, 11, 'form')
+  }, 12, 'form')
 
   const h3 = form.children[0]
   verify(h3, 'H3', {
@@ -106,11 +106,16 @@ test('LoginView', (t) => {
   const h3text = h3.children[0]
   t.equal(h3text.text, 'Create Connection')
 
-  const br = form.children[1]
+  const cf = form.children[1]
+  verify(cf, 'DIV', {
+    className: 'clearfix'
+  }, 0, 'clearfix')
+
+  const br = form.children[2]
   verify(br, 'BR', {}, 0, 'br')
 
   // username group
-  const username = form.children[2]
+  const username = form.children[3]
   verifyGroup(
     username
   , 'username'
@@ -120,7 +125,7 @@ test('LoginView', (t) => {
   , true
   )
 
-  const realname = form.children[3]
+  const realname = form.children[4]
   verifyGroup(
     realname
   , 'realname'
@@ -130,7 +135,7 @@ test('LoginView', (t) => {
   , true
   )
 
-  const nickname = form.children[4]
+  const nickname = form.children[5]
   verifyGroup(
     nickname
   , 'nickname'
@@ -140,7 +145,7 @@ test('LoginView', (t) => {
   , true
   )
 
-  const password = form.children[5]
+  const password = form.children[6]
   verifyGroup(
     password
   , 'password'
@@ -150,7 +155,7 @@ test('LoginView', (t) => {
   , true
   )
 
-  const altnick = form.children[6]
+  const altnick = form.children[7]
   verifyGroup(
     altnick
   , 'altnick'
@@ -160,7 +165,7 @@ test('LoginView', (t) => {
   , false
   )
 
-  const serverurl = form.children[7]
+  const serverurl = form.children[8]
   verifyGroup(
     serverurl
   , 'serverurl'
@@ -170,7 +175,7 @@ test('LoginView', (t) => {
   , true
   )
 
-  const port = form.children[8]
+  const port = form.children[9]
   verifyGroup(
     port
   , 'port'
@@ -188,7 +193,7 @@ test('LoginView', (t) => {
   // const showEvents = form.children[10]
   // verifyCB(showEvents, 'showEvents', 'Show General Events', true)
 
-  let col = form.children[10]
+  let col = form.children[11]
   verify(col, 'DIV', {
     className: 'form-group'
   }, 2, 'offset')
