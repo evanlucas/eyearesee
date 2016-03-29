@@ -45,6 +45,9 @@ To see the available theme selectors, view
 - Better logo
 - UI definitely still needs some work (Header, logs, etc).
 - Allow having channel properties
+- Add Wiki Page for theme selectors
+- The login process needs to be better
+- The connection settings view needs love.
 
 ## Author
 
