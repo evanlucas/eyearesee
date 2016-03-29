@@ -420,7 +420,7 @@ App.prototype._checkAuth = function _checkAuth() {
 
       opts.messageFormatter = function messageFormatter(msg) {
         if (msg.type === 'join' || msg.type === 'part') {
-          return utils.encode(msg)
+          return utils.encode(msg.message)
         }
 
         const chan = msg.channel || {}
