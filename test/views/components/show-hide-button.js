@@ -7,7 +7,7 @@ const IRC = require('eyearesee-client')
 const Settings = IRC.Settings
 
 test('ShowHideButton', (t) => {
-  t.plan(22)
+  t.plan(24)
   const verify = common.VerifyNode(t)
 
   const app = {
@@ -43,6 +43,11 @@ test('ShowHideButton', (t) => {
   const obj = {
     preventDefault: () => {
       t.pass('called preventDefault()')
+    }
+  , target: {
+      blur: () => {
+        t.pass('called blur')
+      }
     }
   }
 
