@@ -22,6 +22,7 @@ package-osx: build-css ## Create a package of the app for OS X
 
 clean: ## Remove old generated apps
 	-rm -rf $(OUT)$(NAME)-darwin-x64
+	-rm -rf coverage/
 
 build-css: ## Build the client side stylesheets
 	npm run build-css
