@@ -1,9 +1,45 @@
-@green:  rgb(28, 184, 65);
-@red:    rgb(202, 60, 60);
-@yellow: rgb(223, 177, 20);
-@blue:   rgb(31, 141, 214);
-@purple: rgb(128, 88, 165);
-@orange: rgb(243, 123, 29);
+@green:   rgb(28, 184, 65);
+@green1:  rgb(19, 127, 45);
+@green2:  rgb(39, 255, 90);
+@green3:  rgb(10, 64, 23);
+@green4:  rgb(35, 229, 81);
+@green5:  darken(@green, 20%);
+
+@red:     rgb(202, 60, 60);
+@red1:    rgb(127, 38, 38);
+@red2:    rgb(255, 76, 76);
+@red3:    rgb(64, 19, 19);
+@red4:    rgb(229, 68, 68);
+@red5:    darken(@red, 30%);
+
+@yellow:  rgb(223, 177, 20);
+@yellow1: rgb(127, 101, 11);
+@yellow2: rgb(255, 202, 23);
+@yellow3: rgb(64, 51, 6);
+@yellow4: rgb(229, 182, 21);
+@yellow5: darken(@yellow, 20%);
+
+@blue:    rgb(31, 141, 214);
+@blue1:   rgb(18, 84, 127);
+@blue2:   rgb(37, 168, 255);
+@blue3:   rgb(9, 42, 64);
+@blue4:   rgb(33, 151, 229);
+@blue5:   darken(@blue, 20%);
+
+@purple:  rgb(128, 88, 165);
+@purple1: rgb(99, 68, 127);
+@purple2: rgb(198, 136, 255);
+@purple3: rgb(49, 34, 64);
+@purple4: rgb(178, 122, 229);
+@purple5: darken(@purple, 20%);
+
+@orange:  rgb(243, 123, 29);
+@orange1: rgb(127, 65, 15);
+@orange2: rgb(255, 129, 30);
+@orange3: rgb(64, 32, 8);
+@orange4: rgb(229, 116, 27);
+@orange5: darken(@orange, 20%);
+
 @dusk: #1e2028;
 @pink: #fb73fa;
 @cyan: #00a0be;
@@ -26,46 +62,46 @@
 .dusk    { color: @dusk; }
 .dusk1   { color: lighten(@dusk, 10%); }
 .green   { color: @green; }
-.green1  { color: lighten(@green, 10%); }
-.green2  { color: lighten(@green, 20%); }
-.green3  { color: lighten(@green, 30%); }
-.green4  { color: darken(@green, 10%); }
-.green5  { color: darken(@green, 20%); }
+.green1  { color: @green1; }
+.green2  { color: @green2; }
+.green3  { color: @green3; }
+.green4  { color: @green4; }
+.green5  { color: @green5; }
 
 .red     { color: @red; }
-.red1    { color: lighten(@red, 10%); }
-.red2    { color: lighten(@red, 20%); }
-.red3    { color: darken(@red, 10%); }
-.red4    { color: darken(@red, 20%); }
-.red5    { color: darken(@red, 30%); }
+.red1    { color: @red1; }
+.red2    { color: @red2; }
+.red3    { color: @red3; }
+.red4    { color: @red4; }
+.red5    { color: @red5; }
 
 .yellow  { color: @yellow; }
-.yellow1 { color: lighten(@yellow, 10%); }
-.yellow2 { color: lighten(@yellow, 20%); }
-.yellow3 { color: lighten(@yellow, 30%); }
-.yellow4 { color: darken(@yellow, 10%); }
-.yellow5 { color: darken(@yellow, 20%); }
+.yellow1 { color: @yellow1; }
+.yellow2 { color: @yellow2; }
+.yellow3 { color: @yellow3; }
+.yellow4 { color: @yellow4; }
+.yellow5 { color: @yellow5; }
 
 .blue    { color: @blue; }
-.blue1   { color: lighten(@blue, 10%); }
-.blue2   { color: lighten(@blue, 20%); }
-.blue3   { color: lighten(@blue, 30%); }
-.blue4   { color: darken(@blue, 10%); }
-.blue5   { color: darken(@blue, 20%); }
+.blue1   { color: @blue1; }
+.blue2   { color: @blue2; }
+.blue3   { color: @blue3; }
+.blue4   { color: @blue4; }
+.blue5   { color: @blue5; }
 
 .purple  { color: @purple; }
-.purple1 { color: lighten(@purple, 10%); }
-.purple2 { color: lighten(@purple, 20%); }
-.purple3 { color: lighten(@purple, 30%); }
-.purple4 { color: darken(@purple, 10%); }
-.purple5 { color: darken(@purple, 20%); }
+.purple1 { color: @purple1; }
+.purple2 { color: @purple2; }
+.purple3 { color: @purple3; }
+.purple4 { color: @purple4; }
+.purple5 { color: @purple5; }
 
 .orange  { color: @orange; }
-.orange1 { color: lighten(@orange, 10%); }
-.orange2 { color: lighten(@orange, 20%); }
-.orange3 { color: lighten(@orange, 30%); }
-.orange4 { color: darken(@orange, 10%); }
-.orange5 { color: darken(@orange, 20%); }
+.orange1 { color: @orange1; }
+.orange2 { color: @orange2; }
+.orange3 { color: @orange3; }
+.orange4 { color: @orange4; }
+.orange5 { color: @orange5; }
 
 // Background colors
 .green-bg  { background-color: @green; }
