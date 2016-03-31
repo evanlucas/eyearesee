@@ -88,6 +88,18 @@ Desktop.prototype.setupMenu = function setupMenu() {
             this.panels.previousPanel()
           }
         }
+      , { label: 'Show Userbar'
+        , accelerator: 'CommandOrControl+Alt+Left'
+        , click: () => {
+            this.panels.showUserbar()
+          }
+        }
+      , { label: 'Hide Userbar'
+        , accelerator: 'CommandOrControl+Alt+Right'
+        , click: () => {
+            this.panels.hideUserbar()
+          }
+        }
       ]
     }
   ]
