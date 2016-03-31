@@ -3,6 +3,60 @@
 const test = require('tap').test
 const utils = require('../lib/utils')
 
+test('connectionLogLocation', (t) => {
+  let conn = {
+    settings: new Map([
+      ['transcripts.enabled', true]
+    , ['transcripts.location', '/tmp']
+    ])
+  , name: 'Freenode'
+  }
+
+  let out = utils.connectionLogLocation(conn)
+  t.equal(out, '/tmp/Connections/Freenode/Console', 'result is correct')
+
+  conn.settings.delete('transcripts.location')
+  out = utils.connectionLogLocation(conn)
+  t.equal(out, null, 'result is correct')
+
+  conn.settings.set('transcripts.enabled', false)
+  out = utils.connectionLogLocation(conn)
+  t.equal(out, null, 'result is correct')
+
+  t.end()
+})
+
+test('channelLogLocation', (t) => {
+  const base = '/tmp/Connections/Freenode'
+  let conn = {
+    settings: new Map([
+      ['transcripts.enabled', true]
+    , ['transcripts.location', '/tmp']
+    ])
+  , name: 'Freenode'
+  }
+
+  let chan = {
+    getConnection: () => {
+      return conn
+    }
+  , type: 'channel'
+  , name: '#node.js'
+  }
+
+  let out = utils.channelLogLocation(chan)
+  t.equal(out, `${base}/Channels/#node.js`, 'result is correct')
+  chan.type = 'private'
+
+  out = utils.channelLogLocation(chan)
+  t.equal(out, `${base}/Messages/#node.js`, 'result is correct')
+
+  conn.settings.set('transcripts.enabled', false)
+  out = utils.channelLogLocation(chan)
+  t.equal(out, null, 'result is correct')
+  t.end()
+})
+
 test('date', (t) => {
   const d = new Date()
   d.setSeconds(2)
