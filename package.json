@@ -16,6 +16,7 @@
     "autolinker": "~0.22.0",
     "bootstrap": "~3.3.6",
     "completor": "~1.0.0",
+    "daily-file-writer": "~1.0.0",
     "debug": "~2.2.0",
     "delegate-dom": "0.0.1",
     "electron-prebuilt": "~0.37.2",
