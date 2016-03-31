@@ -9,6 +9,7 @@
     "lint": "lintit",
     "package-osx": "make package-osx",
     "start": "electron .",
+    "pretest": "npm run lint",
     "test": "EYEARESEE_HOME=$(pwd)/test/fixtures/HOME tap test/*.js test/**/*.js test/**/**/*.js --cov"
   },
   "dependencies": {

@@ -12,8 +12,6 @@ const debug = require('debug')('eyearesee:app')
 const CommandManager = require('./lib/commands')
 const mapUtil = require('map-util')
 const Tooltip = require('./lib/tooltip')
-const nextVal = mapUtil.nextVal
-const prevVal = mapUtil.prevVal
 const Styles = require('./lib/styles/manager')
 const Themes = require('./lib/themes')
 const Router = require('./lib/router')
@@ -27,7 +25,6 @@ module.exports = window.App = App
 
 const IRC = require('eyearesee-client')
 const Connection = IRC.Connection
-const Channel = IRC.Channel
 const Settings = IRC.Settings
 const auth = IRC.auth
 

@@ -63,6 +63,5 @@ test('Connection View', (t) => {
   const out = settings.properties.onclick(opts)
   t.equal(out, false, 'onclick returns false')
 
-  const body = res[1]
   t.end()
 })

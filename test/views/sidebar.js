@@ -5,7 +5,6 @@ const IRC = require('eyearesee-client')
 const SidebarView = require('../../lib/views/sidebar')
 const ConnectionView = require('../../lib/views/sidebar/connection')
 const Connection = IRC.Connection
-const Channel = IRC.Channel
 const LogoView = require('../../lib/views/logo')
 const common = require('../common')
 
@@ -140,11 +139,6 @@ test('SidebarView with active channel', (t) => {
       host: '127.0.0.1'
     , port: 6667
     }
-  })
-
-  const chan = new Channel({
-    name: '#node.js'
-  , connection: conn
   })
 
   const app = {

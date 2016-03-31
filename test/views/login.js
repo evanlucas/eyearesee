@@ -52,41 +52,10 @@ test('LoginView', (t) => {
     verify(outer, 'INPUT', opts, 0, type)
   }
 
-  function verifyCB(node, id, text, checked) {
-    // node is the form-group
-    verify(node, 'DIV', {
-      className: 'form-group'
-    }, 2, `${text} form-group`)
-
-    const child = node.children[0]
-    verify(child, 'DIV', {
-      className: 'checkbox'
-    }, 1, `${text} col`)
-
-    const label = child.children[0]
-
-    verify(label, 'LABEL', {}, 2, `${text} checkbox`)
-
-    const input = label.children[0]
-    verify(input, 'INPUT', {
-      type: 'checkbox'
-    , id: id
-    , checked: checked
-    }, 0, `${text} input`)
-
-    const textPart = label.children[1]
-    verify(textPart, 'DIV', {
-      className: 'setting-title'
-    }, 1, 'setting-title')
-
-    const c = textPart.children[0]
-    t.equal(c.text, ` ${text}`)
-  }
-
   verify(v, 'IRC-LOGIN', {
     id: 'login'
   , className: 'settings-container'
-}, 2, 'loginForm')
+  }, 2, 'loginForm')
 
   const formClass = v.children[1]
   verify(formClass, 'DIV', {
