@@ -20,7 +20,7 @@ const Router = require('./lib/router')
 const Panels = require('./lib/panels')
 const utils = require('./lib/utils')
 const About = require('./lib/about')
-const Logger = require('./lib/logger')
+const Logger = require('daily-file-writer')
 const Notifications = require('./lib/notifications')
 
 module.exports = window.App = App
@@ -548,7 +548,7 @@ App.prototype.checkConnLogging = function checkConnLogging(conn) {
       const l = new Logger({
         path: fp
       })
-      l._createStream()
+      l.open()
       this.loggers.set(conn, l)
     }
   } else if (!enabled && logger) {
@@ -566,7 +566,7 @@ App.prototype.checkConnLogging = function checkConnLogging(conn) {
       const l = new Logger({
         path: fp
       })
-      l._createStream()
+      l.open()
       this.loggers.set(conn, l)
     }
   }
@@ -589,7 +589,7 @@ App.prototype.checkChannelLogging = function checkChannelLogging(chan) {
       const l = new Logger({
         path: fp
       })
-      l._createStream()
+      l.open()
       this.loggers.set(chan, l)
     }
   } else if (!enabled && logger) {
@@ -606,7 +606,7 @@ App.prototype.checkChannelLogging = function checkChannelLogging(chan) {
       const l = new Logger({
         path: fp
       })
-      l._createStream()
+      l.open()
       this.loggers.set(chan, l)
     }
   }
