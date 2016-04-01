@@ -98,7 +98,9 @@ function App(el, currentWindow) {
         if (this.activeModel.ele) {
           const ele = document.querySelector(this.activeModel.ele)
           if (ele) {
-            ele.scrollTop = ele.scrollHeight
+            if (ele.scrollHeight - ele.clientHeight <= ele.scrollTop + 1) {
+              ele.scrollTop = ele.scrollHeight
+            }
           }
         } else if (this.activeModel instanceof Settings) {
           const ele = document.querySelector('.settings-container')
