@@ -61,13 +61,10 @@ test('ChannelView', (t) => {
   })
 
   const hhkids = headerKid.children
-  t.equal(hhkids.length, 3, 'header.children[0].children has 2 objects')
-
-  const btn = hhkids[0]
-  t.equal(btn.tagName, 'BUTTON')
+  t.equal(hhkids.length, 2, 'header.children[0].children has 2 objects')
 
 
-  const title = hhkids[1]
+  const title = hhkids[0]
   t.equal(title.tagName, 'H2')
   t.deepEqual(title.properties, {
     className: 'title'
