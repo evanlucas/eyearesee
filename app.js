@@ -33,6 +33,7 @@ const defaultSettings = new Map([
 , ['invites.accept.auto', false]
 , ['sounds.enabled', true]
 , ['userbar.hidden', false]
+, ['user.color', '#fb73fa']
 ])
 
 function App(el, currentWindow) {
@@ -302,6 +303,10 @@ App.prototype._addHandlers = function _addHandlers() {
   this.newConnectionTip = addConnTooltip
 
   this.settings.on('settingChanged', (key, orig, val) => {
+    // TODO(evanlucas) if key is user.color, maybe go through
+    // and call the messageFormatter on all messages?
+    // Not sure if it is worth it to keep the color in sync for previous
+    // messages though
     this.db.settings.put(key, val, (err) => {
       if (err) {
         console.error('Unable to persist setting changed', key, val, err)
@@ -408,7 +413,7 @@ App.prototype._checkAuth = function _checkAuth() {
 
     // we have saved connections
     var active
-
+    const settings = this.settings
     for (var i = 0; i < len; i++) {
       const opts = connections[i]
       const user = opts.user
@@ -423,8 +428,8 @@ App.prototype._checkAuth = function _checkAuth() {
         }
 
         const chan = msg.channel || {}
-
-        return utils.processMessage(msg.message, chan.colorMap, chan.conn)
+        const uc = settings.get('user.color')
+        return utils.processMessage(msg.message, chan.colorMap, chan.conn, uc)
       }
 
       const conn = new Connection(opts, this)
