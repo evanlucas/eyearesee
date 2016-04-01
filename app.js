@@ -99,9 +99,13 @@ function App(el, currentWindow) {
         if (this.activeModel.ele) {
           const ele = document.querySelector(this.activeModel.ele)
           if (ele) {
-            if (ele.scrollHeight - ele.clientHeight <= ele.scrollTop + 1) {
-              ele.scrollTop = ele.scrollHeight
-            }
+            // TODO(evanlucas) Fix this so it auto scrolls only
+            // if we are not already scrolling
+            //
+            // if (ele.scrollHeight - ele.clientHeight <= ele.scrollTop + 1) {
+            //   ele.scrollTop = ele.scrollHeight
+            // }
+            ele.scrollTop = 0
           }
         } else if (this.activeModel instanceof Settings) {
           const ele = document.querySelector('.settings-container')
