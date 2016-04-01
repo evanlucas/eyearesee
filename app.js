@@ -295,6 +295,17 @@ App.prototype._addHandlers = function _addHandlers() {
     return false
   })
 
+  delegate.on(this.el, 'a.internal-url', 'click', (e) => {
+    e.preventDefault()
+    const a = e.target
+    if (a && a.href) {
+      const u = a.href.replace('file://', '')
+      this.router.goto(u)
+    }
+
+    return false
+  })
+
   const addConnTooltip = new Tooltip(this.el, {
     selector: 'a.add-connection'
   , placement: 'right'
