@@ -618,7 +618,7 @@ App.prototype.checkChannelLogging = function checkChannelLogging(chan) {
     // check that the path is the same, otherwise, close and reopen
     const fp = utils.channelLogLocation(chan)
     if (path.dirname(logger.fp) !== fp) {
-      this.logger.close()
+      logger.close()
     }
 
     if (fp) {
