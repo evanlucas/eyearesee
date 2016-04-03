@@ -4,10 +4,11 @@ const inherits = require('util').inherits
 const App = require('./app')
 const remote = require('remote')
 const app = remote.require('app')
-const BrowserWindow = remote.require('browser-window')
+const ipcRenderer = require('electron').ipcRenderer
 const shell = require('shell')
 const currentWindow = remote.getCurrentWindow()
 const Menu = remote.require('menu')
+const pkg = require('./package')
 
 module.exports = Desktop
 
@@ -33,78 +34,55 @@ function Desktop() {
 }
 inherits(Desktop, App)
 
-Desktop.prototype.setupMenu = function setupMenu() {
-  const template = [
-    {
-      label: 'EyeAreSee'
-    , submenu: [
-        { label: 'About'
-        , click: () => {
-            this.router.goto('/about')
-          }
-        }
-      , { label: 'Settings'
-        , accelerator: 'CommandOrControl+,'
-        , click: () => {
-            this.router.goto('/settings')
-          }
-        }
-      , { type: 'separator' }
-      , { label: 'Toggle DevTools'
-        , accelerator: 'Alt+Command+I'
-        , click: function() {
-            BrowserWindow.getFocusedWindow().toggleDevTools()
-          }
-        }
-      , { label: 'Quit'
-        , accelerator: 'Command+Q'
-        , click: function() { app.quit() }
-        }
-      ]
+Desktop.prototype._handlers = function _handlers() {
+  return {
+    'application:devtools': () => {
+      const win = this.window
+      if (win) win.toggleDevTools()
     }
-  , {
-      label: 'Edit'
-    , submenu: [
-        { label: 'Undo', accelerator: 'Command+Z', selector: 'undo:' }
-      , { label: 'Redo', accelerator: 'Shift+Command+Z', selector: 'redo:' }
-      , { type: 'separator' }
-      , { label: 'Cut', accelerator: 'Command+X', selector: 'cut:' }
-      , { label: 'Copy', accelerator: 'Command+C', selector: 'copy:' }
-      , { label: 'Paste', accelerator: 'Command+V', selector: 'paste:' }
-      ]
+  , 'application:next-panel': () => { this.panels.nextPanel() }
+  , 'application:prev-panel': () => { this.panels.previousPanel() }
+  , 'application:show-userbar': () => { this.panels.showUserbar() }
+  , 'application:hide-userbar': () => { this.panels.hideUserbar() }
+  , 'application:quit': () => { app.quit() }
+  , 'application:minimize': () => {
+      const win = this.window
+      if (win) win.minimize()
     }
-  , {
-      label: 'View'
-    , submenu: [
-        { label: 'Next Panel'
-        , accelerator: 'CommandOrControl+Alt+Down'
-        , click: () => {
-            this.panels.nextPanel()
-          }
-        }
-      , { label: 'Previous Panel'
-        , accelerator: 'CommandOrControl+Alt+Up'
-        , click: () => {
-            this.panels.previousPanel()
-          }
-        }
-      , { label: 'Show Userbar'
-        , accelerator: 'CommandOrControl+Alt+Left'
-        , click: () => {
-            this.panels.showUserbar()
-          }
-        }
-      , { label: 'Hide Userbar'
-        , accelerator: 'CommandOrControl+Alt+Right'
-        , click: () => {
-            this.panels.hideUserbar()
-          }
-        }
-      ]
+  , 'application:maximize': () => {
+      const win = this.window
+      if (win) win.maximize()
     }
-  ]
+  , 'application:open-repo': () => { this.emit('openUrl', pkg.repository.url) }
+  }
+}
 
-  const menu = Menu.buildFromTemplate(template)
+Desktop.prototype.setupMenu = function setupMenu() {
+  const handlers = this._handlers()
+
+  const tmp = require(`./lib/menus/${process.platform}`)
+  for (let toplevel of tmp) {
+    const sub = toplevel.submenu
+    if (sub && sub.length) {
+      for (let item of sub) {
+        if (item.url) {
+          item.click = () => {
+            this.router.goto(item.url)
+          }
+        } else if (item.command) {
+          item.click = () => {
+            if (handlers[item.command]) {
+              handlers[item.command]()
+            } else {
+              ipcRenderer.send('command', item.command)
+            }
+          }
+        }
+      }
+    }
+  }
+
+  const menu = Menu.buildFromTemplate(tmp)
   Menu.setApplicationMenu(menu)
 }
 
