@@ -1,5 +1,10 @@
 # EyeAreSee ChangeLog
 
+# 2016-04-03 v0.2.1 Release, @evanlucas
+
+* [[`8dfca48e6e`](https://github.com/evanlucas/eyearesee/commit/8dfca48e6e)] - Add CHANGELOG (Evan Lucas)
+* [[`742412e125`](https://github.com/evanlucas/eyearesee/commit/742412e125)] - **desktop**: move menus into config files and cleanup (Evan Lucas)
+
 # 2016-04-01 v0.2.0 Release, @evanlucas
 
 * [[`c70f1b190a`](https://github.com/evanlucas/eyearesee/commit/c70f1b190a)] - **app**: fix undefined reference to logger (Evan Lucas)
