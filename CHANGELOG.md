@@ -1,5 +1,10 @@
 # EyeAreSee ChangeLog
 
+# 2016-04-03 v0.3.0 Release, @evanlucas
+
+* [[`5f4ac6bc9c`](https://github.com/evanlucas/eyearesee/commit/5f4ac6bc9c)] - **app**: add option to inline images automatically (Evan Lucas)
+* [[`b98b56d344`](https://github.com/evanlucas/eyearesee/commit/b98b56d344)] - **menu**: add devtools accelerator for darwin (Evan Lucas)
+
 # 2016-04-03 v0.2.1 Release, @evanlucas
 
 * [[`8dfca48e6e`](https://github.com/evanlucas/eyearesee/commit/8dfca48e6e)] - Add CHANGELOG (Evan Lucas)
