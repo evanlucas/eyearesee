@@ -122,11 +122,11 @@ test('processMessage', (t) => {
   colors.set('evanlucas', 'blue')
   colors.set('esya|', 'green')
   let msg = 'this is a test'
-  let out = utils.processMessage(msg, colors)
+  let out = utils.processMessage(msg, colors, null, new Map())
   t.equal(out, 'this is a test')
 
   msg = 'hi evanlucas: this is a test'
-  out = utils.processMessage(msg, colors)
+  out = utils.processMessage(msg, colors, null, new Map())
   t.equal(out, 'hi <span class="mention blue">evanlucas</span>: this is a test')
   t.end()
 })

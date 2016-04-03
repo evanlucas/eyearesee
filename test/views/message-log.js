@@ -31,8 +31,8 @@ test('MessageLogView', (t) => {
     , app: app
     , messageFormatter: (msg) => {
         const chan = msg.channel || {}
-
-        return utils.processMessage(msg.message, chan.colorMap, chan.conn)
+        const m = new Map()
+        return utils.processMessage(msg.message, chan.colorMap, chan.conn, m)
       }
     }
   })

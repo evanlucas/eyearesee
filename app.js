@@ -34,6 +34,7 @@ const defaultSettings = new Map([
 , ['sounds.enabled', true]
 , ['userbar.hidden', false]
 , ['user.color', '#fb73fa']
+, ['inline.images', false]
 ])
 
 function App(el, currentWindow) {
@@ -285,11 +286,15 @@ App.prototype._renderInside = function _renderInside(args, cols) {
 }
 
 App.prototype._addHandlers = function _addHandlers() {
-  delegate.on(this.el, 'a.external-url', 'click', (e) => {
+  delegate.on(this.el, 'a.external-url, a.external-url img', 'click', (e) => {
     e.preventDefault()
     var a = e.target
     if (a && a.href) {
       this.emit('openUrl', a.href)
+    } else {
+      if (a.tagName === 'IMG') {
+        this.emit('openUrl', a.parentNode.href)
+      }
     }
 
     return false
@@ -443,8 +448,8 @@ App.prototype._checkAuth = function _checkAuth() {
         }
 
         const chan = msg.channel || {}
-        const uc = settings.get('user.color')
-        return utils.processMessage(msg.message, chan.colorMap, chan.conn, uc)
+        const m = msg.message
+        return utils.processMessage(m, chan.colorMap, chan.conn, settings)
       }
 
       const conn = new Connection(opts, this)
