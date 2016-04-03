@@ -48,6 +48,15 @@ function setup() {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+
+  if (process.env.DEV_MODE) {
+    mainWindow.once('show', () => {
+      console.log('opening dev tools')
+      mainWindow.openDevTools({
+        detach: true
+      })
+    })
+  }
 }
 
 function setupHome() {
