@@ -1,9 +1,9 @@
 'use strict'
 
 const test = require('tap').test
-const View = require('../../../lib/views/components/setting-theme')
-const Theme = require('../../../lib/themes/theme')
-const common = require('../../common')
+const View = require('../../../../lib/views/components/settings/theme')
+const Theme = require('../../../../lib/themes/theme')
+const common = require('../../../common')
 const IRC = require('eyearesee-client')
 const Settings = IRC.Settings
 

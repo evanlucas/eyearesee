@@ -1,7 +1,7 @@
 'use strict'
 
 const test = require('tap').test
-const View = require('../../../lib/views/components/setting-checkbox')
+const View = require('../../../../lib/views/components/settings/checkbox')
 const IRC = require('eyearesee-client')
 const Settings = IRC.Settings
 
