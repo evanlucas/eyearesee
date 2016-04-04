@@ -1,5 +1,14 @@
 # EyeAreSee ChangeLog
 
+# 2016-04-04 v0.4.0 Release, @evanlucas
+
+* [[`046d05816e`](https://github.com/evanlucas/eyearesee/commit/046d05816e)] - **deps**: semver@5.1.0 (Evan Lucas)
+* [[`4f5a387ffc`](https://github.com/evanlucas/eyearesee/commit/4f5a387ffc)] - **eyearesee**: show dev tools if DEV_MODE env var exists (Evan Lucas)
+* [[`8d16a536b2`](https://github.com/evanlucas/eyearesee/commit/8d16a536b2)] - **script**: add script to generate the commit title for releases (Evan Lucas)
+* [[`fbb063173e`](https://github.com/evanlucas/eyearesee/commit/fbb063173e)] - **test**: make sure we run all test files through tap (Evan Lucas)
+* [[`dac71d7df3`](https://github.com/evanlucas/eyearesee/commit/dac71d7df3)] - **test**: add test for setting-theme component (Evan Lucas)
+* [[`95144a234a`](https://github.com/evanlucas/eyearesee/commit/95144a234a)] - **views**: separate out the setting components (Evan Lucas)
+
 # 2016-04-03 v0.3.0 Release, @evanlucas
 
 * [[`5f4ac6bc9c`](https://github.com/evanlucas/eyearesee/commit/5f4ac6bc9c)] - **app**: add option to inline images automatically (Evan Lucas)
