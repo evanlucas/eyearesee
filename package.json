@@ -38,6 +38,7 @@
     "electron-rebuild": "~1.0.2",
     "less": "~2.5.3",
     "lintit": "~1.0.1",
+    "semver": "~5.1.0",
     "tap": "~5.0.0"
   },
   "bundledDependencies": [
