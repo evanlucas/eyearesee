@@ -1,5 +1,11 @@
 # EyeAreSee ChangeLog
 
+# 2016-04-05 v0.4.1 Release, Evan Lucas
+
+* [[`0a2f89f0b2`](https://github.com/evanlucas/eyearesee/commit/0a2f89f0b2)] - **deps**: chalk@1.1.3 (Evan Lucas) 
+* [[`f367832441`](https://github.com/evanlucas/eyearesee/commit/f367832441)] - **script**: add do-release script (Evan Lucas) 
+* [[`919530caf5`](https://github.com/evanlucas/eyearesee/commit/919530caf5)] - **view**: update view when removing query (Evan Lucas)
+
 # 2016-04-04 v0.4.0 Release, @evanlucas
 
 * [[`046d05816e`](https://github.com/evanlucas/eyearesee/commit/046d05816e)] - **deps**: semver@5.1.0 (Evan Lucas)
