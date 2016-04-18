@@ -75,9 +75,7 @@ test('ChannelView', (t) => {
 
   const container = out[1]
   t.equal(container.tagName, 'DIV')
-  t.deepEqual(container.properties, {
-    className: 'channel-container userbar-shown'
-  })
+  t.equal(container.properties.className, 'channel-container userbar-shown')
 
   t.equal(container.children.length, 2)
   t.equal(container.children[0].tagName, 'UL')

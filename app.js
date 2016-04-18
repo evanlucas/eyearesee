@@ -74,6 +74,8 @@ function App(el, currentWindow) {
   this.router = new Router(this)
   this.url = '/'
 
+  this._shouldAutoScroll = true
+
   this._addRoutes()
   this._addStyles()
   this._addHandlers()
@@ -96,7 +98,7 @@ function App(el, currentWindow) {
       rootNode = patch(rootNode, patches)
       tree = newTree
 
-      if (this.activeModel) {
+      if (this.activeModel && this._shouldAutoScroll) {
         if (this.activeModel.ele) {
           const ele = document.querySelector(this.activeModel.ele)
           if (ele) {
@@ -309,6 +311,17 @@ App.prototype._addHandlers = function _addHandlers() {
     }
 
     return false
+  })
+
+  this.on('scroll', (e) => {
+    const node = e.target
+    if (node.scrollHeight <= node.clientHeight + node.scrollTop) {
+      this._shouldAutoScroll = true
+      debug('should auto scroll')
+    } else {
+      debug('should not auto scroll')
+      this._shouldAutoScroll = false
+    }
   })
 
   const addConnTooltip = new Tooltip(this.el, {
