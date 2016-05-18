@@ -73,7 +73,7 @@ if (!semver.valid(version)) {
 
 version = version.replace('v', '')
 
-const commitTitle = `${getDate()} Version ${version} Release (Stable)`
+const commitTitle = `${getDate()} Version ${version} (Stable) Release`
 
 const cl = exec('changelog-maker --group --filter-release').toString()
 
