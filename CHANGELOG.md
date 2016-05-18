@@ -1,9 +1,16 @@
 # EyeAreSee ChangeLog
 
-# 2016-04-05 v0.4.1 Release, Evan Lucas
+# 2016-05-18 v0.4.2 Release, @evanlucas
+
+* [[`3cd39bfe73`](https://github.com/evanlucas/eyearesee/commit/3cd39bfe73)] - **app**: add auto scroll logic (Evan Lucas)
+* [[`8e9d1f4152`](https://github.com/evanlucas/eyearesee/commit/8e9d1f4152)] - **connection-settings**: add auto join option to settings (Evan Lucas)
+* [[`f876ebda0b`](https://github.com/evanlucas/eyearesee/commit/f876ebda0b)] - **deps**: eyearesee-client@1.5.1 (Evan Lucas)
+* [[`c88b37974e`](https://github.com/evanlucas/eyearesee/commit/c88b37974e)] - **deps**: eyearesee-client@1.5.0 (Evan Lucas)
+
+# 2016-04-05 v0.4.1 Release, @evanlucas
 
 * [[`0a2f89f0b2`](https://github.com/evanlucas/eyearesee/commit/0a2f89f0b2)] - **deps**: chalk@1.1.3 (Evan Lucas) 
-* [[`f367832441`](https://github.com/evanlucas/eyearesee/commit/f367832441)] - **script**: add do-release script (Evan Lucas) 
+* [[`f367832441`](https://github.com/evanlucas/eyearesee/commit/f367832441)] - **script**: add do-release script (Evan Lucas)
 * [[`919530caf5`](https://github.com/evanlucas/eyearesee/commit/919530caf5)] - **view**: update view when removing query (Evan Lucas)
 
 # 2016-04-04 v0.4.0 Release, @evanlucas
