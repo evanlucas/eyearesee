@@ -2,12 +2,13 @@
 
 const inherits = require('util').inherits
 const App = require('./app')
-const remote = require('remote')
-const app = remote.require('app')
-const ipcRenderer = require('electron').ipcRenderer
-const shell = require('shell')
+const electron = require('electron')
+const remote = electron.remote
+const app = remote.app
+const ipcRenderer = electron.ipcRenderer
+const shell = electron.shell
 const currentWindow = remote.getCurrentWindow()
-const Menu = remote.require('menu')
+const Menu = remote.Menu
 const pkg = require('./package')
 
 module.exports = Desktop

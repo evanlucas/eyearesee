@@ -1,9 +1,9 @@
 'use strict'
 
-const BrowserWindow = require('browser-window')
-const app = require('app')
-const path = require('path')
 const electron = require('electron')
+const BrowserWindow = electron.BrowserWindow
+const app = electron.app
+const path = require('path')
 const shortcuts = electron.globalShortcut
 const fs = require('fs')
 const v8 = require('v8')
