@@ -9,6 +9,7 @@ irc-serverbar {
   z-index: 50000;
 
   .nav {
+    padding-top: 20px;
     .menu {
       ul {
         list-style: none;
@@ -71,7 +72,7 @@ irc-serverbar {
       cursor: pointer;
       width: @serverbarWidth - 20;
       height: @serverbarWidth - 20;
-      line-height: @serverbarWidth - 20;
+      line-height: @serverbarWidth - 20 - 4;
       border: 2px solid transparent;
 
       &:active,

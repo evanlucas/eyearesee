@@ -32,6 +32,7 @@ function setup() {
   , 'min-height': 400
   , 'min-width': 600
   , resizable: true
+  , titleBarStyle: 'hidden'
   , center: true
   , title: name
   })

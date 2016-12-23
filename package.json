@@ -8,9 +8,17 @@
     "dev": "npm run build-css && npm start",
     "lint": "lintit",
     "package-osx": "make package-osx",
+    "rebuild": "electron-rebuild -l",
     "start": "electron .",
     "pretest": "npm run lint",
     "test": "EYEARESEE_HOME=$(pwd)/test/fixtures/HOME tap test --cov"
+  },
+  "build": {
+    "appId": "com.evanlucas.eyearesee",
+    "asar": false,
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    }
   },
   "dependencies": {
     "argsplit": "~1.0.4",
@@ -35,9 +43,10 @@
   "devDependencies": {
     "chalk": "~1.1.3",
     "electron": "^1.4.12",
+    "electron-builder": "^10.9.3",
     "electron-packager": "~5.2.1",
     "electron-rebuild": "^1.4.0",
-    "less": "~2.5.3",
+    "less": "^2.7.1",
     "lintit": "~1.0.1",
     "semver": "~5.1.0",
     "tap": "~5.0.0"
