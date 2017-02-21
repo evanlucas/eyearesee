@@ -9,7 +9,7 @@ A WIP IRC client using Electron.
 
 There is still quite a bit of work to be done.
 
-**Note: Requires Node.js v5+ to run**
+**Note: Requires Node.js v6+ to run**
 
 ## To run locally:
 
@@ -17,6 +17,7 @@ There is still quite a bit of work to be done.
 $ git clone git://github.com/evanlucas/eyearesee
 $ cd eyearesee
 $ npm install
+$ npm run rebuild
 $ npm run dev
 ```
 
