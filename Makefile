@@ -1,6 +1,6 @@
 NAME ?= eyearesee
 VERSION ?= $(shell node -pe 'require(`./package`).version')
-ELECTRON_VERSION ?= 0.37.2
+ELECTRON_VERSION ?= 1.6.11
 BUNDLE_ID ?= com.evanlucas.$(NAME)
 OUT ?= build/
 
@@ -14,10 +14,11 @@ help:
 package-osx: build-css ## Create a package of the app for OS X
 	node_modules/.bin/electron-packager . $(NAME) --platform=darwin --arch=x64 \
 		--version=$(ELECTRON_VERSION) \
-		--icon=resources/icon.icns \
+		--icon=build/icon.icns \
 		--app-version=$(VERSION) \
 		--app-bundle-id=$(BUNDLE_ID) \
 		--prune \
+		--overwrite \
 		--out=$(OUT)
 
 clean: ## Remove old generated apps
