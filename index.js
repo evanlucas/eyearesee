@@ -6,8 +6,6 @@ const app = electron.app
 const path = require('path')
 const shortcuts = electron.globalShortcut
 const fs = require('fs')
-const v8 = require('v8')
-v8.setFlagsFromString('--harmony')
 
 const name = 'EyeAreSee'
 const index = `file://${path.join(__dirname, 'views', 'index.html')}`
