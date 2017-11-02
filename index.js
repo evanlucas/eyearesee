@@ -1,6 +1,7 @@
 'use strict'
 
 const electron = require('electron')
+const windowState = require('electron-window-state')
 const BrowserWindow = electron.BrowserWindow
 const app = electron.app
 const path = require('path')
@@ -23,10 +24,16 @@ var mainWindow
 function setup() {
   setupHome()
   shortcuts.unregister('ctrl+r')
+  const mainWindowState = windowState({
+    defaultWidth: 1200
+  , defaultHeight: 800
+  })
 
   mainWindow = new BrowserWindow({
-    width: 1200
-  , height: 730
+    x: mainWindowState.x
+  , y: mainWindowState.y
+  , width: mainWindowState.width
+  , height: mainWindowState.height
   , 'min-height': 400
   , 'min-width': 600
   , resizable: true
@@ -34,6 +41,8 @@ function setup() {
   , center: true
   , title: name
   })
+
+  mainWindowState.manage(mainWindow)
 
   const App = require('./lib/app')
   App.create({

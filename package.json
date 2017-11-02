@@ -30,6 +30,7 @@
     "daily-file-writer": "~1.0.0",
     "debug": "~2.2.0",
     "delegate-dom": "0.0.1",
+    "electron-window-state": "^4.1.1",
     "eyearesee-client": "~1.5.1",
     "keytar": "~3.0.0",
     "leveldown": "~1.4.3",
