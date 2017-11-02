@@ -1,5 +1,20 @@
 # EyeAreSee ChangeLog
 
+# 2017-11-02 v0.5.0 Release, Evan Lucas
+
+* [[`f10b3e4e88`](https://github.com/evanlucas/eyearesee/commit/f10b3e4e88)] - **app**: update electron to latest (Evan Lucas) 
+* [[`3423b20b43`](https://github.com/evanlucas/eyearesee/commit/3423b20b43)] - **app**: switch to no titlebar (Evan Lucas) 
+* [[`164b6393dd`](https://github.com/evanlucas/eyearesee/commit/164b6393dd)] - **client**: improve drag regions (Evan Lucas) 
+* [[`5c04a5445c`](https://github.com/evanlucas/eyearesee/commit/5c04a5445c)] - **doc**: update README with valid steps to run locally (Evan Lucas) 
+* [[`58e031a64f`](https://github.com/evanlucas/eyearesee/commit/58e031a64f)] - **gitignore**: ignore /dist, not /build (Evan Lucas) 
+* [[`34240525f6`](https://github.com/evanlucas/eyearesee/commit/34240525f6)] - **index**: add electron-window-state to manage window state (Evan Lucas) 
+* [[`db3bf32c5c`](https://github.com/evanlucas/eyearesee/commit/db3bf32c5c)] - **index,app**: remove harmony switch (Evan Lucas) 
+* [[`2bca47547f`](https://github.com/evanlucas/eyearesee/commit/2bca47547f)] - **node_modules**: do not checkin delegate-don anymore (Evan Lucas) 
+* [[`97a4bf1b8d`](https://github.com/evanlucas/eyearesee/commit/97a4bf1b8d)] - **node_modules**: fixup delegate-dom (Evan Lucas) 
+* [[`cd692c7c9e`](https://github.com/evanlucas/eyearesee/commit/cd692c7c9e)] - **package**: bump to latest electron (Evan Lucas) 
+* [[`2fd913f7e3`](https://github.com/evanlucas/eyearesee/commit/2fd913f7e3)] - **script**: fix commit message in release script (Evan Lucas) 
+* [[`26c8fb2071`](https://github.com/evanlucas/eyearesee/commit/26c8fb2071)] - **utils**: support italics as well as bold (Evan Lucas)
+
 # 2016-05-18 v0.4.2 Release, @evanlucas
 
 * [[`3cd39bfe73`](https://github.com/evanlucas/eyearesee/commit/3cd39bfe73)] - **app**: add auto scroll logic (Evan Lucas)
